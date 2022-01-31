@@ -1,0 +1,3 @@
+[submodule "Lumi/lib/spdlog"]
+	path = Lumi/lib/spdlog
+	url = https://github.com/gabime/spdlog.git
