@@ -28,7 +28,8 @@ project "Lumi"
 
 	includedirs
 	{
-		"%{prj.name}/lib/spdlog/include"
+		"%{prj.name}/lib/spdlog/include",
+		"%{prj.name}/src"
 	}
 
 	filter "system:windows"
