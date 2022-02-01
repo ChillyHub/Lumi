@@ -11,6 +11,7 @@ namespace Lumi
 	public:
 		int GetKeyCode() const { return m_KeyCode; }
 
+		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_INPUT | EVENT_CATEGORY_KEYBOARD)
 	protected:
 		KeyEvent(int keycode) : m_KeyCode(keycode) { }
 
@@ -33,7 +34,7 @@ namespace Lumi
 		}
 
 		EVENT_CLASS_TYPE(KEY_PRESSED)
-	protected:
+	private:
 		int m_RepeatCount;
 	};
 
@@ -41,7 +42,14 @@ namespace Lumi
 	{
 	public:
 		KeyReleasedEvent(int keycode) : KeyEvent(keycode) { }
-	protected:
-		int m;
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyReleasedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KEY_RELEASED)
 	};
 }
