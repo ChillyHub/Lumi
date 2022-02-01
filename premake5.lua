@@ -11,6 +11,13 @@ workspace "Lumi"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.architecture}" 
 
+-- Include dirctories relative to root folder
+IncludeDir = {}
+IncludeDir["GLFW"] = "Lumi/lib/GLFW/include"
+
+-- Include subpremake
+include "Lumi/lib/GLFW"
+
 project "Lumi"
 	location "Lumi"
 	kind "SharedLib"
@@ -18,6 +25,9 @@ project "Lumi"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	pchheader "pch.h"
+	pchsource "Lumi/src/pch.cpp"
 
 	files
 	{
@@ -29,7 +39,14 @@ project "Lumi"
 	includedirs
 	{
 		"%{prj.name}/lib/spdlog/include",
-		"%{prj.name}/src"
+		"%{prj.name}/src",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"

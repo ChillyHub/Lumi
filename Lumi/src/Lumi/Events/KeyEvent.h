@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Lumi
 {
 	class LUMI_EXPORT KeyEvent : public Event

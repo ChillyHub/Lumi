@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Lumi
 {
 	class LUMI_EXPORT MouseMovedEvent : public Event
@@ -22,7 +20,7 @@ namespace Lumi
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MOUSE_MOVED)
+		EVENT_CLASS_TYPE(MOUSE_MMOVED)
 		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_INPUT | EVENT_CATEGORY_MOUSE)
 	private:
 		float m_MouseX, m_MouseY;
@@ -41,6 +39,7 @@ namespace Lumi
 		{
 			std::stringstream ss;
 			ss << "MouseScrolledEvenet: ( " << m_OffsetX << " , " << m_OffsetY << " )";
+			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(MOUSE_SCROLLED)
