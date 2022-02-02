@@ -14,9 +14,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.architecture}"
 -- Include dirctories relative to root folder
 IncludeDir = {}
 IncludeDir["GLFW"] = "Lumi/lib/GLFW/include"
+IncludeDir["glad"] = "Lumi/lib/glad/include"
 
 -- Include subpremake
 include "Lumi/lib/GLFW"
+include "Lumi/lib/glad"
 
 project "Lumi"
 	location "Lumi"
@@ -40,13 +42,15 @@ project "Lumi"
 	{
 		"%{prj.name}/lib/spdlog/include",
 		"%{prj.name}/src",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}"
 	}
 
 	links
 	{
 		"GLFW",
-		"opengl32.lib"
+		"opengl32.lib",
+		"glad"
 	}
 
 	filter "system:windows"
@@ -67,14 +71,17 @@ project "Lumi"
 
 	filter "configurations:Debug"
 		defines "LUMI_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "LUMI_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "LUMI_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 project "example"
@@ -115,12 +122,15 @@ project "example"
 
 	filter "configurations:Debug"
 		defines "LUMI_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "LUMI_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "LUMI_DIST"
+		buildoptions "/MD"
 		optimize "On"

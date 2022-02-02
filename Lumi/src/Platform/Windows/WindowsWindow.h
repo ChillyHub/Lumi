@@ -3,6 +3,7 @@
 #include "Lumi/Window.h"
 #include "Lumi/Log.h"
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Lumi

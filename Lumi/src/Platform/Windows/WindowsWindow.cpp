@@ -67,9 +67,15 @@ namespace Lumi
 			s_GLFWInitialized = true;
 		}
 
+		// create window
 		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
 		glfwSetWindowUserPointer(m_Window, &m_Data);
+
+		// init glad
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		LUMI_CORE_ASSERT(status, "Could not intialize glad!");
+
 		SetVSync(true);
 
 		// set GLFW callbacks

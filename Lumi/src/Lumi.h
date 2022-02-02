@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Lumi/Application.h"
+#include "Lumi/Layer.h"
 #include "Lumi/Log.h"
 
 // Entry Point
