@@ -15,10 +15,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Lumi/lib/GLFW/include"
 IncludeDir["glad"] = "Lumi/lib/glad/include"
+IncludeDir["ImGui"] = "Lumi/lib/imgui"
 
 -- Include subpremake
 include "Lumi/lib/GLFW"
 include "Lumi/lib/glad"
+include "Lumi/lib/imgui"
 
 project "Lumi"
 	location "Lumi"
@@ -43,14 +45,16 @@ project "Lumi"
 		"%{prj.name}/lib/spdlog/include",
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.glad}"
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.ImGui}"
 	}
 
 	links
 	{
 		"GLFW",
 		"opengl32.lib",
-		"glad"
+		"glad",
+		"ImGui"
 	}
 
 	filter "system:windows"

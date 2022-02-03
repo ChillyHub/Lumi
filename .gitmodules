@@ -1,0 +1,9 @@
+[submodule "Lumi/lib/spdlog"]
+	path = Lumi/lib/spdlog
+	url = https://github.com/ChillyHub/spdlog.git
+[submodule "Lumi/lib/GLFW"]
+	path = Lumi/lib/GLFW
+	url = https://github.com/ChillyHub/glfw.git
+[submodule "Lumi/lib/imgui"]
+	path = Lumi/lib/imgui
+	url = https://github.com/ChillyHub/imgui.git
