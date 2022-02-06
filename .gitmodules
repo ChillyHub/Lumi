@@ -7,3 +7,6 @@
 [submodule "Lumi/lib/imgui"]
 	path = Lumi/lib/imgui
 	url = https://github.com/ChillyHub/imgui.git
+[submodule "Lumi/lib/glad"]
+	path = Lumi/lib/glad
+	url = https://github.com/ChillyHub/glad.git
