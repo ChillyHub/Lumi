@@ -66,8 +66,11 @@ namespace Lumi
 
 		while (m_Running)
 		{
-			glClearColor(0.9f, 0.0f, 0.6f, 1.0f);
+			glClearColor(0.117f, 0.117f, 0.117f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			// auto [x, y] = Input::GetCursorPos();
+			// LUMI_CORE_TRACE(" {0} , {1} ", x, y);
 
 			for (auto layer : m_LayerStack)
 				layer->OnUpdate();

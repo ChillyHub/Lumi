@@ -4,13 +4,14 @@
 #include "Events/Event.h"
 #include "Window.h"
 
-#include "Lumi/Log.h"
 #include "Lumi/Events/ApplicationEvent.h"
+#include "Input.h"
 #include "Lumi/LayerStack.h"
+#include "Lumi/Log.h"
 
 namespace Lumi
 {
-	class LUMI_EXPORT Application
+	class LUMI_API Application
 	{
 	public:
 		Application();

@@ -4,7 +4,7 @@
 
 namespace Lumi
 {
-	class LUMI_EXPORT ImGuiLayer : public Layer
+	class LUMI_API ImGuiLayer : public Layer
 	{
 	public:
 		ImGuiLayer();

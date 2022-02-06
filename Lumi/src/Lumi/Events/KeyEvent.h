@@ -4,7 +4,7 @@
 
 namespace Lumi
 {
-	class LUMI_EXPORT KeyEvent : public Event
+	class LUMI_API KeyEvent : public Event
 	{
 	public:
 		int GetKeyCode() const { return m_KeyCode; }
@@ -16,7 +16,7 @@ namespace Lumi
 		int m_KeyCode;
 	};
 
-	class LUMI_EXPORT KeyPressedEvent : public KeyEvent
+	class LUMI_API KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
@@ -36,7 +36,7 @@ namespace Lumi
 		int m_RepeatCount;
 	};
 
-	class LUMI_EXPORT KeyReleasedEvent : public KeyEvent
+	class LUMI_API KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode) : KeyEvent(keycode) { }

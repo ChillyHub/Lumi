@@ -8,7 +8,7 @@
 
 namespace Lumi
 {
-	class LUMI_EXPORT Log
+	class LUMI_API Log
 	{
 	public:
 		static void Init();

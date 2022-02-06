@@ -5,7 +5,7 @@
 
 namespace Lumi
 {
-	class LUMI_EXPORT LayerStack
+	class LUMI_API LayerStack
 	{
 	public:
 		LayerStack();

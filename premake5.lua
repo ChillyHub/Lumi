@@ -16,6 +16,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Lumi/lib/GLFW/include"
 IncludeDir["glad"] = "Lumi/lib/glad/include"
 IncludeDir["ImGui"] = "Lumi/lib/imgui"
+IncludeDir["glm"] = "Lumi/lib/glm"
 
 -- Include subpremake
 include "Lumi/lib/GLFW"
@@ -38,7 +39,8 @@ project "Lumi"
 	{
 		"%{prj.name}/src/**.h",
         "%{prj.name}/src/**.hpp",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.inl"
 	}
 
 	includedirs
@@ -47,7 +49,8 @@ project "Lumi"
 		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -71,7 +74,7 @@ project "Lumi"
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/example")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/example/\"")
 		}
 
 	filter "configurations:Debug"
@@ -108,7 +111,8 @@ project "example"
 	includedirs
 	{
 		"Lumi/lib/spdlog/include",
-		"Lumi/src"
+		"Lumi/src",
+		"%{IncludeDir.glm}"
 	}
  
 	links

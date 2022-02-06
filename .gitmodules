@@ -10,3 +10,6 @@
 [submodule "Lumi/lib/glad"]
 	path = Lumi/lib/glad
 	url = https://github.com/ChillyHub/glad.git
+[submodule "Lumi/lib/glm"]
+	path = Lumi/lib/glm
+	url = https://github.com/ChillyHub/glm.git

@@ -1,0 +1,14 @@
+#pragma once
+
+#define LUMI_MOUSE_BUTTON_1         0
+#define LUMI_MOUSE_BUTTON_2         1
+#define LUMI_MOUSE_BUTTON_3         2
+#define LUMI_MOUSE_BUTTON_4         3
+#define LUMI_MOUSE_BUTTON_5         4
+#define LUMI_MOUSE_BUTTON_6         5
+#define LUMI_MOUSE_BUTTON_7         6
+#define LUMI_MOUSE_BUTTON_8         7
+#define LUMI_MOUSE_BUTTON_LAST      LUMI_MOUSE_BUTTON_8
+#define LUMI_MOUSE_BUTTON_LEFT      LUMI_MOUSE_BUTTON_1
+#define LUMI_MOUSE_BUTTON_RIGHT     LUMI_MOUSE_BUTTON_2
+#define LUMI_MOUSE_BUTTON_MIDDLE    LUMI_MOUSE_BUTTON_3

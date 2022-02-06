@@ -4,7 +4,7 @@
 
 namespace Lumi
 {
-	class LUMI_EXPORT MouseMovedEvent : public Event
+	class LUMI_API MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y)
@@ -26,7 +26,7 @@ namespace Lumi
 		float m_MouseX, m_MouseY;
 	};
 
-	class LUMI_EXPORT MouseScrolledEvent : public Event
+	class LUMI_API MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(float offsetx, float offsety) 
@@ -48,7 +48,7 @@ namespace Lumi
 		float m_OffsetX, m_OffsetY;
 	};
 
-	class LUMI_EXPORT MouseButtonEvent : public Event
+	class LUMI_API MouseButtonEvent : public Event
 	{
 	public:
 		int GetMouseButton() const { return m_Button; }
@@ -60,7 +60,7 @@ namespace Lumi
 		int m_Button;
 	};
 
-	class LUMI_EXPORT MouseButtonPressedEvent : public MouseButtonEvent
+	class LUMI_API MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button, int repeatCount) 
@@ -80,7 +80,7 @@ namespace Lumi
 		int m_RepeatCount;
 	};
 
-	class LUMI_EXPORT MouseButtonReleasedEvent : public MouseButtonEvent
+	class LUMI_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button) : MouseButtonEvent(button) { }

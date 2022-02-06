@@ -5,7 +5,7 @@
 
 namespace Lumi
 {
-	class LUMI_EXPORT Layer
+	class LUMI_API Layer
 	{
 	public:
 		Layer(const std::string& name = "Layer") : m_DebugName(name) { }

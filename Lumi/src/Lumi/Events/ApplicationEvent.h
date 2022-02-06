@@ -4,7 +4,7 @@
 
 namespace Lumi
 {
-	class LUMI_EXPORT WindowCloseEvent : public Event
+	class LUMI_API WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() { }
@@ -13,7 +13,7 @@ namespace Lumi
 		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_APPLICATION)
 	};
 
-	class LUMI_EXPORT WindowResizeEvent : public Event
+	class LUMI_API WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height) 
@@ -35,7 +35,7 @@ namespace Lumi
 		unsigned int m_Width, m_Height;
 	};
 
-	class LUMI_EXPORT AppTickEvent : public Event
+	class LUMI_API AppTickEvent : public Event
 	{
 	public:
 		AppTickEvent() { }
@@ -44,7 +44,7 @@ namespace Lumi
 		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_APPLICATION)
 	};
 
-	class LUMI_EXPORT AppUpdateEvent : public Event
+	class LUMI_API AppUpdateEvent : public Event
 	{
 	public:
 		AppUpdateEvent() { }
@@ -53,7 +53,7 @@ namespace Lumi
 		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_APPLICATION)
 	};
 
-	class LUMI_EXPORT AppRenderEvent : public Event
+	class LUMI_API AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() { }

@@ -19,7 +19,7 @@ namespace Lumi
 	};
 
 	// Interface representing a desktop system based Window
-	class LUMI_EXPORT Window
+	class LUMI_API Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
