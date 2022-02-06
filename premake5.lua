@@ -26,6 +26,7 @@ project "Lumi"
 	location "Lumi"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -59,7 +60,6 @@ project "Lumi"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -76,23 +76,24 @@ project "Lumi"
 
 	filter "configurations:Debug"
 		defines "LUMI_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "LUMI_RELEASE"
-		buildoptions "/MD"
+		runtime "Debug"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "LUMI_DIST"
-		buildoptions "/MD"
+		runtime "Debug"
 		optimize "On"
 
 project "example"
 	location "example"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -117,7 +118,6 @@ project "example"
 
 	filter "system:windows"
 		cppdialect "C++20"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -127,15 +127,15 @@ project "example"
 
 	filter "configurations:Debug"
 		defines "LUMI_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "LUMI_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "LUMI_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
