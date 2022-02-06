@@ -10,4 +10,4 @@
 **.vcxproj.user
 
 # ImGui tmp
-*.ini
+**.ini
