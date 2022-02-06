@@ -70,6 +70,7 @@ namespace Lumi
 		// create window
 		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
+		LUMI_CORE_ASSERT(m_Window, "Failed to create GLFW window");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 
 		// init glad

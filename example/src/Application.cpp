@@ -29,6 +29,7 @@ private:
 Example::Example()
 {
 	PushLayer(new ExampleLayer());
+	PushLayer(new Lumi::ImGuiLayer());
 }
 
 Example::~Example()

@@ -17,6 +17,8 @@ namespace Lumi
 		unsigned int GetWidth() const override { return m_Data.Width; }
 		unsigned int GetHeight() const override { return m_Data.Height; }
 
+		virtual void* GetNativeWindow() const override { return m_Window; }
+
 		void OnUpdate() override;
 
 		// Window attributes

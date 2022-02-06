@@ -65,7 +65,8 @@ project "Lumi"
 		defines
 		{
 			"_LM_WINDOWS_",
-			"LM_DLL_EXPORTS"
+			"LM_DLL_EXPORTS",
+			"IMGUI_IMPL_OPENGL_LOADER_CUSTOM"
 		}
 
 		postbuildcommands

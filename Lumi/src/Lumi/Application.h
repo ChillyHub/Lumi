@@ -16,6 +16,9 @@ namespace Lumi
 		Application();
 		virtual ~Application();
 
+		Window& GetWindow() { return *m_Window; }
+		static Application& Get() { return *s_Instance; }
+
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
@@ -23,9 +26,11 @@ namespace Lumi
 
 		void Run();
 	private:
-		std::unique_ptr<Window> m_Window;
+		Window* m_Window;
 		LayerStack m_LayerStack;
 		bool m_Running = true;
+
+		static Application* s_Instance;
 
 		bool CloseWindow(WindowCloseEvent& e);
 	};
