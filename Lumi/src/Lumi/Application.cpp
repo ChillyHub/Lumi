@@ -16,8 +16,11 @@ namespace Lumi
 		LUMI_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 		
-		m_Window = Window::Create();
+		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallBack(BIND_EVENT_FN(OnEvent));
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushLayer(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -72,8 +75,10 @@ namespace Lumi
 			// auto [x, y] = Input::GetCursorPos();
 			// LUMI_CORE_TRACE(" {0} , {1} ", x, y);
 
+			m_ImGuiLayer->Begin();
 			for (auto layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}

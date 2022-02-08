@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Core.h"
-#include "Events/Event.h"
-#include "Window.h"
-
+#include "Lumi/Events/Event.h"
 #include "Lumi/Events/ApplicationEvent.h"
+#include "Lumi/ImGui/ImGuiLayer.h"
+#include "Core.h"
 #include "Input.h"
-#include "Lumi/LayerStack.h"
-#include "Lumi/Log.h"
+#include "LayerStack.h"
+#include "Log.h"
+#include "Window.h"
 
 namespace Lumi
 {
@@ -27,7 +27,8 @@ namespace Lumi
 
 		void Run();
 	private:
-		Window* m_Window;
+		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_LayerStack;
 		bool m_Running = true;
 

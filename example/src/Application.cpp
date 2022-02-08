@@ -4,6 +4,8 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <imgui.h>
+
 class ExampleLayer : public Lumi::Layer
 {
 public:
@@ -12,6 +14,13 @@ public:
 	void OnUpdate() override
 	{
 		// LUMI_CLIENT_INFO("ExampleLayer::Update");
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Hello ImGui");
+		ImGui::Text("Testing.");
+		ImGui::End();
 	}
 
 	void OnEvent(Lumi::Event& event) override
@@ -48,7 +57,7 @@ private:
 Example::Example()
 {
 	PushLayer(new ExampleLayer());
-	PushLayer(new Lumi::ImGuiLayer());
+	// PushLayer(new Lumi::ImGuiLayer());
 }
 
 Example::~Example()

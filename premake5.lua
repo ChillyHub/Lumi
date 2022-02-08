@@ -1,13 +1,13 @@
 workspace "Lumi"
-    architecture "x64"
-    startproject "example"
+	architecture "x64"
+	startproject "example"
 
-    configurations
-    {
-        "Debug",
-        "Release",
-        "Dist"
-    }
+	configurations
+	{
+	    "Debug",
+	    "Release",
+	    "Dist"
+	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.architecture}" 
 
@@ -25,9 +25,10 @@ include "Lumi/lib/imgui"
 
 project "Lumi"
 	location "Lumi"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++20"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -38,9 +39,14 @@ project "Lumi"
 	files
 	{
 		"%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.hpp",
+		"%{prj.name}/src/**.hpp",
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/src/**.inl"
+	}
+
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	includedirs
@@ -62,41 +68,35 @@ project "Lumi"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 		defines
 		{
 			"_LM_WINDOWS_",
-			"LM_DLL_EXPORTS",
-			"IMGUI_IMPL_OPENGL_LOADER_CUSTOM"
-		}
-
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/example/\"")
+			"LM_DLL_EXPORTS"
 		}
 
 	filter "configurations:Debug"
 		defines "LUMI_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "LUMI_RELEASE"
 		runtime "Debug"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "LUMI_DIST"
 		runtime "Debug"
-		optimize "On"
+		optimize "on"
 
 project "example"
 	location "example"
 	kind "ConsoleApp"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++20"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -104,7 +104,7 @@ project "example"
 	files
 	{
 		"%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.hpp",
+		"%{prj.name}/src/**.hpp",
 		"%{prj.name}/src/**.cpp"
 	}
 
@@ -112,7 +112,8 @@ project "example"
 	{
 		"Lumi/lib/spdlog/include",
 		"Lumi/src",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGui}"
 	}
  
 	links
@@ -121,7 +122,6 @@ project "example"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 		defines
@@ -132,14 +132,14 @@ project "example"
 	filter "configurations:Debug"
 		defines "LUMI_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "LUMI_RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "LUMI_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"

@@ -1,10 +1,14 @@
 #pragma once
 
 #ifdef _LM_WINDOWS_
-	#ifdef LM_DLL_EXPORTS
-		#define LUMI_API __declspec(dllexport)
+	#ifdef DLL_BUILD
+		#ifdef LM_DLL_EXPORTS
+			#define LUMI_API __declspec(dllexport)
+		#else
+			#define LUMI_API __declspec(dllimport)
+		#endif
 	#else
-		#define LUMI_API __declspec(dllimport)
+		#define LUMI_API
 	#endif
 #else
 	#error Lumi only support Windows
