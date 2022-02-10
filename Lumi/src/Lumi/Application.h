@@ -3,6 +3,10 @@
 #include "Lumi/Events/Event.h"
 #include "Lumi/Events/ApplicationEvent.h"
 #include "Lumi/ImGui/ImGuiLayer.h"
+#include "Lumi/Renderer/Buffer.h"
+#include "Lumi/Renderer/Renderer.h"
+#include "Lumi/Renderer/Shader.h"
+#include "Lumi/Renderer/VertexArray.h"
 #include "Core.h"
 #include "Input.h"
 #include "LayerStack.h"
@@ -31,6 +35,12 @@ namespace Lumi
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_LayerStack;
 		bool m_Running = true;
+
+		std::shared_ptr<Shader> m_TriangleShader;
+		std::shared_ptr<VertexArray> m_TriangleArray;
+
+		std::shared_ptr<Shader> m_QuadShader;
+		std::shared_ptr<VertexArray> m_QuadArray;
 
 		static Application* s_Instance;
 

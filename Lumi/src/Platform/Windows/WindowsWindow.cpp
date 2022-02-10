@@ -5,6 +5,8 @@
 #include "Lumi/Events/KeyEvent.h"
 #include "Lumi/Events/MouseEvent.h"
 
+#include "Platform/OpenGL/OpenGLContext.h"
+
 namespace Lumi
 {
 	static bool s_GLFWInitialized = false;
@@ -31,8 +33,9 @@ namespace Lumi
 
 	void WindowsWindow::OnUpdate()
 	{
+		LUMI_CORE_ASSERT(m_Window, "Window handle is NULL!");
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
@@ -69,13 +72,9 @@ namespace Lumi
 
 		// create window
 		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		LUMI_CORE_ASSERT(m_Window, "Failed to create GLFW window");
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-
-		// init glad
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		LUMI_CORE_ASSERT(status, "Could not intialize glad!");
 
 		SetVSync(true);
 

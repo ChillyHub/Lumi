@@ -3,7 +3,8 @@
 #include "Lumi/Window.h"
 #include "Lumi/Log.h"
 
-#include <glad/glad.h>
+#include "Lumi/Renderer/RenderContext.h"
+
 #include <GLFW/glfw3.h>
 
 namespace Lumi
@@ -30,6 +31,7 @@ namespace Lumi
 		bool IsVSync() const override;
 	private:
 		GLFWwindow* m_Window;
+		RenderContext* m_Context;
 
 		struct WindowData
 		{
