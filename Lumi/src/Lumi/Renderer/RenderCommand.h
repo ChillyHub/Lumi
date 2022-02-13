@@ -24,6 +24,11 @@ namespace Lumi
 			s_RendererAPI->SetColor(r, g, b, a);
 		}
 
+		static void SetViewport(int width, int height)
+		{
+			s_RendererAPI->SetViewport(width, height);
+		}
+
 		static void Clear()
 		{
 			s_RendererAPI->Clear();

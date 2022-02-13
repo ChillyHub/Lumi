@@ -38,6 +38,11 @@ namespace Lumi
 		m_Context->SwapBuffers();
 	}
 
+	void WindowsWindow::UpdateWindowSize()
+	{
+		glfwGetWindowSize(m_Window, &m_Data.Width, &m_Data.Height);
+	}
+
 	void WindowsWindow::SetVSync(bool enabled)
 	{
 		if (enabled)
@@ -66,6 +71,7 @@ namespace Lumi
 			// init GLFW
 			int success = glfwInit();
 			LUMI_CORE_ASSERT(success, "Could not intialize GLFW!");
+			glfwWindowHint(GLFW_MAXIMIZED, GL_TRUE);
 			glfwSetErrorCallback(glfwErrorCallback);
 			s_GLFWInitialized = true;
 		}
@@ -130,7 +136,7 @@ namespace Lumi
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				MouseScrolledEvent event((float)posX, (float)posY);
+				MouseMovedEvent event((float)posX, (float)posY);
 				data.EventCallback(event);
 			});
 

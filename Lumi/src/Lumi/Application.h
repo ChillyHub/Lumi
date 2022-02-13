@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Lumi/Core/Timestep.h"
 #include "Lumi/Events/Event.h"
 #include "Lumi/Events/ApplicationEvent.h"
 #include "Lumi/ImGui/ImGuiLayer.h"
@@ -7,6 +8,8 @@
 #include "Lumi/Renderer/Renderer.h"
 #include "Lumi/Renderer/Shader.h"
 #include "Lumi/Renderer/VertexArray.h"
+#include "Lumi/Scene/Camera.h"
+#include "Lumi/Scene/Camera2D.h"
 #include "Core.h"
 #include "Input.h"
 #include "LayerStack.h"
@@ -30,21 +33,20 @@ namespace Lumi
 		void PushOverlay(Layer* overlay);
 
 		void Run();
-	private:
+	protected:
 		std::unique_ptr<Window> m_Window;
+	private:
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_LayerStack;
 		bool m_Running = true;
 
-		std::shared_ptr<Shader> m_TriangleShader;
-		std::shared_ptr<VertexArray> m_TriangleArray;
-
-		std::shared_ptr<Shader> m_QuadShader;
-		std::shared_ptr<VertexArray> m_QuadArray;
+		float m_LastTime = 0.0f;
 
 		static Application* s_Instance;
 
-		bool CloseWindow(WindowCloseEvent& e);
+		// callback event
+		bool OnCloseWindow(WindowCloseEvent& e);
+		bool OnResizeWindow(WindowResizeEvent& e);
 	};
 
 	Application* CreateApplication();

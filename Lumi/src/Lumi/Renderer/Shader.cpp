@@ -108,7 +108,7 @@ namespace Lumi
 			this->Use();
 		glUniform2f(glGetUniformLocation(this->m_ShaderID, name), x, y);
 	}
-	void Shader::SetVec2(const char* name, glm::vec2& value, bool useShader)
+	void Shader::SetVec2(const char* name, const glm::vec2& value, bool useShader)
 	{
 		if (useShader)
 			this->Use();
@@ -120,7 +120,7 @@ namespace Lumi
 			this->Use();
 		glUniform3f(glGetUniformLocation(this->m_ShaderID, name), x, y, z);
 	}
-	void Shader::SetVec3(const char* name, glm::vec3& value, bool useShader)
+	void Shader::SetVec3(const char* name, const glm::vec3& value, bool useShader)
 	{
 		if (useShader)
 			this->Use();
@@ -132,13 +132,13 @@ namespace Lumi
 			this->Use();
 		glUniform4f(glGetUniformLocation(this->m_ShaderID, name), x, y, z, w);
 	}
-	void Shader::SetVec4(const char* name, glm::vec4& value, bool useShader)
+	void Shader::SetVec4(const char* name, const glm::vec4& value, bool useShader)
 	{
 		if (useShader)
 			this->Use();
 		glUniform4f(glGetUniformLocation(this->m_ShaderID, name), value.x, value.y, value.z, value.w);
 	}
-	void Shader::SetMat4(const char* name, glm::mat4& value, bool useShader)
+	void Shader::SetMat4(const char* name, const glm::mat4& value, bool useShader)
 	{
 		if (useShader)
 			this->Use();

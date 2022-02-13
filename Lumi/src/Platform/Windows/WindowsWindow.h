@@ -15,10 +15,14 @@ namespace Lumi
 		WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow();
 
-		unsigned int GetWidth() const override { return m_Data.Width; }
-		unsigned int GetHeight() const override { return m_Data.Height; }
+		virtual int GetWidth() const override { return m_Data.Width; }
+		virtual int GetHeight() const override { return m_Data.Height; }
+		virtual void SetWidth(int width) override { m_Data.Width = width; }
+		virtual void SetHeight(int height) override { m_Data.Height = height; }
 
 		virtual void* GetNativeWindow() const override { return m_Window; }
+
+		virtual void UpdateWindowSize() override;
 
 		void OnUpdate() override;
 
@@ -36,9 +40,9 @@ namespace Lumi
 		struct WindowData
 		{
 			std::string Title;
-			unsigned int Width;
-			unsigned int Height;
-			bool VSync;
+			int Width  = 1920;
+			int Height = 1080;
+			bool VSync = true;
 
 			EventCallbackFn EventCallback;
 

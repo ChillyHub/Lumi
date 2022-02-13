@@ -24,6 +24,8 @@ namespace Lumi
 		virtual void SetColor(float r, float g, float b) = 0;
 		virtual void SetColor(float r, float g, float b, float a) = 0;
 
+		virtual void SetViewport(int width, int height) = 0;
+
 		virtual void Clear() = 0;
 
 		virtual void DrawArray(const std::shared_ptr<VertexArray>& vertexArray) = 0;

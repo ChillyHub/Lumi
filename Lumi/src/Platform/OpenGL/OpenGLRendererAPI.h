@@ -12,6 +12,8 @@ namespace Lumi
 		virtual void SetColor(float r, float g, float b) override;
 		virtual void SetColor(float r, float g, float b, float a) override;
 
+		virtual void SetViewport(int width, int height) override;
+
 		virtual void Clear() override;
 
 		virtual void DrawArray(const std::shared_ptr<VertexArray>& vertexArray) override;

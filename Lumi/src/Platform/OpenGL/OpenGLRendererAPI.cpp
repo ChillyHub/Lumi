@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "OpenGLRendererAPI.h"
 
+#include "Lumi/Window.h"
+
 #include <glad/glad.h>
 
 namespace Lumi
@@ -23,6 +25,11 @@ namespace Lumi
 	void OpenGLRendererAPI::SetColor(float r, float g, float b, float a)
 	{
 		glClearColor(r, g, b, a);
+	}
+
+	void OpenGLRendererAPI::SetViewport(int width, int height)
+	{
+		glViewport(0, 0, (unsigned int)width, (unsigned int)height);
 	}
 
 	void OpenGLRendererAPI::Clear()
