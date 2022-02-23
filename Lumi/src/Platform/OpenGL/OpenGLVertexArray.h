@@ -20,7 +20,7 @@ namespace Lumi
 		{
 			return m_VertexBuffer;
 		}
-		virtual const std::shared_ptr<IndexBuffer>& GetIndexBuffer() const override
+		virtual const std::shared_ptr<IndexBuffer> GetIndexBuffer() const override
 		{
 			return m_IndexBuffer;
 		}

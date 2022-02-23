@@ -7,11 +7,15 @@
 #include "Lumi/Scene/Camera2D.h"
 #include "Lumi/Scene/Camera3D.h"
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 namespace Lumi
 {	
 	class Renderer
 	{
 	public:
+		static void Init();
+
 		static void BeginScene(const Camera2D& camera);
 		static void BeginScene(const Camera3D& camera);
 		static void EndScene();

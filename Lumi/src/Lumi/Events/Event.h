@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-#include "Lumi/Core.h"
+#include "Lumi/Core/Core.h"
 
 namespace Lumi
 {

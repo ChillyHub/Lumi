@@ -19,6 +19,8 @@ namespace Lumi
 
 		static API GetAPI() { return m_API; }
 
+		virtual void Init() = 0;
+
 		virtual void SetColor(const glm::vec3& color) = 0;
 		virtual void SetColor(const glm::vec4& color) = 0;
 		virtual void SetColor(float r, float g, float b) = 0;

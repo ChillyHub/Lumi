@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "WindowsInput.h"
 
-#include "Lumi/Application.h"
+#include "Lumi/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

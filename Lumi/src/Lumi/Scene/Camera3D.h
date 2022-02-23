@@ -2,8 +2,14 @@
 
 #include "Camera.h"
 
-#include "Lumi/Window.h"
+#include "Lumi/Core/KeyCodes.h"
+#include "Lumi/Core/MouseButtonCodes.h"
+#include "Lumi/Core/Timestep.h"
+#include "Lumi/Core/Window.h"
+
 #include "Lumi/Events/Event.h"
+#include "Lumi/Events/ApplicationEvent.h"
+#include "Lumi/Events/MouseEvent.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>

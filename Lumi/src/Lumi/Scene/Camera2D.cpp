@@ -69,12 +69,15 @@ namespace Lumi
 
 	bool Camera2D::OnScrolleMouse(MouseScrolledEvent& e)
 	{
-		m_ScaleOffset += e.GetOffsetY() * m_MouseScaleSensitivity;
+		if (m_OrthoScale > 0.05f || e.GetOffsetY() < 0)
+			m_ScaleOffset += e.GetOffsetY() * m_MouseScaleSensitivity;
 
-		if (m_ScaleOffset < 0.0f)
-			m_OrthoScale = 0.2f * m_ScaleOffset * m_ScaleOffset - 0.75f * m_ScaleOffset + 1;
-		else
-			m_OrthoScale = 0.25f + 0.75f / (m_ScaleOffset + 1);
+		// if (m_ScaleOffset < 0.0f)
+		// 	m_OrthoScale = std::exp(0.95f * -m_ScaleOffset);
+		// else
+		// 	m_OrthoScale = 0.05f + 0.95f / (m_ScaleOffset + 1);
+
+		m_OrthoScale = std::max(std::exp(0.7f * -m_ScaleOffset), 0.05f);
 		
 		UpdateProjection();
 
@@ -94,7 +97,7 @@ namespace Lumi
 
 			auto deltaPos = -(glm::mat3(rota) * glm::vec3(deltaX, -deltaY, 0.0f));
 
-			m_Position = m_Position + deltaPos * m_MouseMovedSensitivity;
+			m_Position = m_Position + deltaPos * m_OrthoScale * (2.0f / m_Height);
 			UpdateView();
 		}
 		if (m_MouseButtonRightPressed)

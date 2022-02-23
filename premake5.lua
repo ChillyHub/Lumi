@@ -17,6 +17,7 @@ IncludeDir["GLFW"] = "Lumi/lib/GLFW/include"
 IncludeDir["glad"] = "Lumi/lib/glad/include"
 IncludeDir["ImGui"] = "Lumi/lib/imgui"
 IncludeDir["glm"] = "Lumi/lib/glm"
+IncludeDir["stb"] = "Lumi/lib/stb"
 
 -- Include subpremake
 include "Lumi/lib/GLFW"
@@ -56,7 +57,8 @@ project "Lumi"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb}"
 	}
 
 	links

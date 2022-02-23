@@ -7,6 +7,11 @@ namespace Lumi
 	class RenderCommand
 	{
 	public:
+		static void Init()
+		{
+			s_RendererAPI->Init();
+		}
+
 		static void SetColor(const glm::vec3& color)
 		{
 			s_RendererAPI->SetColor(color);

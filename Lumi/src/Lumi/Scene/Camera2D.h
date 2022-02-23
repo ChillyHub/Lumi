@@ -2,15 +2,14 @@
 
 #include "Camera.h"
 
-#include "Lumi/Window.h"
+#include "Lumi/Core/KeyCodes.h"
+#include "Lumi/Core/MouseButtonCodes.h"
 #include "Lumi/Core/Timestep.h"
+#include "Lumi/Core/Window.h"
 
 #include "Lumi/Events/Event.h"
 #include "Lumi/Events/ApplicationEvent.h"
 #include "Lumi/Events/MouseEvent.h"
-
-#include "Lumi/KeyCodes.h"
-#include "Lumi/MouseButtonCodes.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

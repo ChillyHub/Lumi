@@ -33,4 +33,13 @@
 
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
-// #include "pch.h"
+#include "pch.h"
+
+namespace Lumi
+{
+	template <typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template <typename T>
+	using Refer = std::shared_ptr<T>;
+}

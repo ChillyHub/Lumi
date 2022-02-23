@@ -1,12 +1,18 @@
 #include "pch.h"
 #include "OpenGLRendererAPI.h"
 
-#include "Lumi/Window.h"
+#include "Lumi/Core/Window.h"
 
 #include <glad/glad.h>
 
 namespace Lumi
 {
+	void OpenGLRendererAPI::Init()
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+	
 	void OpenGLRendererAPI::SetColor(const glm::vec3& color)
 	{
 		glClearColor(color.r, color.g, color.b, 1.0f);

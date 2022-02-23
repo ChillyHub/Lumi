@@ -8,7 +8,7 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
-#include "Lumi/Application.h"
+#include "Lumi\Core\Application.h"
 
 #define GLSL_VERSION "#version 410"
 

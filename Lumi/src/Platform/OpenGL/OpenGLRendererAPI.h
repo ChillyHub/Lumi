@@ -7,6 +7,8 @@ namespace Lumi
 	class OpenGLRendererAPI : public RendererAPI
 	{
 	public:
+		virtual void Init() override;
+
 		virtual void SetColor(const glm::vec3& color) override;
 		virtual void SetColor(const glm::vec4& color) override;
 		virtual void SetColor(float r, float g, float b) override;

@@ -1,15 +1,13 @@
 #include "pch.h"
-#include "Shader.h"
+#include "Texture.h"
 
 #include "Renderer.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
+#include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Lumi
 {
-	std::shared_ptr<Shader> Shader::Create(const std::string& vertexSource, 
-		const std::string& fragmentSource,
-		const std::string& geometrySource)
+	std::shared_ptr<Texture2D> Texture2D::Create()
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -17,7 +15,7 @@ namespace Lumi
 			LUMI_CORE_ASSERT(false, "RendererAPI: Unknown renderer API!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(vertexSource, fragmentSource, geometrySource);
+			return std::make_shared<OpenGLTexture2D>();
 		case RendererAPI::API::Vulkan:
 			LUMI_CORE_ASSERT(false, "RendererAPI: Vulkan currently not supported!");
 			return nullptr;

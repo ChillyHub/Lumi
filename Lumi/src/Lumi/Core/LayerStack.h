@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Lumi/Core.h"
-#include "Lumi/Layer.h"
+#include "Core.h"
+#include "Layer.h"
 
 namespace Lumi
 {

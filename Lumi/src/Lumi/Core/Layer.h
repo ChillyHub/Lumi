@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Lumi/Core.h"
+#include "Lumi/Core/Core.h"
 #include "Lumi/Core/Timestep.h"
 #include "Lumi/Events/Event.h"
 

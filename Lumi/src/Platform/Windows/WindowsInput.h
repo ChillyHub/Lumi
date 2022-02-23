@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Lumi/Input.h"
+#include "Lumi/Core/Input.h"
 
 namespace Lumi
 {

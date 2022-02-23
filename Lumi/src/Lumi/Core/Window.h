@@ -2,7 +2,7 @@
 
 #include "pch.h"
 
-#include "Lumi/Core.h"
+#include "Lumi/Core/Core.h"
 #include "Lumi/Events/Event.h"
 
 namespace Lumi

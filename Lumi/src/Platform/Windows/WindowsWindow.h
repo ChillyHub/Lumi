@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Lumi/Window.h"
-#include "Lumi/Log.h"
+#include "Lumi/Core/Log.h"
+#include "Lumi/Core/Window.h"
 
 #include "Lumi/Renderer/RenderContext.h"
 

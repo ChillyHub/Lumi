@@ -6,6 +6,11 @@ namespace Lumi
 	std::shared_ptr<Renderer::SceneData> Renderer::s_SceneData =
 		std::shared_ptr<Renderer::SceneData>(new Renderer::SceneData());
 	
+	void Renderer::Init()
+	{
+		RenderCommand::Init();
+	}
+	
 	void Renderer::BeginScene(const Camera2D& camera)
 	{
 		s_SceneData->ProjectMatrix = camera.GetProjectMatrix();
@@ -26,8 +31,12 @@ namespace Lumi
 		const std::shared_ptr<VertexArray>& vertexArray)
 	{
 		shader->Use();
-		shader->SetMat4("uProjection", s_SceneData->ProjectMatrix);
-		shader->SetMat4("uView", s_SceneData->ViewMatirx);
+
+#       ifdef _LM_WINDOWS_
+			std::dynamic_pointer_cast<OpenGLShader>(shader)->SetMat4("uProjection", s_SceneData->ProjectMatrix);
+			std::dynamic_pointer_cast<OpenGLShader>(shader)->SetMat4("uView", s_SceneData->ViewMatirx);
+#       endif
+
 		vertexArray->Bind();
 		if (vertexArray->GetIndexBuffer())
 		{

@@ -1,6 +1,16 @@
 #pragma once
 
+#include "Lumi/Core/Application.h"
+#include "Lumi/Core/Core.h"
+#include "Lumi/Core/Input.h"
+#include "Lumi/Core/KeyCodes.h"
+#include "Lumi/Core/Layer.h"
+#include "Lumi/Core/LayerStack.h"
+#include "Lumi/Core/Log.h"
+#include "Lumi/Core/MouseButtonCodes.h"
+#include "Lumi/Core/ResourceManager.h"
 #include "Lumi/Core/Timestep.h"
+#include "Lumi/Core/Window.h"
 
 #include "Lumi/Events/Event.h"
 #include "Lumi/Events/ApplicationEvent.h"
@@ -19,14 +29,5 @@
 #include "Lumi/Scene/Camera2D.h"
 #include "Lumi/Scene/Camera3D.h"
 
-#include "Lumi/Application.h"
-#include "Lumi/Input.h"
-#include "Lumi/KeyCodes.h"
-#include "Lumi/Layer.h"
-#include "Lumi/LayerStack.h"
-#include "Lumi/Log.h"
-#include "Lumi/MouseButtonCodes.h"
-#include "Lumi/Window.h"
-
 // Entry Point
-#include "Lumi/EntryPoint.h"
+#include "Lumi/Core/EntryPoint.h"
