@@ -17,22 +17,17 @@ public:
 	ExampleLayer(int width, int height) : Layer("Example")
 	{
 		////////////////////////////////////////////////////////////////////
-		// A TESTING TRIANGLE
+		// A TESTING QUAD
 		// 
 		m_Camera = Lumi::Camera2D(width, height, { 0.0f, 0.0f, 2.0f });
 
-		std::string currentPath = std::filesystem::current_path().string();
+		Lumi::ResourceManager::LoadShader
+		("shaders/shaderT.vert", "shaders/shaderT.frag", std::string(), "TriangleShader");
 
 		Lumi::ResourceManager::LoadShader
-		(currentPath + "\\shaders\\shaderT.vert", currentPath + "\\shaders\\shaderT.frag", 
-			std::string(), "TriangleShader");
+		("shaders/shaderQ.vert", "shaders/shaderQ.frag", std::string(), "QuadShader");
 
-		Lumi::ResourceManager::LoadShader
-		(currentPath + "\\shaders\\shaderQ.vert", currentPath + "\\shaders\\shaderQ.frag", 
-			std::string(), "QuadShader");
-
-		Lumi::ResourceManager::LoadTexture2D
-		(currentPath + "\\assets\\textures\\barbara2.png", true, "Barbara");
+		Lumi::ResourceManager::LoadTexture2D("assets/textures/barbara2.png", true, "Barbara");
 
 		float verticesT[] = {
 			-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,

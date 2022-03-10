@@ -114,6 +114,7 @@ project "example"
 	{
 		"Lumi/lib/spdlog/include",
 		"Lumi/src",
+		"example",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}"
 	}
