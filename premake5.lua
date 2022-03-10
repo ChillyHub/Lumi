@@ -42,7 +42,8 @@ project "Lumi"
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.hpp",
 		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/src/**.inl"
+		"%{prj.name}/src/**.inl",
+		"%{IncludeDir.stb}/**.cpp"
 	}
 
 	defines
