@@ -71,10 +71,14 @@ namespace Lumi
 		{
 			float time = (float)glfwGetTime();
 			Timestep timestep = time - m_LastTime;
+			if (m_Minimize && timestep < 0.1) continue;
 			m_LastTime = time;
 			
-			for (auto layer : m_LayerStack)
-				layer->OnUpdate(timestep);
+			if (!m_Minimize)
+			{
+				for (auto layer : m_LayerStack)
+					layer->OnUpdate(timestep);
+			}
 
 			m_ImGuiLayer->Begin();
 			for (auto layer : m_LayerStack)
@@ -93,7 +97,18 @@ namespace Lumi
 
 	bool Application::OnResizeWindow(WindowResizeEvent& e)
 	{
-		RenderCommand::SetViewport(m_Window->GetWidth(), m_Window->GetHeight());
+		unsigned int width = e.GetWidth();
+		unsigned int height = e.GetHeight();
+		if (width == 0 || height == 0)
+		{
+			m_Minimize = true;
+		}
+		else
+		{
+			m_Minimize = false;
+		}
+		
+		RenderCommand::SetViewport(width, height);
 		return false;
 	}
 }

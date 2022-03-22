@@ -16,6 +16,10 @@ namespace Lumi
 
 		virtual void SetInternalFormat(unsigned int type) override { m_Internal_Format = type; }
 		virtual void SetImageFormat(unsigned int type) override { m_Image_Format = type; }
+		virtual void SetWrapS(unsigned int type) override { m_Wrap_S = type; }
+		virtual void SetWrapT(unsigned int type) override { m_Wrap_T = type; }
+		virtual void SetFilterMin(unsigned int type) override { m_Filter_Min = type; }
+		virtual void SetFilterMax(unsigned int type) override { m_Filter_Max = type; }
 
 		// generates texture from image
 		virtual void Generate(unsigned int width, unsigned int height, unsigned char* data) override;

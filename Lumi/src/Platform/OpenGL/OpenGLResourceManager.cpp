@@ -20,15 +20,17 @@ namespace Lumi
 		return Shaders[name];
 	}
 
-	std::shared_ptr<Texture> OpenGLResourceManager::LoadTexture2D(const char* file, bool alpha, std::string name)
+	std::shared_ptr<Texture> OpenGLResourceManager::LoadTexture2D(const char* file, std::string name, 
+		bool mipmap, bool gamma)
 	{
-		Textures[name] = loadTexture2DFromFile(file, alpha);
+		Textures[name] = loadTexture2DFromFile(file, mipmap, gamma);
 		return Textures[name];
 	}
 
-	std::shared_ptr<Texture> OpenGLResourceManager::LoadTexture2D(const std::string& file, bool alpha, std::string name)
+	std::shared_ptr<Texture> OpenGLResourceManager::LoadTexture2D(const std::string& file, std::string name, 
+		bool mipmap, bool gamma)
 	{
-		Textures[name] = loadTexture2DFromFile(file.c_str(), alpha);
+		Textures[name] = loadTexture2DFromFile(file.c_str(), mipmap, gamma);
 		return Textures[name];
 	}
 
@@ -90,7 +92,8 @@ namespace Lumi
 		return Shader::Create(vertexCode, fragmnetCode, geometryCode);
 	}
 
-	std::shared_ptr<Texture> OpenGLResourceManager::loadTexture2DFromFile(const char* file, bool alpha)
+	std::shared_ptr<Texture> OpenGLResourceManager::loadTexture2DFromFile(const char* file, 
+		bool mipmap, bool gamma)
 	{
 #       ifdef _LM_WINDOWS_
 		stbi_set_flip_vertically_on_load(1);
@@ -98,14 +101,42 @@ namespace Lumi
 
 		// create texture object
 		std::shared_ptr<Texture> texture = Texture2D::Create();
-		if (alpha)
-		{
-			texture->SetInternalFormat(GL_RGBA);
-			texture->SetImageFormat(GL_RGBA);
-		}
+
 		// load image
 		int width, height, nrChannels;
 		unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
+
+		if (nrChannels == 1)
+		{
+			texture->SetInternalFormat(GL_RED);
+			texture->SetImageFormat(GL_RED);
+		}
+		else if (nrChannels == 3)
+		{
+			if (gamma)
+			{
+				texture->SetInternalFormat(GL_SRGB);
+			}
+		}
+		else if (nrChannels == 4)
+		{
+			if (gamma)
+			{
+				texture->SetInternalFormat(GL_SRGB_ALPHA);
+			}
+			else
+			{
+				texture->SetInternalFormat(GL_RGBA);
+			}
+			texture->SetImageFormat(GL_RGBA);
+			texture->SetWrapS(GL_CLAMP_TO_EDGE);
+			texture->SetWrapT(GL_CLAMP_TO_EDGE);
+		}
+		if (mipmap)
+		{
+			texture->SetFilterMin(GL_LINEAR_MIPMAP_LINEAR);
+		}
+
 		// generate texture
 		if (data)
 			texture->Generate(width, height, data);

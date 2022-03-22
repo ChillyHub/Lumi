@@ -15,8 +15,10 @@ namespace Lumi
 			const std::string& gShaderFile, std::string name);
 		static std::shared_ptr<Shader> GetShader(std::string name);
 		// load and generate texture, get texture
-		static std::shared_ptr<Texture> LoadTexture2D(const char* file, bool alpha, std::string name);
-		static std::shared_ptr<Texture> LoadTexture2D(const std::string& file, bool alpha, std::string name);
+		static std::shared_ptr<Texture> LoadTexture2D(const char* file, std::string name, 
+			bool mipmap = false, bool gamma = false);
+		static std::shared_ptr<Texture> LoadTexture2D(const std::string& file, std::string name, 
+			bool mipmap = false, bool gamma = false);
 		static std::shared_ptr<Texture> GetTexture2D(std::string name);
 		// de-allocates all loaded resources
 		static void Clear();

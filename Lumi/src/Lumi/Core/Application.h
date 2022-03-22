@@ -33,20 +33,21 @@ namespace Lumi
 		void PushOverlay(Layer* overlay);
 
 		void Run();
+	private:
+		// callback event
+		bool OnCloseWindow(WindowCloseEvent& e);
+		bool OnResizeWindow(WindowResizeEvent& e);
 	protected:
 		std::unique_ptr<Window> m_Window;
 	private:
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_LayerStack;
 		bool m_Running = true;
+		bool m_Minimize = false;
 
 		float m_LastTime = 0.0f;
 
 		static Application* s_Instance;
-
-		// callback event
-		bool OnCloseWindow(WindowCloseEvent& e);
-		bool OnResizeWindow(WindowResizeEvent& e);
 	};
 
 	Application* CreateApplication();

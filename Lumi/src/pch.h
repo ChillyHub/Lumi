@@ -19,6 +19,10 @@
 #include <utility>
 #include <unordered_map>
 #include <unordered_set>
+// debug
+#include <chrono>
+// thread
+#include <thread>
 
 // log
 #include "Lumi/Core/Log.h"

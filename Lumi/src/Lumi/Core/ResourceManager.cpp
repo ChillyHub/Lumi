@@ -28,14 +28,16 @@ namespace Lumi
 		return Shaders[name];
 	}
 
-	std::shared_ptr<Texture> ResourceManager::LoadTexture2D(const char* file, bool alpha, std::string name)
+	std::shared_ptr<Texture> ResourceManager::LoadTexture2D(const char* file, std::string name, 
+		bool mipmap, bool gamma)
 	{
-		return OpenGLResourceManager::LoadTexture2D(file, alpha, name);
+		return OpenGLResourceManager::LoadTexture2D(file, name, mipmap, gamma);
 	}
 
-	std::shared_ptr<Texture> ResourceManager::LoadTexture2D(const std::string& file, bool alpha, std::string name)
+	std::shared_ptr<Texture> ResourceManager::LoadTexture2D(const std::string& file, std::string name, 
+		bool mipmap, bool gamma)
 	{
-		return OpenGLResourceManager::LoadTexture2D(file, alpha, name);
+		return OpenGLResourceManager::LoadTexture2D(file, name, mipmap, gamma);
 	}
 
 	std::shared_ptr<Texture> ResourceManager::GetTexture2D(std::string name)

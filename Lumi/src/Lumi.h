@@ -12,6 +12,8 @@
 #include "Lumi/Core/Timestep.h"
 #include "Lumi/Core/Window.h"
 
+#include "Lumi/Debug/Instrumentor.h"
+
 #include "Lumi/Events/Event.h"
 #include "Lumi/Events/ApplicationEvent.h"
 #include "Lumi/Events/KeyEvent.h"
@@ -22,6 +24,7 @@
 #include "Lumi/Renderer/Buffer.h"
 #include "Lumi/Renderer/RenderCommand.h"
 #include "Lumi/Renderer/Renderer.h"
+#include "Lumi/Renderer/Renderer2D.h"
 #include "Lumi/Renderer/Shader.h"
 #include "Lumi/Renderer/VertexArray.h"
 

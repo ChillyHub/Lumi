@@ -32,10 +32,8 @@ namespace Lumi
 	{
 		shader->Use();
 
-#       ifdef _LM_WINDOWS_
-			std::dynamic_pointer_cast<OpenGLShader>(shader)->SetMat4("uProjection", s_SceneData->ProjectMatrix);
-			std::dynamic_pointer_cast<OpenGLShader>(shader)->SetMat4("uView", s_SceneData->ViewMatirx);
-#       endif
+		shader->SetMat4("uProjection", s_SceneData->ProjectMatrix);
+		shader->SetMat4("uView", s_SceneData->ViewMatirx);
 
 		vertexArray->Bind();
 		if (vertexArray->GetIndexBuffer())

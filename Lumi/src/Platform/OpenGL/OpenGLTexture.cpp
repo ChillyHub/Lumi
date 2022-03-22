@@ -26,6 +26,10 @@ namespace Lumi
 		// crete texture
 		glBindTexture(GL_TEXTURE_2D, m_TextureID);
 		glTexImage2D(GL_TEXTURE_2D, 0, m_Internal_Format, width, height, 0, m_Image_Format, GL_UNSIGNED_BYTE, data);
+		if (m_Filter_Min == GL_LINEAR_MIPMAP_LINEAR)
+		{
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
 		// set texture wrap and filter modes
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_Wrap_S);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_Wrap_T);

@@ -11,3 +11,6 @@
 
 # ImGui tmp
 **.ini
+
+# profile
+**/profile/

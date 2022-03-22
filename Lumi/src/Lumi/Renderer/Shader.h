@@ -17,6 +17,17 @@ namespace Lumi
 		virtual void Use() const = 0;
 		virtual void Unuse() const = 0;
 
+		// utility functions
+		virtual void SetInt(const char* name, int value, bool useShader = false) = 0;
+		virtual void SetFloat(const char* name, float value, bool useShader = false) = 0;
+		virtual void SetVec2(const char* name, float x, float y, bool useShader = false) = 0;
+		virtual void SetVec2(const char* name, const glm::vec2& value, bool useShader = false) = 0;
+		virtual void SetVec3(const char* name, float x, float y, float z, bool useShader = false) = 0;
+		virtual void SetVec3(const char* name, const glm::vec3& value, bool useShader = false) = 0;
+		virtual void SetVec4(const char* name, float x, float y, float z, float w, bool useShader = false) = 0;
+		virtual void SetVec4(const char* name, const glm::vec4& value, bool useShader = false) = 0;
+		virtual void SetMat4(const char* name, const glm::mat4& value, bool useShader = false) = 0;
+
 		static std::shared_ptr<Shader> Create(const std::string& vertexSource, 
 			const std::string& fragmentSource,
 			const std::string& geometrySource = std::string());
