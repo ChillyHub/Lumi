@@ -44,8 +44,9 @@ public:
 		auto quadTexture = Lumi::ResourceManager::GetTexture2D("Barbara");
 	{
 		LM_PROFILE_SCOPE("Draw_Quad");
-		Lumi::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.01f }, { 1.0f, 1.0f }, m_QuadColor);
-		Lumi::Renderer2D::DrawQuad(quadTexture);
+		Lumi::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.01f }, { 1.0f, 1.0f }, m_QuadColor, 0.0f);
+		Lumi::Renderer2D::DrawQuad(quadTexture, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 
+			{1.0f, 1.0f, 1.0f}, 0.0f);
 	}
 		Lumi::Renderer2D::EndScene();
 	}

@@ -9,17 +9,21 @@ namespace Lumi
 	Camera2D::Camera2D(int width, int height, glm::vec3 position)
 		: m_Width(width), m_Height(height), m_Position(position)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		UpdateView();
 		UpdateProjection();
 	}
 
 	void Camera2D::OnUpdate(Timestep ts)
 	{
-		
+		LM_PROFILE_FUNCTION();
 	}
 
 	void Camera2D::OnEvent(Event& e)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(Camera2D::OnMouseButtonPressed));
 		dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(Camera2D::OnMouseButtonRealeased));
@@ -31,6 +35,8 @@ namespace Lumi
 
 	void Camera2D::UpdateView()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		glm::mat4 rota(1.0f);
 		glm::vec3 up(0.0f, 1.0f, 0.0f);
 		rota = glm::rotate(rota, glm::radians(m_Rotation), { 0.0f, 0.0f, 1.0f });
@@ -39,6 +45,8 @@ namespace Lumi
 
 	void Camera2D::UpdateProjection()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		if (m_ProjectionType == ProjectionType::Perspective)
 			m_ProjectMatrix = glm::perspective(m_Zoom, (float)m_Width / (float)m_Height, m_NearClip, m_FarClip);
 		else

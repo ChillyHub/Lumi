@@ -57,6 +57,8 @@ namespace Lumi
 
 	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		LUMI_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(),
 			"Vertex buffer has not layout data!");
 		
@@ -82,6 +84,8 @@ namespace Lumi
 
 	void OpenGLVertexArray::AddIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		glBindVertexArray(m_VAO);
 		indexBuffer->Bind();
 

@@ -9,6 +9,8 @@ namespace Lumi
 {
 	VertexArray* VertexArray::Create()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:

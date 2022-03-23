@@ -9,11 +9,15 @@ namespace Lumi
 	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
 		: m_WindowHandle(windowHandle)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		LUMI_CORE_ASSERT(m_WindowHandle, "Window handle is NULL!");
 	}
 	
 	void OpenGLContext::Init()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		glfwMakeContextCurrent(m_WindowHandle);
 
 		// init glad
@@ -30,6 +34,8 @@ namespace Lumi
 
 	void OpenGLContext::SwapBuffers()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }

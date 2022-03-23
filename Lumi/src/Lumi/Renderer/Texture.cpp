@@ -9,6 +9,8 @@ namespace Lumi
 {
 	std::shared_ptr<Texture2D> Texture2D::Create()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:

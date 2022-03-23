@@ -42,6 +42,8 @@ namespace Lumi
 
 	void OpenGLShader::Compile(const char* vertexSource, const char* fragmentSource, const char* geometrySource)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		if (m_ShaderID)
 		{
 			LUMI_CORE_INFO("Shader have allready been compiled!");

@@ -21,6 +21,8 @@ namespace Lumi
 
 	void OpenGLTexture2D::Generate(unsigned int width, unsigned int height, unsigned char* data)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		m_Width = width;
 		m_Height = height;
 		// crete texture

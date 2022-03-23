@@ -17,16 +17,18 @@ namespace Lumi
 	ImGuiLayer::ImGuiLayer()
 		: Layer("ImGuiLayer")
 	{
-
+		LM_PROFILE_FUNCTION();
 	}
 
 	ImGuiLayer::~ImGuiLayer()
 	{
-
+		LM_PROFILE_FUNCTION();
 	}
 
 	void ImGuiLayer::OnAttach()
 	{
+		LM_PROFILE_FUNCTION();
+		
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -58,6 +60,8 @@ namespace Lumi
 
 	void ImGuiLayer::OnDetach()
 	{
+		LM_PROFILE_FUNCTION();
+		
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
@@ -65,17 +69,21 @@ namespace Lumi
 
 	void ImGuiLayer::OnImGuiRender()
 	{
+		LM_PROFILE_FUNCTION();
+		
 		// static bool show = true;
 		// ImGui::ShowDemoWindow(&show);
 	}
 
 	void ImGuiLayer::OnEvent(Event& event)
 	{
-
+		LM_PROFILE_FUNCTION();
 	}
 
 	void ImGuiLayer::Begin()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
@@ -91,6 +99,8 @@ namespace Lumi
 
 	void ImGuiLayer::End()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		ImGuiIO& io = ImGui::GetIO();
 
 		ImGui::Render();
@@ -107,6 +117,8 @@ namespace Lumi
 
 	void ImGuiLayer::SetDarkThemeColors()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.WindowRounding = 13.0f;
 		

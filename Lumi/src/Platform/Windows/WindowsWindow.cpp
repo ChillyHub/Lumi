@@ -18,21 +18,29 @@ namespace Lumi
 
 	Window* Window::Create(const WindowProps& props)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		return new WindowsWindow(props);
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		Init(props);
 	}
 
 	WindowsWindow::~WindowsWindow()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		Shutdown();
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		LUMI_CORE_ASSERT(m_Window, "Window handle is NULL!");
 		glfwPollEvents();
 		m_Context->SwapBuffers();
@@ -60,6 +68,8 @@ namespace Lumi
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -181,6 +191,8 @@ namespace Lumi
 
 	void WindowsWindow::Shutdown()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		glfwDestroyWindow(m_Window);
 	}
 }

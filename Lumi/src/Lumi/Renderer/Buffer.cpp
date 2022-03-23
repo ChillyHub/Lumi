@@ -12,6 +12,8 @@ namespace Lumi
 
 	VertexBuffer* VertexBuffer::Create(float* vertices, unsigned int count)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:
@@ -39,6 +41,8 @@ namespace Lumi
 
 	IndexBuffer* IndexBuffer::Create(unsigned int* indices, unsigned int count)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:

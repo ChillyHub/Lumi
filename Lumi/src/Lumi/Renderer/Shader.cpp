@@ -11,6 +11,8 @@ namespace Lumi
 		const std::string& fragmentSource,
 		const std::string& geometrySource)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:

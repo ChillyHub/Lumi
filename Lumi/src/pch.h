@@ -24,8 +24,9 @@
 // thread
 #include <thread>
 
-// log
+// log and profile
 #include "Lumi/Core/Log.h"
+#include "Lumi/Debug/Instrumentor.h"
 
 #ifdef _LM_WINDOWS_
 	#include <Windows.h>

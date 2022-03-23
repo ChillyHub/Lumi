@@ -10,6 +10,8 @@ namespace Lumi
 	
 	Application::Application()
 	{
+		LM_PROFILE_FUNCTION();
+		
 		LUMI_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 		
@@ -24,11 +26,13 @@ namespace Lumi
 
 	Application::~Application()
 	{
-
+		LM_PROFILE_FUNCTION();
 	}
 
 	void Application::OnEvent(Event& e)
 	{
+		LM_PROFILE_FUNCTION();
+		
 		EventDispatcher dispathcher(e);
 		dispathcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnCloseWindow));
 		dispathcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnResizeWindow));
@@ -45,27 +49,23 @@ namespace Lumi
 
 	void Application::PushLayer(Layer* layer)
 	{
+		LM_PROFILE_FUNCTION();
+		
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
+		LM_PROFILE_FUNCTION();
+		
 		m_LayerStack.PushOverlay(overlay);
 		overlay->OnAttach(); 
 	}
 	
 	void Application::Run()
 	{
-		WindowResizeEvent e(1920, 1080);
-		if (e.IsInCategory(EVENT_CATEGORY_APPLICATION))
-		{
-			LUMI_CLIENT_TRACE(e);
-		}
-		if (e.IsInCategory(EVENT_CATEGORY_INPUT))
-		{
-			LUMI_CLIENT_ERROR(e);
-		}
+		LM_PROFILE_FUNCTION();
 
 		while (m_Running)
 		{

@@ -9,6 +9,8 @@ namespace Lumi
 	
 	void Renderer2D::Init()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		float vertices[] = {
 			// vertex           // coord
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -48,68 +50,44 @@ namespace Lumi
 
 	void Renderer2D::BeginScene(const Camera2D& camera)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		Renderer::BeginScene(camera);
 	}
 
 	void Renderer2D::EndScene()
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		Renderer::EndScene();
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size,
 		const glm::vec3& color, float rotate)
 	{
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, { position.x, position.y, 0.0f });
-		model = glm::rotate(model, rotate, { 0.0f, 0.0f, 1.0f });
-		model = glm::scale(model, { size.x, size.y, 0.0f });
-		
-		s_RenderData->Shader->Use();
-		s_RenderData->Shader->SetInt("uPng", false);
-		s_RenderData->Shader->SetVec4("uColor", {color.r, color.g, color.b, 1.0f});
-		s_RenderData->Shader->SetMat4("uModel", model);
-
-		Renderer::Draw(s_RenderData->Shader, s_RenderData->VAO);
+		DrawQuad({ position.x, position.y, 0.0f }, size, { color.r, color.g, color.b, 1.0f }, rotate);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size,
 		const glm::vec4& color, float rotate)
 	{
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, { position.x, position.y, 0.0f });
-		model = glm::rotate(model, rotate, { 0.0f, 0.0f, 1.0f });
-		model = glm::scale(model, { size.x, size.y, 0.0f });
-
-		s_RenderData->Shader->Use();
-		s_RenderData->Shader->SetInt("uPng", false);
-		s_RenderData->Shader->SetVec4("uColor", color);
-		s_RenderData->Shader->SetMat4("uModel", model);
-
-		Renderer::Draw(s_RenderData->Shader, s_RenderData->VAO);
+		DrawQuad({ position.x, position.y, 0.0f }, size, color, rotate);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,
 		const glm::vec3& color, float rotate)
 	{
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, position);
-		model = glm::rotate(model, rotate, { 0.0f, 0.0f, 1.0f });
-		model = glm::scale(model, { size.x, size.y, 0.0f });
-
-		s_RenderData->Shader->Use();
-		s_RenderData->Shader->SetInt("uPng", false);
-		s_RenderData->Shader->SetVec4("uColor", { color.r, color.g, color.b, 1.0f });
-		s_RenderData->Shader->SetMat4("uModel", model);
-
-		Renderer::Draw(s_RenderData->Shader, s_RenderData->VAO);
+		DrawQuad(position, size, { color.r, color.g, color.b, 1.0f }, rotate);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,
 		const glm::vec4& color, float rotate)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, position);
-		model = glm::rotate(model, rotate, { 0.0f, 0.0f, 1.0f });
+		model = glm::rotate(model, glm::radians(rotate), { 0.0f, 0.0f, -1.0f });
 		model = glm::scale(model, { size.x, size.y, 0.0f });
 
 		s_RenderData->Shader->Use();
@@ -123,60 +101,30 @@ namespace Lumi
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec2& position,
 		const glm::vec2& size, const glm::vec3& color, float rotate)
 	{
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, { position.x, position.y, 0.0f });
-		model = glm::rotate(model, rotate, { 0.0f, 0.0f, 1.0f });
-		model = glm::scale(model, { size.x, size.y, 0.0f });
-
-		s_RenderData->Shader->Use();
-		s_RenderData->Shader->SetInt("uPng", true);
-		s_RenderData->Shader->SetVec4("uColor", { color.r, color.g, color.b, 1.0f });
-		s_RenderData->Shader->SetMat4("uModel", model);
-
-		texture->Bind();
-		Renderer::Draw(s_RenderData->Shader, s_RenderData->VAO);
+		DrawQuad(texture, { position.x, position.y, 0.0f }, size,
+			{ color.r, color.g, color.b, 1.0f }, rotate);
 	}
 
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec2& position,
 		const glm::vec2& size, const glm::vec4& color, float rotate)
 	{
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, { position.x, position.y, 0.0f });
-		model = glm::rotate(model, rotate, { 0.0f, 0.0f, 1.0f });
-		model = glm::scale(model, { size.x, size.y, 0.0f });
-
-		s_RenderData->Shader->Use();
-		s_RenderData->Shader->SetInt("uPng", true);
-		s_RenderData->Shader->SetVec4("uColor", color);
-		s_RenderData->Shader->SetMat4("uModel", model);
-
-		texture->Bind();
-		Renderer::Draw(s_RenderData->Shader, s_RenderData->VAO);
+		DrawQuad(texture, { position.x, position.y, 0.0f }, size, color, rotate);
 	}
 
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec3& position,
 		const glm::vec2& size, const glm::vec3& color, float rotate)
 	{
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, position);
-		model = glm::rotate(model, rotate, { 0.0f, 0.0f, 1.0f });
-		model = glm::scale(model, { size.x, size.y, 0.0f });
-
-		s_RenderData->Shader->Use();
-		s_RenderData->Shader->SetInt("uPng", true);
-		s_RenderData->Shader->SetVec4("uColor", { color.r, color.g, color.b, 1.0f });
-		s_RenderData->Shader->SetMat4("uModel", model);
-
-		texture->Bind();
-		Renderer::Draw(s_RenderData->Shader, s_RenderData->VAO);
+		DrawQuad(texture, position, size, { color.r, color.g, color.b, 1.0f }, rotate);
 	}
 
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec3& position,
 		const glm::vec2& size, const glm::vec4& color, float rotate)
 	{
+		LM_PROFILE_FUNCTION(); 
+		
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, position);
-		model = glm::rotate(model, rotate, { 0.0f, 0.0f, 1.0f });
+		model = glm::rotate(model, glm::radians(rotate), { 0.0f, 0.0f, -1.0f });
 		model = glm::scale(model, { size.x, size.y, 0.0f });
 
 		s_RenderData->Shader->Use();
