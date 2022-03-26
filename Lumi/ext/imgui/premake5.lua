@@ -7,6 +7,13 @@ project "ImGui"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	includedirs
+	{
+		".", 
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.GLFW}",
+	}
+
 	files
 	{
 		"imconfig.h",
@@ -19,11 +26,18 @@ project "ImGui"
 		"imstb_rectpack.h",
 		"imstb_textedit.h",
 		"imstb_truetype.h",
-		"imgui_demo.cpp"
+		"imgui_demo.cpp",
+
+		"backends/imgui_impl_glfw.h",
+		"backends/imgui_impl_glfw.cpp", 
+		"backends/imgui_impl_opengl3.h",
+		"backends/imgui_impl_opengl3.cpp", 
+		"backends/imgui_impl_opengl3_loader.h"
 	}
 
 	filter "system:windows"
 		systemversion "latest"
+		defines "IMGUI_IMPL_OPENGL_LOADER_CUSTOM"
 
 	filter "system:linux"
 		pic "On"
