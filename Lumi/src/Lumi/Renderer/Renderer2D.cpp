@@ -76,8 +76,8 @@ namespace Lumi
 	{
 		LM_PROFILE_FUNCTION(); 
 		
-		unsigned int dataSize = (uint8_t*)s_RenderData.VertexBufferPtr
-			- (uint8_t*)s_RenderData.VertexBufferBase;
+		unsigned int dataSize = (unsigned int)((uint8_t*)s_RenderData.VertexBufferPtr
+			- (uint8_t*)s_RenderData.VertexBufferBase);
 		s_RenderData.VBO->SetData(s_RenderData.VertexBufferBase, dataSize);
 		Flush();
 
