@@ -16,10 +16,11 @@ public:
 		// 
 		m_Camera = Lumi::Camera2D(width, height, { 0.0f, 0.0f, 2.0f });
 
-		Lumi::ResourceManager::LoadShader
-		("shaders/shaderQ.vert", "shaders/shaderQ.frag", nullptr, "Shader2D");
-
 		Lumi::ResourceManager::LoadTexture2D("assets/textures/barbara2.png", "Barbara", true);
+		Lumi::ResourceManager::LoadTexture2D("assets/textures/bronya2.png", "Bronya", true);
+		Lumi::ResourceManager::LoadTexture2D("assets/textures/ei.png", "Ei", true);
+		Lumi::ResourceManager::LoadTexture2D("assets/textures/ganyu_keqing.png", "Ganyu", true);
+		Lumi::ResourceManager::LoadTexture2D("assets/textures/keqing.png", "Keqing", true);
 
 		Lumi::Renderer2D::Init();
 
@@ -41,14 +42,21 @@ public:
 		LM_PROFILE_SCOPE("Camera_change");
 		Lumi::Renderer2D::BeginScene(m_Camera);
 	}
-		auto quadTexture = Lumi::ResourceManager::GetTexture2D("Barbara");
+		auto quadTexture1 = Lumi::ResourceManager::GetTexture2D("Barbara");
+		auto quadTexture2 = Lumi::ResourceManager::GetTexture2D("Bronya");
+		auto quadTexture3 = Lumi::ResourceManager::GetTexture2D("Ei");
+		auto quadTexture4 = Lumi::ResourceManager::GetTexture2D("Ganyu");
+		auto quadTexture5 = Lumi::ResourceManager::GetTexture2D("Keqing");
 	{
 		LM_PROFILE_SCOPE("Draw_Quad");
-		Lumi::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.01f }, { 1.0f, 1.0f }, m_QuadColor, 0.0f);
-		Lumi::Renderer2D::DrawQuad(quadTexture, { 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, 
-			{1.0f, 1.0f, 1.0f}, 0.0f);
-	}
+		//Lumi::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.02f }, { 1.0f, 1.0f }, m_QuadColor, 0.0f);
+		Lumi::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.02f }, { 1.0f, 1.0f }, m_QuadColor, 0.0f);
+		Lumi::Renderer2D::DrawQuad(quadTexture1, { 0.0f, 0.0f, -0.01f }, { 1.0f, 1.0f },
+			{ 1.0f, 1.0f, 1.0f }, 0.0f);
+		Lumi::Renderer2D::DrawQuad(quadTexture1, { 0.0f, 0.0f, -0.01f }, { 1.0f, 1.0f },
+			{ 1.0f, 1.0f, 1.0f }, 0.0f);
 		Lumi::Renderer2D::EndScene();
+	}
 	}
 
 	void OnImGuiRender() override

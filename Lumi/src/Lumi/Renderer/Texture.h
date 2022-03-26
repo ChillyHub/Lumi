@@ -20,6 +20,8 @@ namespace Lumi
 		virtual void Generate(unsigned int width, unsigned int height, unsigned char* data) = 0;
 		virtual void Bind() const = 0;
 		virtual void Bind(unsigned int slot) const = 0;
+
+		virtual bool operator==(const Texture& rhs) const = 0;
 	};
 
 	class Texture2D : public Texture

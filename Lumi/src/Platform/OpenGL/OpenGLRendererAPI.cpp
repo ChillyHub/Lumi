@@ -51,8 +51,9 @@ namespace Lumi
 		glDrawArrays(GL_TRIANGLES, 0, vertexArray->GetVertexCount());
 	}
 
-	void OpenGLRendererAPI::DrawIndex(const std::shared_ptr<VertexArray>& vertexArray)
+	void OpenGLRendererAPI::DrawIndex(const std::shared_ptr<VertexArray>& vertexArray, unsigned int count)
 	{
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, NULL);
+		unsigned int indexCount = count ? count : vertexArray->GetIndexBuffer()->GetCount();
+		glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, NULL);
 	}
 }

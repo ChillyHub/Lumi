@@ -23,12 +23,18 @@ namespace Lumi
 	{
 		glGenBuffers(1, &m_VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-		glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
 		glDeleteBuffers(1, &m_VBO);
+	}
+
+	void OpenGLVertexBuffer::SetData(const void* data, unsigned int size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
 
 	void OpenGLVertexBuffer::Bind() const

@@ -96,55 +96,85 @@ namespace Lumi
 	{
 		if (useShader)
 			this->Use();
-		glUniform1i(glGetUniformLocation(this->m_ShaderID, name), value);
+		glUniform1i(glGetUniformLocation(m_ShaderID, name), value);
+	}
+	void OpenGLShader::SetIntV(const char* name, int* value, unsigned int count, bool useShader)
+	{
+		if (useShader)
+			this->Use();
+		glUniform1iv(glGetUniformLocation(m_ShaderID, name), count, value);
 	}
 	void OpenGLShader::SetFloat(const char* name, float value, bool useShader)
 	{
 		if (useShader)
 			this->Use();
-		glUniform1f(glGetUniformLocation(this->m_ShaderID, name), value);
+		glUniform1f(glGetUniformLocation(m_ShaderID, name), value);
+	}
+	void OpenGLShader::SetFloatV(const char* name, float* value, unsigned int count, bool useShader)
+	{
+		if (useShader)
+			this->Use();
+		glUniform1fv(glGetUniformLocation(m_ShaderID, name), count, value);
 	}
 	void OpenGLShader::SetVec2(const char* name, float x, float y, bool useShader)
 	{
 		if (useShader)
 			this->Use();
-		glUniform2f(glGetUniformLocation(this->m_ShaderID, name), x, y);
+		glUniform2f(glGetUniformLocation(m_ShaderID, name), x, y);
 	}
-	void OpenGLShader::SetVec2(const char* name, const glm::vec2& value, bool useShader)
+	void OpenGLShader::SetVec2(const char* name, glm::vec2& value, bool useShader)
 	{
 		if (useShader)
 			this->Use();
-		glUniform2f(glGetUniformLocation(this->m_ShaderID, name), value.x, value.y);
+		glUniform2f(glGetUniformLocation(m_ShaderID, name), value.x, value.y);
+	}
+	void OpenGLShader::SetVec2V(const char* name, float* value, unsigned int count, bool useShader)
+	{
+		if (useShader)
+			this->Use();
+		glUniform2fv(glGetUniformLocation(m_ShaderID, name), count, value);
 	}
 	void OpenGLShader::SetVec3(const char* name, float x, float y, float z, bool useShader)
 	{
 		if (useShader)
 			this->Use();
-		glUniform3f(glGetUniformLocation(this->m_ShaderID, name), x, y, z);
+		glUniform3f(glGetUniformLocation(m_ShaderID, name), x, y, z);
 	}
-	void OpenGLShader::SetVec3(const char* name, const glm::vec3& value, bool useShader)
+	void OpenGLShader::SetVec3(const char* name, glm::vec3& value, bool useShader)
 	{
 		if (useShader)
 			this->Use();
-		glUniform3f(glGetUniformLocation(this->m_ShaderID, name), value.x, value.y, value.z);
+		glUniform3f(glGetUniformLocation(m_ShaderID, name), value.x, value.y, value.z);
+	}
+	void OpenGLShader::SetVec3V(const char* name, float* value, unsigned int count, bool useShader)
+	{
+		if (useShader)
+			this->Use();
+		glUniform3fv(glGetUniformLocation(m_ShaderID, name), count, value);
 	}
 	void OpenGLShader::SetVec4(const char* name, float x, float y, float z, float w, bool useShader)
 	{
 		if (useShader)
 			this->Use();
-		glUniform4f(glGetUniformLocation(this->m_ShaderID, name), x, y, z, w);
+		glUniform4f(glGetUniformLocation(m_ShaderID, name), x, y, z, w);
 	}
-	void OpenGLShader::SetVec4(const char* name, const glm::vec4& value, bool useShader)
+	void OpenGLShader::SetVec4(const char* name, glm::vec4& value, bool useShader)
 	{
 		if (useShader)
 			this->Use();
-		glUniform4f(glGetUniformLocation(this->m_ShaderID, name), value.x, value.y, value.z, value.w);
+		glUniform4f(glGetUniformLocation(m_ShaderID, name), value.x, value.y, value.z, value.w);
 	}
-	void OpenGLShader::SetMat4(const char* name, const glm::mat4& value, bool useShader)
+	void OpenGLShader::SetVec4V(const char* name, float* value, unsigned int count, bool useShader)
 	{
 		if (useShader)
 			this->Use();
-		glUniformMatrix4fv(glGetUniformLocation(this->m_ShaderID, name), 1, false, glm::value_ptr(value));
+		glUniform4fv(glGetUniformLocation(m_ShaderID, name), count, value);
+	}
+	void OpenGLShader::SetMat4(const char* name, glm::mat4& value, bool useShader)
+	{
+		if (useShader)
+			this->Use();
+		glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, name), 1, false, glm::value_ptr(value));
 	}
 
 	void OpenGLShader::CheckComplieErrors(unsigned int object, std::string type)

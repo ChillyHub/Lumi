@@ -43,9 +43,9 @@ namespace Lumi
 		{
 			s_RendererAPI->DrawArray(vertexArray);
 		}
-		static void DrawIndex(const std::shared_ptr<VertexArray>& vertexArray)
+		static void DrawIndex(const std::shared_ptr<VertexArray>& vertexArray, unsigned int count = 0)
 		{
-			s_RendererAPI->DrawIndex(vertexArray);
+			s_RendererAPI->DrawIndex(vertexArray, count);
 		}
 	private:
 		static RendererAPI* s_RendererAPI;

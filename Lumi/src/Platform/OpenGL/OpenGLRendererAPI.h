@@ -19,6 +19,6 @@ namespace Lumi
 		virtual void Clear() override;
 
 		virtual void DrawArray(const std::shared_ptr<VertexArray>& vertexArray) override;
-		virtual void DrawIndex(const std::shared_ptr<VertexArray>& vertexArray) override;
+		virtual void DrawIndex(const std::shared_ptr<VertexArray>& vertexArray, unsigned int count = 0) override;
 	};
 }

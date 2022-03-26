@@ -28,14 +28,19 @@ namespace Lumi
 		void Compile(const char* vertexSource, const char* fragmentSource, const char* geometrySource = nullptr);
 		// utility functions
 		virtual void SetInt(const char* name, int value, bool useShader = false) override;
+		virtual void SetIntV(const char* name, int* value, unsigned int count, bool useShader = false) override;
 		virtual void SetFloat(const char* name, float value, bool useShader = false) override;
+		virtual void SetFloatV(const char* name, float* value, unsigned int count, bool useShader = false) override;
 		virtual void SetVec2(const char* name, float x, float y, bool useShader = false) override;
-		virtual void SetVec2(const char* name, const glm::vec2& value, bool useShader = false) override;
+		virtual void SetVec2(const char* name, glm::vec2& value, bool useShader = false) override;
+		virtual void SetVec2V(const char* name, float* value, unsigned int count, bool useShader = false) override;
 		virtual void SetVec3(const char* name, float x, float y, float z, bool useShader = false) override;
-		virtual void SetVec3(const char* name, const glm::vec3& value, bool useShader = false) override;
+		virtual void SetVec3(const char* name, glm::vec3& value, bool useShader = false) override;
+		virtual void SetVec3V(const char* name, float* value, unsigned int count, bool useShader = false) override;
 		virtual void SetVec4(const char* name, float x, float y, float z, float w, bool useShader = false) override;
-		virtual void SetVec4(const char* name, const glm::vec4& value, bool useShader = false) override;
-		virtual void SetMat4(const char* name, const glm::mat4& value, bool useShader = false) override;
+		virtual void SetVec4(const char* name, glm::vec4& value, bool useShader = false) override;
+		virtual void SetVec4V(const char* name, float* value, unsigned int count, bool useShader = false) override;
+		virtual void SetMat4(const char* name, glm::mat4& value, bool useShader = false) override;
 	private:
 		// state
 		unsigned int m_ShaderID;

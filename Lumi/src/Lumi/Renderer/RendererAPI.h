@@ -31,7 +31,7 @@ namespace Lumi
 		virtual void Clear() = 0;
 
 		virtual void DrawArray(const std::shared_ptr<VertexArray>& vertexArray) = 0;
-		virtual void DrawIndex(const std::shared_ptr<VertexArray>& vertexArray) = 0;
+		virtual void DrawIndex(const std::shared_ptr<VertexArray>& vertexArray, unsigned int count = 0) = 0;
 	private:
 		static API m_API;
 	};

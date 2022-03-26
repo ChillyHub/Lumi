@@ -26,6 +26,8 @@ namespace Lumi
 		// bind texture
 		virtual void Bind() const override;
 		virtual void Bind(unsigned int solt) const override;
+
+		virtual bool operator==(const Texture& rhs) const override;
 	private:
 		unsigned int m_TextureID;
 		unsigned int m_Width, m_Height;

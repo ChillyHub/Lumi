@@ -21,6 +21,6 @@ namespace Lumi
 		virtual const std::shared_ptr<IndexBuffer> GetIndexBuffer() const = 0;
 		virtual unsigned int GetVertexCount() const = 0;
 
-		static VertexArray* Create();
+		static std::shared_ptr<VertexArray> Create();
 	};
 }

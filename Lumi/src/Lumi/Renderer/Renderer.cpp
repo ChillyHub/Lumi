@@ -32,7 +32,7 @@ namespace Lumi
 	}
 
 	void Renderer::Draw(const std::shared_ptr<Shader>& shader, 
-		const std::shared_ptr<VertexArray>& vertexArray)
+		const std::shared_ptr<VertexArray>& vertexArray, unsigned int count)
 	{
 		LM_PROFILE_FUNCTION(); 
 		
@@ -44,7 +44,7 @@ namespace Lumi
 		vertexArray->Bind();
 		if (vertexArray->GetIndexBuffer())
 		{
-			RenderCommand::DrawIndex(vertexArray);
+			RenderCommand::DrawIndex(vertexArray, count);
 		}
 		else
 		{

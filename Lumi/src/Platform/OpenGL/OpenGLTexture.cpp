@@ -50,4 +50,9 @@ namespace Lumi
 	{
 		glBindTextureUnit(slot, m_TextureID);
 	}
+
+	bool OpenGLTexture2D::operator==(const Texture& rhs) const
+	{
+		return this->m_TextureID == ((OpenGLTexture2D&)rhs).m_TextureID;
+	}
 }

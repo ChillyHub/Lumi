@@ -55,6 +55,7 @@ project "Lumi"
 	{
 		"%{prj.name}/lib/spdlog/include",
 		"%{prj.name}/src",
+		"%{prj.name}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.ImGui}",
@@ -115,6 +116,7 @@ project "example"
 	{
 		"Lumi/lib/spdlog/include",
 		"Lumi/src",
+		"Lumi/include",
 		"example",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}"

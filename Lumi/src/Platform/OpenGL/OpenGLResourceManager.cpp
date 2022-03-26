@@ -67,9 +67,14 @@ namespace Lumi
 			vertexCode = vShaderStream.str();
 			fragmnetCode = fShaderStream.str();
 
-			if (vertexCode.empty() || fragmnetCode.empty())
+			if (vertexCode.empty())
 			{
-				throw std::exception("Empty shader file.");
+				throw std::exception("Empty vertex shader file.");
+			}
+
+			if (fragmnetCode.empty())
+			{
+				throw std::exception("Empty fragment shader file.");
 			}
 
 			// load geometry shader

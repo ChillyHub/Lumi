@@ -21,7 +21,7 @@ namespace Lumi
 		static void EndScene();
 
 		static void Draw(const std::shared_ptr<Shader>& shader, 
-			const std::shared_ptr<VertexArray>& vertexArray);
+			const std::shared_ptr<VertexArray>& vertexArray, unsigned int count = 0);
 
 		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	private:

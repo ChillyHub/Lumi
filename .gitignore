@@ -14,3 +14,6 @@
 
 # profile
 **/profile/
+
+# premake
+!premake5.exe
