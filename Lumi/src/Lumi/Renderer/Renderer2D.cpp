@@ -23,22 +23,27 @@ namespace Lumi
 		s_RenderData.VAO->AddVertexBuffer(s_RenderData.VBO);
 
 		unsigned int* indices = new unsigned int[s_RenderData.MaxIndices];
-		s_RenderData.VertexBufferBase = new QuadVertex[s_RenderData.MaxIndices];
+		s_RenderData.VertexBufferBase = new QuadVertex[s_RenderData.MaxVertices];
 		for (unsigned int i = 0, offset = 0; i < s_RenderData.MaxIndices; i += 6, offset += 4)
 		{
-			indices[i + 0u] = offset + 0u;
-			indices[i + 1u] = offset + 1u;
-			indices[i + 2u] = offset + 3u;
+			indices[i + 0] = offset + 0u;
+			indices[i + 1] = offset + 1u;
+			indices[i + 2] = offset + 2u;
 
-			indices[i + 3u] = offset + 1u;
-			indices[i + 4u] = offset + 2u;
-			indices[i + 5u] = offset + 3u;
+			indices[i + 3] = offset + 0u;
+			indices[i + 4] = offset + 2u;
+			indices[i + 5] = offset + 3u;
 		}
 
-		auto indexBufferQ = IndexBuffer::Create(indices, s_RenderData.MaxVertices);
-		s_RenderData.VAO->AddIndexBuffer(indexBufferQ);
+		auto indexBuffer = IndexBuffer::Create(indices, s_RenderData.MaxIndices);
+		s_RenderData.VAO->AddIndexBuffer(indexBuffer);
 
 		delete[] indices;
+
+		s_RenderData.QuadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
+		s_RenderData.QuadVertexPositions[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
+		s_RenderData.QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
+		s_RenderData.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
 
 		s_RenderData.VBO->Unbind();
 		s_RenderData.VAO->Unbind();
@@ -72,13 +77,22 @@ namespace Lumi
 		Renderer::BeginScene(camera);
 	}
 
+	void Renderer2D::ReBeginScene()
+	{
+		LM_PROFILE_FUNCTION();
+
+		s_RenderData.IndexCount = 0u;
+		s_RenderData.VertexBufferPtr = s_RenderData.VertexBufferBase;
+	}
+
 	void Renderer2D::EndScene()
 	{
 		LM_PROFILE_FUNCTION(); 
 		
-		unsigned int dataSize = (unsigned int)((uint8_t*)s_RenderData.VertexBufferPtr
-			- (uint8_t*)s_RenderData.VertexBufferBase);
-		s_RenderData.VBO->SetData(s_RenderData.VertexBufferBase, dataSize);
+		unsigned int dataSize = (unsigned int)(s_RenderData.VertexBufferPtr
+			- s_RenderData.VertexBufferBase);
+		auto s = sizeof(QuadVertex);
+		s_RenderData.VBO->SetData(s_RenderData.VertexBufferBase, dataSize * sizeof(QuadVertex));
 		Flush();
 
 		Renderer::EndScene();
@@ -94,6 +108,18 @@ namespace Lumi
 		}
 		
 		Renderer::Draw(s_RenderData.Shader, s_RenderData.VAO, s_RenderData.IndexCount);
+
+		s_RenderData.Stats.DrawCall++;
+	}
+
+	Renderer2D::Stat Renderer2D::GetStats()
+	{
+		return s_RenderData.Stats;
+	}
+
+	void Renderer2D::ResetStats()
+	{
+		memset(&s_RenderData.Stats, 0, sizeof(Renderer2D::Stat));
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size,
@@ -119,39 +145,44 @@ namespace Lumi
 	{
 		LM_PROFILE_FUNCTION();
 
-		s_RenderData.VertexBufferPtr->Position = position;
+		if (s_RenderData.IndexCount >= Renderer2DData::MaxIndices)
+		{
+			EndScene();
+			ReBeginScene();
+		}
+
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, position);
+		model = glm::rotate(model, glm::radians(rotate), { 0.0f, 0.0f, -1.0f });
+		model = glm::scale(model, { size.x, size.y, 0.0f });
+
+		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[0];
 		s_RenderData.VertexBufferPtr->TexCoord = { 0.0f, 0.0f };
 		s_RenderData.VertexBufferPtr->Color = color;
 		s_RenderData.VertexBufferPtr->TexIndex = 0.0f;
 		s_RenderData.VertexBufferPtr++;
 
-		s_RenderData.VertexBufferPtr->Position = { position.x + size.x, position.y, position.z };
+		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[1];
 		s_RenderData.VertexBufferPtr->TexCoord = { 1.0f, 0.0f };
 		s_RenderData.VertexBufferPtr->Color = color;
 		s_RenderData.VertexBufferPtr->TexIndex = 0.0f;
 		s_RenderData.VertexBufferPtr++;
 
-		s_RenderData.VertexBufferPtr->Position = { position.x + size.x, position.y + size.y, position.z };
+		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[2];
 		s_RenderData.VertexBufferPtr->TexCoord = { 1.0f, 1.0f };
 		s_RenderData.VertexBufferPtr->Color = color;
 		s_RenderData.VertexBufferPtr->TexIndex = 0.0f;
 		s_RenderData.VertexBufferPtr++;
 
-		s_RenderData.VertexBufferPtr->Position = { position.x, position.y + size.y, position.z };
+		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[3];
 		s_RenderData.VertexBufferPtr->TexCoord = { 0.0f, 1.0f };
 		s_RenderData.VertexBufferPtr->Color = color;
 		s_RenderData.VertexBufferPtr->TexIndex = 0.0f;
 		s_RenderData.VertexBufferPtr++;
 
 		s_RenderData.IndexCount += 6;
-		
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::rotate(model, glm::radians(rotate), { 0.0f, 0.0f, -1.0f });
 
-		s_RenderData.Shader->Use();
-		s_RenderData.Shader->SetMat4("uModel", model);
-
-		//Renderer::Draw(s_RenderData.Shader, s_RenderData.VAO);
+		s_RenderData.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec2& position,
@@ -178,6 +209,12 @@ namespace Lumi
 	{
 		LM_PROFILE_FUNCTION(); 
 
+		if (s_RenderData.IndexCount >= Renderer2DData::MaxIndices)
+		{
+			EndScene();
+			ReBeginScene();
+		}
+
 		unsigned int textureIndex = 0u;
 		for (unsigned int i = 1; i < s_RenderData.TextureSlotsIndex; i++)
 		{
@@ -194,36 +231,37 @@ namespace Lumi
 			s_RenderData.TextureSlots[s_RenderData.TextureSlotsIndex++] = texture;
 		}
 
-		s_RenderData.VertexBufferPtr->Position = position;
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, position);
+		model = glm::rotate(model, glm::radians(rotate), { 0.0f, 0.0f, -1.0f });
+		model = glm::scale(model, { size.x, size.y, 0.0f });
+		
+		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[0];
 		s_RenderData.VertexBufferPtr->TexCoord = { 0.0f, 0.0f };
 		s_RenderData.VertexBufferPtr->Color = color;
 		s_RenderData.VertexBufferPtr->TexIndex = (float)textureIndex;
 		s_RenderData.VertexBufferPtr++;
 
-		s_RenderData.VertexBufferPtr->Position = { position.x + size.x, position.y, position.z };
+		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[1];
 		s_RenderData.VertexBufferPtr->TexCoord = { 1.0f, 0.0f };
 		s_RenderData.VertexBufferPtr->Color = color;
 		s_RenderData.VertexBufferPtr->TexIndex = (float)textureIndex;
 		s_RenderData.VertexBufferPtr++;
 
-		s_RenderData.VertexBufferPtr->Position = { position.x + size.x, position.y + size.y, position.z };
+		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[2];
 		s_RenderData.VertexBufferPtr->TexCoord = { 1.0f, 1.0f };
 		s_RenderData.VertexBufferPtr->Color = color;
 		s_RenderData.VertexBufferPtr->TexIndex = (float)textureIndex;
 		s_RenderData.VertexBufferPtr++;
 
-		s_RenderData.VertexBufferPtr->Position = { position.x, position.y + size.y, position.z };
+		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[3];
 		s_RenderData.VertexBufferPtr->TexCoord = { 0.0f, 1.0f };
 		s_RenderData.VertexBufferPtr->Color = color;
 		s_RenderData.VertexBufferPtr->TexIndex = (float)textureIndex;
 		s_RenderData.VertexBufferPtr++;
 
 		s_RenderData.IndexCount += 6;
-		
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::rotate(model, glm::radians(rotate), { 0.0f, 0.0f, -1.0f });
-		
-		s_RenderData.Shader->Use();
-		s_RenderData.Shader->SetMat4("uModel", model);
+
+		s_RenderData.Stats.QuadCount++;
 	}
 }

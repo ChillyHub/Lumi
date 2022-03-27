@@ -144,11 +144,15 @@ namespace Lumi
 
 		// generate texture
 		if (data)
+		{
 			texture->Generate(width, height, data);
+			stbi_image_free(data);
+		}
 		else
+		{
+			stbi_image_free(data);
 			LUMI_CORE_ASSERT(false, "ERROR::TEXTURE: Filed to read texture file");
-		// free image data
-		stbi_image_free(data);
+		}
 		return texture;
 	}
 }

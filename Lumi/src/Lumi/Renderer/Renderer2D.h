@@ -11,11 +11,24 @@ namespace Lumi
 	class Renderer2D
 	{
 	public:
+		struct Stat
+		{
+			unsigned int DrawCall = 0;
+			unsigned int QuadCount = 0;
+
+			unsigned int GetVerteicesCount() { return QuadCount * 4; };
+			unsigned int GetIndicesCount() { return QuadCount * 6; };
+		};
+	public:
 		static void Init();
 
 		static void BeginScene(const Camera2D& camera);
+		static void ReBeginScene();
 		static void EndScene();
 		static void Flush();
+
+		static Stat GetStats();
+		static void ResetStats();
 
 		static void DrawQuad(const glm::vec2& position = glm::vec2(0.0f),
 			const glm::vec2& size = glm::vec2(1.0f),
@@ -79,6 +92,10 @@ namespace Lumi
 
 			std::array<std::shared_ptr<Texture>, MaxTextureSlots> TextureSlots;
 			unsigned int TextureSlotsIndex = 1;
+
+			glm::vec4 QuadVertexPositions[4];
+
+			Stat Stats;
 		};
 		static Renderer2DData s_RenderData;
 	};
