@@ -12,6 +12,14 @@ namespace Lumi
 		
 		RenderCommand::Init();
 	}
+
+	void Renderer::BeginScene()
+	{
+		LM_PROFILE_FUNCTION();
+
+		s_SceneData->ProjectMatrix = glm::mat4(1.0f);
+		s_SceneData->ViewMatirx = glm::mat4(1.0f);
+	}
 	
 	void Renderer::BeginScene(const Camera2D& camera)
 	{

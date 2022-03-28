@@ -22,6 +22,7 @@
 #include "Lumi/ImGui/ImGuiLayer.h"
 
 #include "Lumi/Renderer/Buffer.h"
+#include "Lumi/Renderer/Framebuffer.h"
 #include "Lumi/Renderer/RenderCommand.h"
 #include "Lumi/Renderer/Renderer.h"
 #include "Lumi/Renderer/Renderer2D.h"

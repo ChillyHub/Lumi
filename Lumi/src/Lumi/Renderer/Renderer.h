@@ -16,6 +16,7 @@ namespace Lumi
 	public:
 		static void Init();
 
+		static void BeginScene();
 		static void BeginScene(const Camera2D& camera);
 		static void BeginScene(const Camera3D& camera);
 		static void EndScene();

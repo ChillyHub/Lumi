@@ -1,14 +1,29 @@
 #include "pch.h"
-#include "Texture.h"
 
+#include "Framebuffer.h"
 #include "Renderer.h"
 
-#include "Platform/OpenGL/OpenGLTexture.h"
+#include "Platform/OpenGL/OpenGLFramebuffer.h"
 
 namespace Lumi
 {
-	TextureSpecification TexSpecCreator::Create(TextureType tp,
-		unsigned int width, unsigned int height)
+	std::shared_ptr<Framebuffer> Framebuffer::Create(const FramebufferSpecification& spec)
+	{
+		if (spec.type == FramebufferType::QuadTextureBuffer || 
+			spec.type == FramebufferType::QuadHDRTextureBuffer)
+		{
+			return QuadFramebuffer::Create(spec);
+		}
+		if (spec.type == FramebufferType::CubeTextureBuffer ||
+			spec.type == FramebufferType::CubeHDRTextureBuffer)
+		{
+			return CubeFramebuffer::Create(spec);
+		}
+		LUMI_CORE_ASSERT(false, "Framebuffer: Unknown framebuffer type!");
+		return nullptr;
+	}
+
+	std::shared_ptr<Framebuffer> QuadFramebuffer::Create(const FramebufferSpecification& spec)
 	{
 		LM_PROFILE_FUNCTION();
 
@@ -16,34 +31,34 @@ namespace Lumi
 		{
 		case RendererAPI::API::None:
 			LUMI_CORE_ASSERT(false, "RendererAPI: Unknown renderer API!");
-			return TextureSpecification();
+			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return OpenGLTexSpecCreator::Create(tp, width, height);
+			return std::make_shared<OpenGLQuadFramebuffer>(spec);
 		case RendererAPI::API::Vulkan:
 			LUMI_CORE_ASSERT(false, "RendererAPI: Vulkan currently not supported!");
-			return TextureSpecification();
+			return nullptr;
 		case RendererAPI::API::DirectX:
 			LUMI_CORE_ASSERT(false, "RendererAPI: DirectX currently not supported!");
-			return TextureSpecification();
+			return nullptr;
 		default:
 			break;
 		}
 
 		LUMI_CORE_ASSERT(false, "RendererAPI: Unknown renderer API!");
-		return TextureSpecification();
+		return nullptr;
 	}
-	
-	std::shared_ptr<Texture2D> Texture2D::Create()
+
+	std::shared_ptr<Framebuffer> CubeFramebuffer::Create(const FramebufferSpecification& spec)
 	{
-		LM_PROFILE_FUNCTION(); 
-		
+		LM_PROFILE_FUNCTION();
+
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:
 			LUMI_CORE_ASSERT(false, "RendererAPI: Unknown renderer API!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLTexture2D>();
+			return nullptr;// std::make_shared<OpenGLCubeFramebuffer>(spec);
 		case RendererAPI::API::Vulkan:
 			LUMI_CORE_ASSERT(false, "RendererAPI: Vulkan currently not supported!");
 			return nullptr;

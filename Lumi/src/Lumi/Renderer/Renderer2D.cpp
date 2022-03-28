@@ -65,6 +65,18 @@ namespace Lumi
 		s_RenderData.Shader->SetIntV("uTextures", sample, s_RenderData.MaxTextureSlots);
 	}
 
+	void Renderer2D::BeginScene()
+	{
+		LM_PROFILE_FUNCTION();
+
+		s_RenderData.IndexCount = 0u;
+		s_RenderData.VertexBufferPtr = s_RenderData.VertexBufferBase;
+
+		s_RenderData.TextureSlotsIndex = 1u;
+
+		Renderer::BeginScene();
+	}
+
 	void Renderer2D::BeginScene(const Camera2D& camera)
 	{
 		LM_PROFILE_FUNCTION(); 

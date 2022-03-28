@@ -4,6 +4,13 @@
 
 namespace Lumi
 {
+	class OpenGLTexSpecCreator
+	{
+	public:
+		static TextureSpecification Create(TextureType tp = TextureType::ColorMap,
+			unsigned int width = 0, unsigned int height = 0);
+	};
+	
 	class OpenGLTexture2D : public Texture2D
 	{
 	public:
@@ -11,18 +18,21 @@ namespace Lumi
 		OpenGLTexture2D();
 		~OpenGLTexture2D();
 
-		virtual unsigned int GetWidth() const override { return m_Width; }
-		virtual unsigned int GetHeight() const override { return m_Height; }
+		virtual unsigned int GetTexID() const override { return m_TextureID; }
+		virtual unsigned int GetWidth() const override { return m_TexSpec.Width; }
+		virtual unsigned int GetHeight() const override { return m_TexSpec.Height; }
+		virtual TextureSpecification GetSpec() const override { return m_TexSpec; }
 
-		virtual void SetInternalFormat(unsigned int type) override { m_Internal_Format = type; }
-		virtual void SetImageFormat(unsigned int type) override { m_Image_Format = type; }
-		virtual void SetWrapS(unsigned int type) override { m_Wrap_S = type; }
-		virtual void SetWrapT(unsigned int type) override { m_Wrap_T = type; }
-		virtual void SetFilterMin(unsigned int type) override { m_Filter_Min = type; }
-		virtual void SetFilterMax(unsigned int type) override { m_Filter_Max = type; }
+		virtual void SetInternalFormat(unsigned int type) override { m_TexSpec.InternalFormat = type; }
+		virtual void SetImageFormat(unsigned int type) override { m_TexSpec.ImageFormat = type; }
+		virtual void SetWrapS(unsigned int type) override { m_TexSpec.WrapSFormat = type; }
+		virtual void SetWrapT(unsigned int type) override { m_TexSpec.WrapTFormat = type; }
+		virtual void SetFilterMin(unsigned int type) override { m_TexSpec.MinFilterFormat = type; }
+		virtual void SetFilterMax(unsigned int type) override { m_TexSpec.MaxFilterFormat = type; }
 
 		// generates texture from image
 		virtual void Generate(unsigned int width, unsigned int height, unsigned char* data) override;
+		virtual void Generate(const TextureSpecification& spec) override;
 		// bind texture
 		virtual void Bind() const override;
 		virtual void Bind(unsigned int solt) const override;
@@ -30,12 +40,6 @@ namespace Lumi
 		virtual bool operator==(const Texture& rhs) const override;
 	private:
 		unsigned int m_TextureID;
-		unsigned int m_Width, m_Height;
-		unsigned int m_Internal_Format;
-		unsigned int m_Image_Format;
-		unsigned int m_Wrap_S;
-		unsigned int m_Wrap_T;
-		unsigned int m_Filter_Min;
-		unsigned int m_Filter_Max;
+		TextureSpecification m_TexSpec;
 	};
 }

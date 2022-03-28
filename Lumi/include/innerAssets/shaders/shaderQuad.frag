@@ -3,7 +3,6 @@
 in vec2 TexCoord;
 in vec4 Color;
 in float TexIndex;
-in vec3 Pos;
 			
 out vec4 FragColor;
 
@@ -13,7 +12,6 @@ void main()
 {
 	uint index = uint(TexIndex);
 	vec4 texColor = Color;
-	//FragColor = vec4(TexIndex - index, TexIndex - index, TexIndex - index, 1.0);
 
 	switch(uint(TexIndex))
 	{

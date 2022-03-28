@@ -24,6 +24,16 @@ public:
 
 		Lumi::Renderer2D::Init();
 
+		auto frameSpec = Lumi::FramebufferSpecification();
+		frameSpec.Width = width;
+		frameSpec.Height = height;
+		auto colorTexSpec = Lumi::TexSpecCreator::Create();
+		auto depthTexSpec = Lumi::TexSpecCreator::Create(Lumi::TextureType::DepthMap);
+
+		m_Framebuffer = Lumi::Framebuffer::Create(frameSpec);
+		//m_Framebuffer->AddTexBuffer(depthTexSpec);
+		m_Framebuffer->AddTexBuffer(colorTexSpec);
+
 		// ------------------
 		// ------------------
 		////////////////////////////////////////////////////////////////////
@@ -33,6 +43,7 @@ public:
 	{
 		//LUMI_CLIENT_INFO("DeltaTime: {0}s  {1}ms", ts.GetSeconds(), ts.GetMilliseconds());
 		LM_PROFILE_FUNCTION();
+		m_Framebuffer->Bind();
 	{
 		LM_PROFILE_SCOPE("Render_Reset");
 		Lumi::RenderCommand::SetColor(0.117f, 0.117f, 0.117f, 1.0f);
@@ -65,6 +76,14 @@ public:
 		}
 		Lumi::Renderer2D::EndScene();
 	}
+		m_Framebuffer->UnBind();
+
+		Lumi::RenderCommand::SetColor(0.117f, 0.117f, 0.117f, 1.0f);
+		Lumi::RenderCommand::Clear();
+		Lumi::Renderer2D::BeginScene();
+		auto texture = m_Framebuffer->GetTexture2D(m_Framebuffer->GetTexID(0));
+		Lumi::Renderer2D::DrawQuad(texture, {0.0f, 0.0f, 0.0f}, {2.0f, 2.0f});
+		Lumi::Renderer2D::EndScene();
 	}
 
 	void OnImGuiRender() override
@@ -95,6 +114,8 @@ private:
 	Lumi::Camera2D m_Camera;
 
 	glm::vec3 m_QuadColor = { 0.113f, 0.113f, 0.113f };
+
+	std::shared_ptr<Lumi::Framebuffer> m_Framebuffer;
 };
 
 class Example : public Lumi::Application
