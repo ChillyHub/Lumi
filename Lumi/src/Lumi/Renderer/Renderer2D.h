@@ -20,13 +20,19 @@ namespace Lumi
 			unsigned int GetIndicesCount() { return QuadCount * 6; };
 		};
 	public:
-		static void Init();
+		static void Init(bool initFramebuffer = false);
 
 		static void BeginScene();
 		static void BeginScene(const Camera2D& camera);
 		static void ReBeginScene();
 		static void EndScene();
+
+		static void BeginFrame();
+		static void ReBeginFrame();
+		static void EndFrame();
+
 		static void Flush();
+		static void FlushFrame();
 
 		static Stat GetStats();
 		static void ResetStats();
@@ -67,6 +73,8 @@ namespace Lumi
 			const glm::vec2& size,
 			const glm::vec4& color, 
 			float rotate = 0.0f);
+
+		static void DrawFrame(std::shared_ptr<Texture> texture);
 	private:
 		struct QuadVertex
 		{
@@ -94,10 +102,42 @@ namespace Lumi
 			std::array<std::shared_ptr<Texture>, MaxTextureSlots> TextureSlots;
 			unsigned int TextureSlotsIndex = 1;
 
-			glm::vec4 QuadVertexPositions[4];
+			glm::vec4 QuadVertexPositions[4] = {
+				{ -0.5f, -0.5f, 0.0f, 1.0f },
+				{  0.5f, -0.5f, 0.0f, 1.0f },
+				{  0.5f,  0.5f, 0.0f, 1.0f },
+				{ -0.5f,  0.5f, 0.0f, 1.0f }
+			};
 
 			Stat Stats;
 		};
 		static Renderer2DData s_RenderData;
+
+		struct FramebufferData
+		{
+			static const unsigned int MaxQuads = 10;
+			static const unsigned int MaxVertices = MaxQuads * 4;
+			static const unsigned int MaxIndices = MaxQuads * 6;
+			static const unsigned int MaxTextureSlots = 8;
+			
+			unsigned int IndexCount = 0;
+			QuadVertex* VertexBufferBase = nullptr;
+			QuadVertex* VertexBufferPtr = nullptr;
+
+			std::shared_ptr<VertexArray> VAO;
+			std::shared_ptr<VertexBuffer> VBO;
+			std::shared_ptr<Shader> Shader;
+
+			std::array<std::shared_ptr<Texture>, MaxTextureSlots> TextureSlots;
+			unsigned int TextureSlotsIndex = 1;
+
+			glm::vec4 QuadVertexPositions[4] = {
+				{ -1.0f, -1.0f, 0.0f, 1.0f },
+				{  1.0f, -1.0f, 0.0f, 1.0f },
+				{  1.0f,  1.0f, 0.0f, 1.0f },
+				{ -1.0f,  1.0f, 0.0f, 1.0f }
+			};
+		};
+		static FramebufferData s_FramebufferData;
 	};
 }

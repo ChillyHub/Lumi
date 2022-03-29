@@ -23,6 +23,8 @@ namespace Lumi
 		virtual unsigned int GetHeight() const override { return m_TexSpec.Height; }
 		virtual TextureSpecification GetSpec() const override { return m_TexSpec; }
 
+		virtual void SetWidth(unsigned int width) override { m_TexSpec.Width = width; }
+		virtual void SetHeight(unsigned int height) override { m_TexSpec.Height = height; }
 		virtual void SetInternalFormat(unsigned int type) override { m_TexSpec.InternalFormat = type; }
 		virtual void SetImageFormat(unsigned int type) override { m_TexSpec.ImageFormat = type; }
 		virtual void SetWrapS(unsigned int type) override { m_TexSpec.WrapSFormat = type; }

@@ -79,12 +79,12 @@ public:
 	}
 		m_Framebuffer->UnBind();
 
-		Lumi::RenderCommand::SetColor(0.117f, 0.117f, 0.117f, 1.0f);
-		Lumi::RenderCommand::Clear();
-		Lumi::Renderer2D::BeginFrame();
-		auto texture = m_Framebuffer->GetTexture2D(m_ColorTex);
-		Lumi::Renderer2D::DrawFrame(texture);
-		Lumi::Renderer2D::EndFrame();
+		//Lumi::RenderCommand::SetColor(0.117f, 0.117f, 0.117f, 1.0f);
+		//Lumi::RenderCommand::Clear();
+		//Lumi::Renderer2D::BeginFrame();
+		//auto texture = m_Framebuffer->GetTexture2D(m_ColorTex);
+		//Lumi::Renderer2D::DrawFrame(texture);
+		//Lumi::Renderer2D::EndFrame();
 	}
 
 	void OnImGuiRender() override
@@ -110,7 +110,12 @@ public:
 		LM_PROFILE_FUNCTION();
 
 		m_Camera.OnEvent(event);
-		m_Framebuffer->OnEvent(event);
+		//m_Framebuffer->OnEvent(event);
+	}
+
+	std::shared_ptr<Lumi::Framebuffer> GetFramebuffer()
+	{
+		return m_Framebuffer;
 	}
 private:
 	Lumi::Camera2D m_Camera;
@@ -120,27 +125,3 @@ private:
 	std::shared_ptr<Lumi::Framebuffer> m_Framebuffer;
 	unsigned int  m_ColorTex;
 };
-
-class Example : public Lumi::Application
-{
-public:
-	Example();
-	~Example();
-
-private:
-	
-};
-
-Example::Example()
-{
-	PushLayer(new ExampleLayer(m_Window->GetWidth(), m_Window->GetHeight()));
-}
-
-Example::~Example()
-{
-}
-
-Lumi::Application* Lumi::CreateApplication()
-{
-	return new Example();
-}

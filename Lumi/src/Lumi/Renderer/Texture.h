@@ -48,6 +48,8 @@ namespace Lumi
 		virtual unsigned int GetHeight() const = 0;
 		virtual TextureSpecification GetSpec() const = 0;
 
+		virtual void SetWidth(unsigned int width) = 0;
+		virtual void SetHeight(unsigned int height) = 0;
 		virtual void SetInternalFormat(unsigned int type) = 0;
 		virtual void SetImageFormat(unsigned int type) = 0;
 		virtual void SetWrapS(unsigned int type) = 0;

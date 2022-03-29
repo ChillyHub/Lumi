@@ -32,6 +32,3 @@
 #include "Lumi/Scene/Camera.h"
 #include "Lumi/Scene/Camera2D.h"
 #include "Lumi/Scene/Camera3D.h"
-
-// Entry Point
-#include "Lumi/Core/EntryPoint.h"

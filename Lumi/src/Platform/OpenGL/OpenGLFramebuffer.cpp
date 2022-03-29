@@ -12,12 +12,14 @@ namespace Lumi
 
 	OpenGLQuadFramebuffer::~OpenGLQuadFramebuffer()
 	{
+		LM_PROFILE_FUNCTION();
+		
 		glDeleteFramebuffers(1, &m_FBO);
 		glDeleteRenderbuffers(1, &m_RBO);
 		glDeleteTextures((GLsizei)m_Textures.size(), m_Textures.data());
 	}
 
-	unsigned int OpenGLQuadFramebuffer::GetTexID(int index) const
+	unsigned int OpenGLQuadFramebuffer::GetTexID(unsigned int index) const
 	{
 		if (index >= m_Textures.size())
 		{
@@ -26,14 +28,14 @@ namespace Lumi
 		return m_Textures[index];
 	}
 
-	std::shared_ptr<Texture2D> OpenGLQuadFramebuffer::GetTexture2D(unsigned int texID)
+	TextureSpecification OpenGLQuadFramebuffer::GetSpec(unsigned int index)
 	{
-		return m_TexturesSpec[texID];
+		return m_TextureSlots[index]->GetSpec();
 	}
 
-	TextureSpecification OpenGLQuadFramebuffer::GetSpec(unsigned int texID)
+	std::shared_ptr<Texture> OpenGLQuadFramebuffer::GetTexture2D(unsigned int index)
 	{
-		return m_TexturesSpec[texID]->GetSpec();
+		return m_TextureSlots[index];
 	}
 
 	void OpenGLQuadFramebuffer::Bind()
@@ -46,17 +48,42 @@ namespace Lumi
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
+	void OpenGLQuadFramebuffer::OnEvent(Event& event)
+	{
+		LM_PROFILE_FUNCTION();
+		
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<Lumi::WindowResizeEvent>(BIND_EVENT_FN(OpenGLQuadFramebuffer::OnResize));
+	}
+
+	bool OpenGLQuadFramebuffer::OnResize(WindowResizeEvent& event)
+	{
+		LM_PROFILE_FUNCTION();
+		
+		Resize(event.GetWidth(), event.GetHeight());
+
+		return false;
+	}
+
 	void OpenGLQuadFramebuffer::Resize(unsigned int width, unsigned int height)
 	{
+		LM_PROFILE_FUNCTION();
+		
 		m_Spec.Width = width;
 		m_Spec.Height = height;
 
-		Init();
+		if (width != 0 || height != 0)
+		{
+			Init();
+		}
 	}
 
-	void OpenGLQuadFramebuffer::AddTexBuffer(const TextureSpecification& texspec)
+	unsigned int OpenGLQuadFramebuffer::AddTexBuffer(const TextureSpecification& texspec)
 	{
+		LM_PROFILE_FUNCTION();
+		
 		auto spec = texspec;
+		unsigned int oldID = spec.TextureID;
 		if (spec.Width == 0 && spec.Height == 0)
 		{
 			spec.Width = m_Spec.Width;
@@ -75,24 +102,77 @@ namespace Lumi
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		m_Textures.push_back(texID);
-		m_TextureCount++;
-
-		if (m_TexturesSpec.find(texID) == m_TexturesSpec.end())
+		for (unsigned int i = 0; i < m_TextureCount; i++)
 		{
-			m_TexturesSpec[texID] = texture;
+			if (m_Textures[i] == oldID)
+			{
+				m_Textures[i] = texID;
+				m_TextureSlots[i] = texture;
+				return i;
+			}
 		}
+
+		m_Textures.push_back(texID);
+		m_TextureSlots.push_back(texture);
+
+		return m_TextureCount++;
+	}
+
+	void OpenGLQuadFramebuffer::BeginFrameRender()
+	{
+		LM_PROFILE_FUNCTION();
+
+		Renderer::BeginScene();
+	}
+
+	void OpenGLQuadFramebuffer::EndFrameRender()
+	{
+		LM_PROFILE_FUNCTION();
+	}
+
+	void OpenGLQuadFramebuffer::DrawFrame(unsigned int index)
+	{
+		LM_PROFILE_FUNCTION();
+
+		m_RenderData.CurrentIndex = index;
+
+		m_RenderData.VertexBufferPtr->Position = m_RenderData.QuadVertexPositions[0];
+		m_RenderData.VertexBufferPtr->TexCoord = { 0.0f, 0.0f };
+		m_RenderData.VertexBufferPtr->Color = glm::vec4(1.0f);
+		m_RenderData.VertexBufferPtr->TexIndex = 0.0f;
+		m_RenderData.VertexBufferPtr++;
+		
+		m_RenderData.VertexBufferPtr->Position = m_RenderData.QuadVertexPositions[1];
+		m_RenderData.VertexBufferPtr->TexCoord = { 1.0f, 0.0f };
+		m_RenderData.VertexBufferPtr->Color = glm::vec4(1.0f);
+		m_RenderData.VertexBufferPtr->TexIndex = 0.0f;
+		m_RenderData.VertexBufferPtr++;
+		
+		m_RenderData.VertexBufferPtr->Position = m_RenderData.QuadVertexPositions[2];
+		m_RenderData.VertexBufferPtr->TexCoord = { 1.0f, 1.0f };
+		m_RenderData.VertexBufferPtr->Color = glm::vec4(1.0f);
+		m_RenderData.VertexBufferPtr->TexIndex = 0.0f;
+		m_RenderData.VertexBufferPtr++;
+		
+		m_RenderData.VertexBufferPtr->Position = m_RenderData.QuadVertexPositions[3];
+		m_RenderData.VertexBufferPtr->TexCoord = { 0.0f, 1.0f };
+		m_RenderData.VertexBufferPtr->Color = glm::vec4(1.0f);
+		m_RenderData.VertexBufferPtr->TexIndex = 0.0f;
+		m_RenderData.VertexBufferPtr++;
+
+		m_RenderData.IndexCount += 6;
 	}
 
 	void OpenGLQuadFramebuffer::Init()
 	{
+		LM_PROFILE_FUNCTION();
+		
+		std::vector<unsigned int> texs;
 		if (m_FBO)
 		{
 			glDeleteFramebuffers(1, &m_FBO);
 			glDeleteRenderbuffers(1, &m_RBO);
 			glDeleteTextures((GLsizei)m_Textures.size(), m_Textures.data());
-			m_Textures.clear();
-			m_TextureCount = 0;
 		}
 		
 		glGenFramebuffers(1, &m_FBO);
@@ -107,12 +187,15 @@ namespace Lumi
 			LUMI_CORE_ASSERT(false, "FRAMEBUFFER: Framebuffer not complete!");
 		}
 
-		for (auto& [_, spec] : m_TexturesSpec)
-		{
-			AddTexBuffer(spec->GetSpec());
-		}
-
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+		for (int i = 0; i < m_TextureCount; i++)
+		{
+			auto tex = m_TextureSlots[i];
+			tex->SetWidth(m_Spec.Width);
+			tex->SetHeight(m_Spec.Height);
+			AddTexBuffer(tex->GetSpec());
+		}
 	}
 }
