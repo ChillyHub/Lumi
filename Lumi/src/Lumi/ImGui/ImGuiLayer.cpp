@@ -8,7 +8,7 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
-#include "Lumi\Core\Application.h"
+#include "Lumi/Core/Application.h"
 
 #define GLSL_VERSION "#version 410"
 
@@ -78,6 +78,10 @@ namespace Lumi
 	void ImGuiLayer::OnEvent(Event& event)
 	{
 		LM_PROFILE_FUNCTION();
+
+		ImGuiIO& io = ImGui::GetIO();
+		event.m_Handled |= event.IsInCategory(EventCategory::EVENT_CATEGORY_MOUSE) && io.WantCaptureMouse;
+		event.m_Handled |= event.IsInCategory(EventCategory::EVENT_CATEGORY_KEYBOARD) && io.WantCaptureKeyboard;
 	}
 
 	void ImGuiLayer::Begin()

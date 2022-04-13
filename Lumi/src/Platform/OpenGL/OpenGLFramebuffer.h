@@ -7,14 +7,14 @@
 #include "Lumi/Events/Event.h"
 #include "Lumi/Events/ApplicationEvent.h"
 #include "Lumi/Renderer/Framebuffer.h"
-#include "Lumi/Renderer/IFramebufferRenderer.h"
 #include "Lumi/Renderer/Renderer.h"
+#include "Lumi/Renderer/Renderer2D.h"
 
 #include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Lumi
 {
-	class OpenGLQuadFramebuffer : public QuadFramebuffer, public IFramebufferRenderer
+	class OpenGLQuadFramebuffer : public QuadFramebuffer
 	{
 	public:
 		OpenGLQuadFramebuffer(const FramebufferSpecification& spec);
@@ -32,17 +32,11 @@ namespace Lumi
 		virtual void Resize(unsigned int width, unsigned int height) override;
 
 		virtual unsigned int AddTexBuffer(const TextureSpecification& texspec) override;
-	public:
-		virtual void BeginFrameRender() override;
-		virtual void EndFrameRender() override;
-
-		virtual void DrawFrame(unsigned int index) override;
 	private:
 		void Init();
 	private:
 		unsigned int m_FBO = 0, m_RBO = 0;
 		FramebufferSpecification m_Spec;
-		Renderer2DData m_RenderData;
 		std::vector<unsigned int> m_Textures;
 		std::vector<std::shared_ptr<Texture>> m_TextureSlots;
 		unsigned int m_TextureCount = 0;

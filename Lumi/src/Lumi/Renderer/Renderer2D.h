@@ -34,6 +34,8 @@ namespace Lumi
 		static void Flush();
 		static void FlushFrame();
 
+		static void ResetFrameData();
+
 		static Stat GetStats();
 		static void ResetStats();
 
@@ -129,7 +131,7 @@ namespace Lumi
 			std::shared_ptr<Shader> Shader;
 
 			std::array<std::shared_ptr<Texture>, MaxTextureSlots> TextureSlots;
-			unsigned int TextureSlotsIndex = 1;
+			unsigned int TextureSlotsIndex = 0;
 
 			glm::vec4 QuadVertexPositions[4] = {
 				{ -1.0f, -1.0f, 0.0f, 1.0f },

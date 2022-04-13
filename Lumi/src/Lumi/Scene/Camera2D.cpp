@@ -29,7 +29,7 @@ namespace Lumi
 		dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(Camera2D::OnMouseButtonRealeased));
 		dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(Camera2D::OnScrolleMouse));
 		dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(Camera2D::OnMoveCursorPos));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Camera2D::OnResizeWindow));
+		//dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Camera2D::OnResizeWindow));
 		
 	}
 
@@ -57,8 +57,8 @@ namespace Lumi
 
 	bool Camera2D::OnMouseButtonPressed(MouseButtonPressedEvent& e)
 	{
-		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_MIDDLE)
-			m_MouseButtonMiddlePressed = true;
+		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_LEFT)
+			m_MouseButtonLeftPressed = true;
 		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_RIGHT)
 			m_MouseButtonRightPressed = true;
 		
@@ -67,8 +67,8 @@ namespace Lumi
 
 	bool Camera2D::OnMouseButtonRealeased(MouseButtonReleasedEvent& e)
 	{
-		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_MIDDLE)
-			m_MouseButtonMiddlePressed = false;
+		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_LEFT)
+			m_MouseButtonLeftPressed = false;
 		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_RIGHT)
 			m_MouseButtonRightPressed = false;
 
@@ -94,7 +94,7 @@ namespace Lumi
 
 	bool Camera2D::OnMoveCursorPos(MouseMovedEvent& e)
 	{
-		if (m_MouseButtonMiddlePressed)
+		if (m_MouseButtonLeftPressed)
 		{
 			float deltaX = (float)e.GetX() - m_CursorPosX;
 			float deltaY = (float)e.GetY() - m_CursorPosY;

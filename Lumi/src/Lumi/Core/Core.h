@@ -1,6 +1,8 @@
 #pragma once
 
-#ifdef _LM_WINDOWS_
+#include "Platform/PlatformSystem.h"
+
+#ifdef LM_PLATFORM_WINDOWS
 	#ifdef DLL_BUILD
 		#ifdef LM_DLL_EXPORTS
 			#define LUMI_API __declspec(dllexport)
@@ -15,7 +17,17 @@
 #endif
 
 #ifdef LUMI_DEBUG
+	#if defined(LM_PLATFORM_WINDOWS)
+		#define LM_DEBUGBREAK() __debugbreak()
+	#elif defined(LM_PLATFORM_LINUX)
+		#include <signal.h>
+		#define LM_DEBUGBREAK() raise(SIGTRAP)
+	#else
+		#error "Platform doesn't support debugbreak yet!"
+	#endif
 	#define LM_ENABLE_ASSERTS
+#else
+	#define LM_DEBUGBREAK()
 #endif // LUMI_DEBUG
 
 #ifdef LM_ENABLE_ASSERTS

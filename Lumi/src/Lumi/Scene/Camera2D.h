@@ -46,6 +46,12 @@ namespace Lumi
 			m_Rotation = rotation;
 			UpdateView();
 		}
+		void Resize(float width, float height)
+		{
+			m_Width = (int)width;
+			m_Height = (int)height;
+			UpdateProjection();
+		}
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);

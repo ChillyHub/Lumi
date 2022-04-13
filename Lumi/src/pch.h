@@ -25,9 +25,10 @@
 #include <thread>
 
 // log and profile
+#include "Lumi/Core/Core.h"
 #include "Lumi/Core/Log.h"
 #include "Lumi/Debug/Instrumentor.h"
 
-#ifdef _LM_WINDOWS_
+#ifdef LM_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif // _LM_WINDOWS_

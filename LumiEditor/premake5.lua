@@ -1,4 +1,4 @@
-project "LumiEngine"
+project "LumiEditor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
@@ -18,8 +18,8 @@ project "LumiEngine"
 	{
 		"%{wks.location}/Lumi/src",
 		"%{wks.location}/Lumi/include",
-		"%{wks.location}/LumiEngine",
-		"%{wks.location}/LumiEngine/src",
+		"%{wks.location}/LumiEditor",
+		"%{wks.location}/LumiEditor/src",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}", 
 		"%{IncludeDir.spdlog}"

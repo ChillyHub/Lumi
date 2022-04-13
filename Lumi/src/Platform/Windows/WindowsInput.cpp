@@ -1,29 +1,27 @@
 #include "pch.h"
-#include "WindowsInput.h"
 
 #include "Lumi/Core/Application.h"
+#include "Lumi/Core/Input.h"
 
 #include <GLFW/glfw3.h>
 
 namespace Lumi
 {
-	Input* Input::s_Instance = new WindowsInput();
-
-	bool WindowsInput::IsKeyPressedImpl(int keycode)
+	bool Input::IsKeyPressed(int keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetKey(window, keycode);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedImpl(int button)
+	bool Input::IsMouseButtonPressed(int button)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetMouseButton(window, button);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	std::pair<float, float> WindowsInput::GetCursorPosImpl()
+	std::pair<float, float> Input::GetCursorPos()
 	{
 		double xpos, ypos;
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -31,15 +29,15 @@ namespace Lumi
 		return { (float)xpos, (float)ypos };
 	}
 
-	float WindowsInput::GetCursorXImpl()
+	float Input::GetCursorX()
 	{
-		auto [xpos, ypos] = GetCursorPosImpl();
+		auto [xpos, ypos] = GetCursorPos();
 		return xpos;
 	}
 
-	float WindowsInput::GetCursorYImpl()
+	float Input::GetCursorY()
 	{
-		auto [xpos, ypos] = GetCursorPosImpl();
+		auto [xpos, ypos] = GetCursorPos();
 		return ypos;
 	}
 }

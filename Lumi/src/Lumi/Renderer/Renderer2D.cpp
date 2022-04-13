@@ -88,10 +88,6 @@ namespace Lumi
 			s_FramebufferData.VBO->Unbind();
 			s_FramebufferData.VAO->Unbind();
 
-			unsigned int whiteTextureData = 0xffffffff;
-			s_FramebufferData.TextureSlots[0] = Texture2D::Create();
-			s_FramebufferData.TextureSlots[0]->Generate(1, 1, (unsigned char*)&whiteTextureData);
-
 			int sample[s_FramebufferData.MaxTextureSlots];
 			for (int i = 0; i < s_FramebufferData.MaxTextureSlots; i++)
 			{
@@ -200,6 +196,15 @@ namespace Lumi
 		}
 
 		Renderer::Draw(s_FramebufferData.Shader, s_FramebufferData.VAO, s_FramebufferData.IndexCount);
+	}
+
+	void Renderer2D::ResetFrameData()
+	{
+		LM_PROFILE_FUNCTION();
+
+		s_FramebufferData.TextureSlots = std::array<std::shared_ptr<Texture>, 
+			s_FramebufferData.MaxTextureSlots>();
+		s_FramebufferData.TextureSlotsIndex = 0;
 	}
 
 	Renderer2D::Stat Renderer2D::GetStats()
@@ -366,8 +371,8 @@ namespace Lumi
 			ReBeginFrame();
 		}
 
-		unsigned int textureIndex = 0u;
-		for (unsigned int i = 1; i < s_FramebufferData.TextureSlotsIndex; i++)
+		unsigned int textureIndex = 32u;
+		for (unsigned int i = 0; i < s_FramebufferData.TextureSlotsIndex; i++)
 		{
 			if (*s_FramebufferData.TextureSlots[i].get() == *texture.get())
 			{
@@ -377,7 +382,7 @@ namespace Lumi
 			}
 		}
 
-		if (textureIndex == 0)
+		if (textureIndex == 32u)
 		{
 			textureIndex = s_FramebufferData.TextureSlotsIndex;
 			s_FramebufferData.TextureSlots[s_FramebufferData.TextureSlotsIndex++] = texture;

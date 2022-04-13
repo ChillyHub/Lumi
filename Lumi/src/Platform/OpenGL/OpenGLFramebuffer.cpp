@@ -17,6 +17,7 @@ namespace Lumi
 		glDeleteFramebuffers(1, &m_FBO);
 		glDeleteRenderbuffers(1, &m_RBO);
 		glDeleteTextures((GLsizei)m_Textures.size(), m_Textures.data());
+		Renderer2D::ResetFrameData();
 	}
 
 	unsigned int OpenGLQuadFramebuffer::GetTexID(unsigned int index) const
@@ -41,6 +42,7 @@ namespace Lumi
 	void OpenGLQuadFramebuffer::Bind()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+		glViewport(0, 0, m_Spec.Width, m_Spec.Height);
 	}
 
 	void OpenGLQuadFramebuffer::UnBind()
@@ -72,7 +74,7 @@ namespace Lumi
 		m_Spec.Width = width;
 		m_Spec.Height = height;
 
-		if (width != 0 || height != 0)
+		if (width < 10000 && height < 10000 && width > 0 && height > 0)
 		{
 			Init();
 		}
@@ -94,6 +96,24 @@ namespace Lumi
 		texture->Generate(spec);
 		texture->Bind();
 		unsigned int texID = texture->GetTexID();
+
+		for (unsigned int i = 0; i < m_TextureCount; i++)
+		{
+			if (m_Textures[i] == oldID)
+			{
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i,
+					GL_TEXTURE_2D, texID, 0);
+				if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+				{
+					LUMI_CORE_ASSERT(false, "FRAMEBUFFER: Framebuffer not complete!");
+				}
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				m_Textures[i] = texID;
+				m_TextureSlots[i] = texture;
+				return i;
+			}
+		}
+
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + m_TextureCount,
 			GL_TEXTURE_2D, texID, 0);
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -102,65 +122,10 @@ namespace Lumi
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		for (unsigned int i = 0; i < m_TextureCount; i++)
-		{
-			if (m_Textures[i] == oldID)
-			{
-				m_Textures[i] = texID;
-				m_TextureSlots[i] = texture;
-				return i;
-			}
-		}
-
 		m_Textures.push_back(texID);
 		m_TextureSlots.push_back(texture);
 
 		return m_TextureCount++;
-	}
-
-	void OpenGLQuadFramebuffer::BeginFrameRender()
-	{
-		LM_PROFILE_FUNCTION();
-
-		Renderer::BeginScene();
-	}
-
-	void OpenGLQuadFramebuffer::EndFrameRender()
-	{
-		LM_PROFILE_FUNCTION();
-	}
-
-	void OpenGLQuadFramebuffer::DrawFrame(unsigned int index)
-	{
-		LM_PROFILE_FUNCTION();
-
-		m_RenderData.CurrentIndex = index;
-
-		m_RenderData.VertexBufferPtr->Position = m_RenderData.QuadVertexPositions[0];
-		m_RenderData.VertexBufferPtr->TexCoord = { 0.0f, 0.0f };
-		m_RenderData.VertexBufferPtr->Color = glm::vec4(1.0f);
-		m_RenderData.VertexBufferPtr->TexIndex = 0.0f;
-		m_RenderData.VertexBufferPtr++;
-		
-		m_RenderData.VertexBufferPtr->Position = m_RenderData.QuadVertexPositions[1];
-		m_RenderData.VertexBufferPtr->TexCoord = { 1.0f, 0.0f };
-		m_RenderData.VertexBufferPtr->Color = glm::vec4(1.0f);
-		m_RenderData.VertexBufferPtr->TexIndex = 0.0f;
-		m_RenderData.VertexBufferPtr++;
-		
-		m_RenderData.VertexBufferPtr->Position = m_RenderData.QuadVertexPositions[2];
-		m_RenderData.VertexBufferPtr->TexCoord = { 1.0f, 1.0f };
-		m_RenderData.VertexBufferPtr->Color = glm::vec4(1.0f);
-		m_RenderData.VertexBufferPtr->TexIndex = 0.0f;
-		m_RenderData.VertexBufferPtr++;
-		
-		m_RenderData.VertexBufferPtr->Position = m_RenderData.QuadVertexPositions[3];
-		m_RenderData.VertexBufferPtr->TexCoord = { 0.0f, 1.0f };
-		m_RenderData.VertexBufferPtr->Color = glm::vec4(1.0f);
-		m_RenderData.VertexBufferPtr->TexIndex = 0.0f;
-		m_RenderData.VertexBufferPtr++;
-
-		m_RenderData.IndexCount += 6;
 	}
 
 	void OpenGLQuadFramebuffer::Init()
@@ -172,7 +137,8 @@ namespace Lumi
 		{
 			glDeleteFramebuffers(1, &m_FBO);
 			glDeleteRenderbuffers(1, &m_RBO);
-			glDeleteTextures((GLsizei)m_Textures.size(), m_Textures.data());
+			//glDeleteTextures((GLsizei)m_Textures.size(), m_Textures.data());
+			Renderer2D::ResetFrameData();
 		}
 		
 		glGenFramebuffers(1, &m_FBO);
@@ -190,7 +156,8 @@ namespace Lumi
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-		for (int i = 0; i < m_TextureCount; i++)
+		unsigned int count = m_TextureCount;
+		for (unsigned int i = 0; i < count; i++)
 		{
 			auto tex = m_TextureSlots[i];
 			tex->SetWidth(m_Spec.Width);

@@ -7,7 +7,8 @@ namespace Lumi
 	class EditorLayer : public Layer
 	{
 	public:
-		EditorLayer();
+		//EditorLayer();
+		EditorLayer(unsigned int width, unsigned int height);
 		~EditorLayer();
 
 		virtual void OnAttach() override;
@@ -20,6 +21,13 @@ namespace Lumi
 		Camera3D m_Camera3D;
 
 		std::shared_ptr<Framebuffer> m_Framebuffer;
-		std::shared_ptr<Texture> m_Texture;
+		//std::shared_ptr<Texture> m_Texture;
+
+		glm::vec3 m_QuadColor = { 0.113f, 0.113f, 0.113f };
+		glm::vec2 m_ViewportSize;
+		bool m_ViewportFocus;
+		bool m_ViewportHover;
+
+		unsigned int m_ColorTex;
 	};
 }

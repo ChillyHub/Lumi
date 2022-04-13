@@ -1,6 +1,6 @@
 workspace "Lumi"
 	architecture "x64"
-	startproject "example"
+	startproject "LumiEditor"
 
 	configurations
 	{
@@ -33,4 +33,4 @@ IncludeDir["stb"] = "%{wks.location}/Lumi/ext/stb"
 -- Include subpremake
 include "Lumi"
 include "example"
-include "LumiEngine"
+include "LumiEditor"
