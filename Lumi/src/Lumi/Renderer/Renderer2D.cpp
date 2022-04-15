@@ -302,7 +302,13 @@ namespace Lumi
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec3& position,
 		const glm::vec2& size, const glm::vec4& color, float rotate)
 	{
-		LM_PROFILE_FUNCTION(); 
+		LM_PROFILE_FUNCTION();
+
+		if (texture == nullptr)
+		{
+			DrawQuad(position, size, color, rotate);
+			return;
+		}
 
 		if (s_RenderData.IndexCount >= Renderer2DData::MaxIndices)
 		{

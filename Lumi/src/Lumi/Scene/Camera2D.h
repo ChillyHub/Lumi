@@ -55,6 +55,7 @@ namespace Lumi
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
+		void OnEvent2(Event& e);
 	private:
 		void UpdateView();
 		void UpdateProjection();

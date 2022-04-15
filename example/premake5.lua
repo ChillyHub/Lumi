@@ -19,6 +19,7 @@ project "example"
 		"%{wks.location}/Lumi/src",
 		"%{wks.location}/Lumi/include",
 		"%{wks.location}/example",
+		"%{IncludeDir.entt}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}", 
 		"%{IncludeDir.spdlog}"

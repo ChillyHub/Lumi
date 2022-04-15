@@ -21,9 +21,10 @@ namespace Lumi
 		Camera3D m_Camera3D;
 
 		std::shared_ptr<Framebuffer> m_Framebuffer;
-		//std::shared_ptr<Texture> m_Texture;
+		std::shared_ptr<Scene> m_Scene;
 
 		glm::vec3 m_QuadColor = { 0.113f, 0.113f, 0.113f };
+		glm::vec3 m_LastColor = { 0.113f, 0.113f, 0.113f };
 		glm::vec2 m_ViewportSize;
 		bool m_ViewportFocus;
 		bool m_ViewportHover;

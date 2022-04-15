@@ -8,6 +8,7 @@
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+**.cd
 
 # ImGui tmp
 # **.ini

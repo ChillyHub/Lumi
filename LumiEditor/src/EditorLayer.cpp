@@ -35,6 +35,36 @@ namespace Lumi
         m_Framebuffer = Lumi::Framebuffer::Create(frameSpec);
         //m_Framebuffer->AddTexBuffer(depthTexSpec);
         m_ColorTex = m_Framebuffer->AddTexBuffer(colorTexSpec);
+
+        m_Scene = std::make_shared<Scene>();
+
+        auto quadTexture1 = Lumi::ResourceManager::GetTexture2D("Barbara");
+        auto quadTexture2 = Lumi::ResourceManager::GetTexture2D("Bronya");
+        auto quadTexture3 = Lumi::ResourceManager::GetTexture2D("Ei");
+        auto quadTexture4 = Lumi::ResourceManager::GetTexture2D("Ganyu");
+        auto quadTexture5 = Lumi::ResourceManager::GetTexture2D("Keqing");
+        std::vector textures{ quadTexture1, quadTexture2, quadTexture3, quadTexture4, quadTexture5 };
+
+        for (float x = 0.0f, i = 0.0f; x < 50.0f; x += 1.2f)
+        {
+            for (float y = 0.0f; y < 50.0f; y += 1.2f, i++)
+            {
+                auto quads = m_Scene->CreateEntity2D("Entity" + std::to_string(2 * i));
+                auto texture = textures[(int)i % textures.size()];
+                auto& transform1 = quads.GetComponent<Transform2D>();
+                transform1.Position = { x, y, 0.0f };
+                transform1.Scale = { 1.0f, 1.0f };
+                transform1.Rotation = 0.0f;
+                quads.AddComponent<Material2D>(texture, glm::vec4(1.0f));
+                quads = m_Scene->CreateEntity2D("Entity" + std::to_string(2 * i + 1));
+                auto& transform2 = quads.GetComponent<Transform2D>();
+                transform2.Position = { x, y, -0.01f };
+                transform2.Scale = { 1.0f, 1.0f };
+                transform2.Rotation = 0.0f;
+                quads.AddComponent<Material2D>(m_QuadColor);
+                
+            }
+        }
 	}
 
 	EditorLayer::~EditorLayer()
@@ -63,12 +93,12 @@ namespace Lumi
             Lumi::RenderCommand::Clear();
             Lumi::Renderer2D::ResetStats();
         }
-        auto quadTexture1 = Lumi::ResourceManager::GetTexture2D("Barbara");
-        auto quadTexture2 = Lumi::ResourceManager::GetTexture2D("Bronya");
-        auto quadTexture3 = Lumi::ResourceManager::GetTexture2D("Ei");
-        auto quadTexture4 = Lumi::ResourceManager::GetTexture2D("Ganyu");
-        auto quadTexture5 = Lumi::ResourceManager::GetTexture2D("Keqing");
-        std::vector textures{ quadTexture1, quadTexture2, quadTexture3, quadTexture4, quadTexture5 };
+        //auto quadTexture1 = Lumi::ResourceManager::GetTexture2D("Barbara");
+        //auto quadTexture2 = Lumi::ResourceManager::GetTexture2D("Bronya");
+        //auto quadTexture3 = Lumi::ResourceManager::GetTexture2D("Ei");
+        //auto quadTexture4 = Lumi::ResourceManager::GetTexture2D("Ganyu");
+        //auto quadTexture5 = Lumi::ResourceManager::GetTexture2D("Keqing");
+        //std::vector textures{ quadTexture1, quadTexture2, quadTexture3, quadTexture4, quadTexture5 };
         {
             LM_PROFILE_SCOPE("Draw_Quad");
             // Lumi::Renderer2D::BeginScene(m_Camera);
@@ -77,16 +107,17 @@ namespace Lumi
             // 	{ 1.0f, 1.0f, 1.0f }, 0.0f);
             // Lumi::Renderer2D::EndScene();
             Lumi::Renderer2D::BeginScene(m_Camera2D);
-            for (float x = 0.0f, i = 0.0f; x < 50.0f; x += 1.2f)
-            {
-                for (float y = 0.0f; y < 50.0f; y += 1.2f, i++)
-                {
-                    auto texture = textures[(int)i % textures.size()];
-                    Lumi::Renderer2D::DrawQuad({ x, y, -0.01f }, { 1.0f, 1.0f }, m_QuadColor, 0.0f);
-                    Lumi::Renderer2D::DrawQuad(texture, { x, y, 0.0f }, { 1.0f, 1.0f },
-                        { 1.0f, 1.0f, 1.0f }, 0.0f);
-                }
-            }
+            //for (float x = 0.0f, i = 0.0f; x < 50.0f; x += 1.2f)
+            //{
+            //    for (float y = 0.0f; y < 50.0f; y += 1.2f, i++)
+            //    {
+            //        auto texture = textures[(int)i % textures.size()];
+            //        Lumi::Renderer2D::DrawQuad({ x, y, -0.01f }, { 1.0f, 1.0f }, m_QuadColor, 0.0f);
+            //        Lumi::Renderer2D::DrawQuad(texture, { x, y, 0.0f }, { 1.0f, 1.0f },
+            //            { 1.0f, 1.0f, 1.0f }, 0.0f);
+            //    }
+            //}
+            m_Scene->OnUpdate2D(ts, m_QuadColor);
             Lumi::Renderer2D::EndScene();
         }
         m_Framebuffer->UnBind();
@@ -211,6 +242,21 @@ namespace Lumi
 
         ImGui::Begin("Setting");
         ImGui::ColorEdit3("Quad Color", glm::value_ptr(m_QuadColor));
+        ImGui::Separator();
+
+        auto entities = m_Scene->GetRegistry().view<Material2D>();
+        for (auto entity : entities)
+        {
+            auto [material] = entities.get(entity);
+            if (m_QuadColor != m_LastColor && material.Texture2D == nullptr)
+            {
+                material.QuadColor = glm::vec4(m_QuadColor, 1.0f);
+            }
+            ImGui::ColorEdit3(std::format("Quad {0}", (unsigned int)entity).c_str(), 
+                glm::value_ptr(material.QuadColor));
+            ImGui::Separator();
+        }
+        m_LastColor = m_QuadColor;
         ImGui::End();
 	}
 
@@ -221,6 +267,10 @@ namespace Lumi
         if (m_ViewportHover)
         {
             m_Camera2D.OnEvent(event);
+        }
+        else
+        {
+            m_Camera2D.OnEvent2(event);
         }
         //m_Framebuffer->OnEvent(event);
 	}

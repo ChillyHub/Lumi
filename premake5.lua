@@ -13,6 +13,7 @@ workspace "Lumi"
 outputdir = "%{cfg.buildcfg}-%{cfg.architecture}" 
 
 group "External"
+	include "Lumi/ext/entt"
 	include "Lumi/ext/glad"
 	include "Lumi/ext/GLFW"
 	include "Lumi/ext/glm"
@@ -23,6 +24,7 @@ group ""
 
 -- Include dirctories relative to root folder
 IncludeDir = {}
+IncludeDir["entt"] = "%{wks.location}/Lumi/ext/entt/include"
 IncludeDir["glad"] = "%{wks.location}/Lumi/ext/glad/include"
 IncludeDir["GLFW"] = "%{wks.location}/Lumi/ext/GLFW/include"
 IncludeDir["glm"] = "%{wks.location}/Lumi/ext/glm"

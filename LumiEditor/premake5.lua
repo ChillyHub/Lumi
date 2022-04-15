@@ -20,6 +20,7 @@ project "LumiEditor"
 		"%{wks.location}/Lumi/include",
 		"%{wks.location}/LumiEditor",
 		"%{wks.location}/LumiEditor/src",
+		"%{IncludeDir.entt}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}", 
 		"%{IncludeDir.spdlog}"

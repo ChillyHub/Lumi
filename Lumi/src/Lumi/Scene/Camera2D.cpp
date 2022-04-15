@@ -33,6 +33,17 @@ namespace Lumi
 		
 	}
 
+	void Camera2D::OnEvent2(Event& e)
+	{
+		LM_PROFILE_FUNCTION();
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(Camera2D::OnMouseButtonRealeased));
+		dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(Camera2D::OnMoveCursorPos));
+		//dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Camera2D::OnResizeWindow));
+
+	}
+
 	void Camera2D::UpdateView()
 	{
 		LM_PROFILE_FUNCTION(); 

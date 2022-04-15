@@ -27,6 +27,7 @@ project "Lumi"
 	{
 		"%{wks.location}/%{prj.name}/src",
 		"%{wks.location}/%{prj.name}",
+		"%{IncludeDir.entt}",
         "%{IncludeDir.glad}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glm}",
@@ -38,6 +39,7 @@ project "Lumi"
 	links
 	{
 		"opengl32.lib",
+		"entt",
         "glad",
         "GLFW",
         "glm",
