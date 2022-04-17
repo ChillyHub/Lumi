@@ -6,6 +6,11 @@
 
 #include "Lumi/Core/ResourceManager.h"
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 namespace Lumi
 {
 	class Renderer2D
@@ -42,39 +47,39 @@ namespace Lumi
 		static void DrawQuad(const glm::vec2& position = glm::vec2(0.0f),
 			const glm::vec2& size = glm::vec2(1.0f),
 			const glm::vec3& color = glm::vec3(1.0f), 
-			float rotate = 0.0f);
+			const glm::quat& rotate = glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 		static void DrawQuad(const glm::vec2& position,
 			const glm::vec2& size,
 			const glm::vec4& color, 
-			float rotate = 0.0f);
+			const glm::quat& rotate = glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 		static void DrawQuad(const glm::vec3& position,
 			const glm::vec2& size = glm::vec2(1.0f),
 			const glm::vec3& color = glm::vec3(1.0f), 
-			float rotate = 0.0f);
+			const glm::quat& rotate = glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 		static void DrawQuad(const glm::vec3& position,
 			const glm::vec2& size,
 			const glm::vec4& color, 
-			float rotate = 0.0f);
+			const glm::quat& rotate = glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 		static void DrawQuad(std::shared_ptr<Texture> texture, 
 			const glm::vec2& position = glm::vec2(0.0f),
 			const glm::vec2& size = glm::vec2(1.0f),
 			const glm::vec3& color = glm::vec3(1.0f), 
-			float rotate = 0.0f);
+			const glm::quat& rotate = glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 		static void DrawQuad(std::shared_ptr<Texture> texture, 
 			const glm::vec2& position,
 			const glm::vec2& size,
 			const glm::vec4& color, 
-			float rotate = 0.0f);
+			const glm::quat& rotate = glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 		static void DrawQuad(std::shared_ptr<Texture> texture, 
 			const glm::vec3& position,
 			const glm::vec2& size = glm::vec2(1.0f),
 			const glm::vec3& color = glm::vec3(1.0f), 
-			float rotate = 0.0f);
+			const glm::quat& rotate = glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 		static void DrawQuad(std::shared_ptr<Texture> texture, 
 			const glm::vec3& position,
 			const glm::vec2& size,
 			const glm::vec4& color, 
-			float rotate = 0.0f);
+			const glm::quat& rotate = glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
 
 		static void DrawFrame(std::shared_ptr<Texture> texture);
 	private:

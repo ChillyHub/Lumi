@@ -9,33 +9,52 @@
 
 namespace Lumi
 {
+	class Transform;
+	
 	class Entity
 	{
 	public:
 		std::string Name;
+		Transform& transform;
 	public:
-		Entity() = default;
 		Entity(const Entity& e) = default;
 		Entity(entt::entity entity, Scene* scene, std::string& name)
-			: m_Entity(entity), m_Scene(scene), Name(name) {}
+			: m_Entity(entity), m_Scene(scene), Name(name), transform(AddTransform(scene, entity)) {}
 
 		template <typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{
-			T& component = m_Scene->GetRegistry().emplace<T>(m_Entity, std::forward<Args>(args)...);
-			return component;
+			if (HasComponent<T>())
+			{
+				return GetComponent<T>();
+			}
+			return m_Scene->GetRegistry().emplace<T>(m_Entity, this, std::forward<Args>(args)...);
 		}
 
 		template <typename T>
 		T& GetComponent()
 		{
+			LUMI_CORE_ASSERT(HasComponent<T>(), "No Component {0}", typeid(T).name());
 			return m_Scene->GetRegistry().get<T>(m_Entity);
 		}
 
 		template <typename T, typename... Args>
 		decltype(auto) GetComponents()
 		{
+			LUMI_CORE_ASSERT((HasComponents<T, Args>()), "No Components {0} ...", typeid(T).name());
 			return m_Scene->GetRegistry().get<T, Args>(m_Entity);
+		}
+
+		template <typename T>
+		bool HasComponent()
+		{
+			return m_Scene->GetRegistry().all_of<T>(m_Entity);
+		}
+
+		template <typename T, typename... Args>
+		bool HasComponents()
+		{
+			return m_Scene->GetRegistry().all_of<T, Args>(m_Entity);
 		}
 
 		template <typename T, typename... Args>
@@ -56,6 +75,11 @@ namespace Lumi
 
 		operator bool() const { return m_Entity != entt::null; }
 		operator unsigned int() const { return (unsigned int)m_Entity; }
+	private:
+		Transform& AddTransform(Scene* scene, entt::entity entity)
+		{
+			return scene->GetRegistry().emplace<Transform>(entity, this);
+		}
 	private:
 		entt::entity m_Entity { entt::null };
 		Scene* m_Scene { nullptr };

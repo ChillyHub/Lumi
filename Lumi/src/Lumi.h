@@ -33,9 +33,9 @@
 #include "Lumi/Scene/Camera2D.h"
 #include "Lumi/Scene/Camera3D.h"
 #include "Lumi/Scene/Component/Component.h"
+//#include "Lumi/Scene/Component/Camera.h"
 #include "Lumi/Scene/Component/Material2D.h"
 #include "Lumi/Scene/Component/Transform.h"
-#include "Lumi/Scene/Component/Transform2D.h"
 
 #include "Lumi/Scene/Scene.h"
 #include "Lumi/Scene/Entity.h"

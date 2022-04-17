@@ -49,19 +49,19 @@ namespace Lumi
         {
             for (float y = 0.0f; y < 50.0f; y += 1.2f, i++)
             {
-                auto quads = m_Scene->CreateEntity2D("Entity" + std::to_string(2 * i));
+                auto quad1 = m_Scene->CreateEntity("Entity" + std::to_string(2 * i));
                 auto texture = textures[(int)i % textures.size()];
-                auto& transform1 = quads.GetComponent<Transform2D>();
+                auto& transform1 = quad1.GetComponent<Transform>();
                 transform1.Position = { x, y, 0.0f };
-                transform1.Scale = { 1.0f, 1.0f };
-                transform1.Rotation = 0.0f;
-                quads.AddComponent<Material2D>(texture, glm::vec4(1.0f));
-                quads = m_Scene->CreateEntity2D("Entity" + std::to_string(2 * i + 1));
-                auto& transform2 = quads.GetComponent<Transform2D>();
+                transform1.Scale = { 1.0f, 1.0f, 1.0f };
+                transform1.Rotation = { 1.0f, 0.0f, 0.0f, 0.0f };
+                quad1.AddComponent<Material2D>(texture, glm::vec4(1.0f));
+                auto quad2 = m_Scene->CreateEntity("Entity" + std::to_string(2 * i + 1));
+                auto& transform2 = quad2.GetComponent<Transform>();
                 transform2.Position = { x, y, -0.01f };
-                transform2.Scale = { 1.0f, 1.0f };
-                transform2.Rotation = 0.0f;
-                quads.AddComponent<Material2D>(m_QuadColor);
+                transform2.Scale = { 1.0f, 1.0f, 1.0f };
+                transform2.Rotation = { 1.0f, 0.0f, 0.0f, 0.0f };
+                quad2.AddComponent<Material2D>(m_QuadColor);
                 
             }
         }

@@ -218,25 +218,25 @@ namespace Lumi
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size,
-		const glm::vec3& color, float rotate)
+		const glm::vec3& color, const glm::quat& rotate)
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, { color.r, color.g, color.b, 1.0f }, rotate);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size,
-		const glm::vec4& color, float rotate)
+		const glm::vec4& color, const glm::quat& rotate)
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, color, rotate);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,
-		const glm::vec3& color, float rotate)
+		const glm::vec3& color, const glm::quat& rotate)
 	{
 		DrawQuad(position, size, { color.r, color.g, color.b, 1.0f }, rotate);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size,
-		const glm::vec4& color, float rotate)
+		const glm::vec4& color, const glm::quat& rotate)
 	{
 		LM_PROFILE_FUNCTION();
 
@@ -248,7 +248,7 @@ namespace Lumi
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, position);
-		model = glm::rotate(model, glm::radians(rotate), { 0.0f, 0.0f, -1.0f });
+		model = model * glm::toMat4(rotate);
 		model = glm::scale(model, { size.x, size.y, 0.0f });
 
 		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[0];
@@ -281,26 +281,26 @@ namespace Lumi
 	}
 
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec2& position,
-		const glm::vec2& size, const glm::vec3& color, float rotate)
+		const glm::vec2& size, const glm::vec3& color, const glm::quat& rotate)
 	{
 		DrawQuad(texture, { position.x, position.y, 0.0f }, size,
 			{ color.r, color.g, color.b, 1.0f }, rotate);
 	}
 
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec2& position,
-		const glm::vec2& size, const glm::vec4& color, float rotate)
+		const glm::vec2& size, const glm::vec4& color, const glm::quat& rotate)
 	{
 		DrawQuad(texture, { position.x, position.y, 0.0f }, size, color, rotate);
 	}
 
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec3& position,
-		const glm::vec2& size, const glm::vec3& color, float rotate)
+		const glm::vec2& size, const glm::vec3& color, const glm::quat& rotate)
 	{
 		DrawQuad(texture, position, size, { color.r, color.g, color.b, 1.0f }, rotate);
 	}
 
 	void Renderer2D::DrawQuad(std::shared_ptr<Texture> texture, const glm::vec3& position,
-		const glm::vec2& size, const glm::vec4& color, float rotate)
+		const glm::vec2& size, const glm::vec4& color, const glm::quat& rotate)
 	{
 		LM_PROFILE_FUNCTION();
 
@@ -335,7 +335,7 @@ namespace Lumi
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, position);
-		model = glm::rotate(model, glm::radians(rotate), { 0.0f, 0.0f, -1.0f });
+		model = model * glm::toMat4(rotate);
 		model = glm::scale(model, { size.x, size.y, 0.0f });
 		
 		s_RenderData.VertexBufferPtr->Position = model * s_RenderData.QuadVertexPositions[0];

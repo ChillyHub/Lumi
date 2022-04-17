@@ -68,9 +68,9 @@ namespace Lumi
 
 	bool Camera2D::OnMouseButtonPressed(MouseButtonPressedEvent& e)
 	{
-		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_LEFT)
+		if (e.GetMouseButton() == Mouse::Left)
 			m_MouseButtonLeftPressed = true;
-		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_RIGHT)
+		if (e.GetMouseButton() == Mouse::Right)
 			m_MouseButtonRightPressed = true;
 		
 		return false;
@@ -78,9 +78,9 @@ namespace Lumi
 
 	bool Camera2D::OnMouseButtonRealeased(MouseButtonReleasedEvent& e)
 	{
-		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_LEFT)
+		if (e.GetMouseButton() == Mouse::Left)
 			m_MouseButtonLeftPressed = false;
-		if (e.GetMouseButton() == LUMI_MOUSE_BUTTON_RIGHT)
+		if (e.GetMouseButton() == Mouse::Right)
 			m_MouseButtonRightPressed = false;
 
 		return false;

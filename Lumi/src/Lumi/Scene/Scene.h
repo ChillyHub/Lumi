@@ -4,7 +4,6 @@
 #include "Lumi/Scene/Component/Component.h"
 #include "Lumi/Scene/Component/Material2D.h"
 #include "Lumi/Scene/Component/Transform.h"
-#include "Lumi/Scene/Component/Transform2D.h"
 
 #include <entt.hpp>
 #include <glm/glm.hpp>
@@ -17,10 +16,10 @@ namespace Lumi
 	{
 	public:
 		Entity CreateEntity(std::string name = "Entity");
-		Entity CreateEntity2D(std::string name = "Entity");
 		entt::registry& GetRegistry() { return m_Registry; }
-		void OnUpdate2D(Timestep ts, glm::vec3 color);
-	private:
+		virtual void OnUpdate2D(Timestep ts, glm::vec3 color);
+	protected:
+		std::vector<Entity> m_Entities;
 		entt::registry m_Registry;
 	};
 }
