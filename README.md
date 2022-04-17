@@ -14,6 +14,18 @@
 
 
 
+#### 外部库
+
+- GLFW :  基于 OpenGL 的窗口库
+- entt :  实体组件系统 (ECS) 库
+- glad :  OpenGL API 接口
+- glm :  数学库
+- imgui :  即时 UI 库
+- spdlog :  日志库
+- stb :  文件加载库
+
+
+
 #### 接下来的计划
 
 - 完善 Editor 的 UI 界面，实现 UI 界面修改 Component 属性
