@@ -2,9 +2,10 @@
 
 #include "Transform.h"
 #include "Lumi/Scene/Scene.h"
+#include "Lumi/Scene/Entity.h"
 
 namespace Lumi
-{
+{	
 	glm::mat4 Transform::GetModelMatrix() const
 	{
 		return m_ModelMatrix;

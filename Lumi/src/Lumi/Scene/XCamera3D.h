@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 #include "Camera.h"
@@ -90,3 +91,4 @@ namespace Lumi
 		int m_Height              = 1080;
 	};
 }
+*/

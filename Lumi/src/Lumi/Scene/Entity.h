@@ -4,20 +4,19 @@
 
 #include "Lumi/Scene/Component/Component.h"
 #include "Lumi/Scene/Scene.h"
+#include "Lumi/Scene/Component/Transform.h"
 
 #include <entt.hpp>
 
 namespace Lumi
 {
-	class Transform;
-	
 	class Entity
 	{
 	public:
 		std::string Name;
 		Transform& transform;
 	public:
-		Entity(const Entity& e) = default;
+		Entity(const Entity& src);
 		Entity(entt::entity entity, Scene* scene, std::string& name)
 			: m_Entity(entity), m_Scene(scene), Name(name), transform(AddTransform(scene, entity)) {}
 
@@ -41,8 +40,8 @@ namespace Lumi
 		template <typename T, typename... Args>
 		decltype(auto) GetComponents()
 		{
-			LUMI_CORE_ASSERT((HasComponents<T, Args>()), "No Components {0} ...", typeid(T).name());
-			return m_Scene->GetRegistry().get<T, Args>(m_Entity);
+			LUMI_CORE_ASSERT((HasComponents<T, Args...>()), "No Components {0} ...", typeid(T).name());
+			return m_Scene->GetRegistry().get<T, Args...>(m_Entity);
 		}
 
 		template <typename T>
@@ -54,13 +53,13 @@ namespace Lumi
 		template <typename T, typename... Args>
 		bool HasComponents()
 		{
-			return m_Scene->GetRegistry().all_of<T, Args>(m_Entity);
+			return m_Scene->GetRegistry().all_of<T, Args...>(m_Entity);
 		}
 
 		template <typename T, typename... Args>
 		void RemoveComponent()
 		{
-			m_Scene->GetRegistry().remove<T, Args>(m_Entity);
+			m_Scene->GetRegistry().remove<T, Args...>(m_Entity);
 		}
 
 		bool operator==(const Entity& rhs) const
@@ -71,6 +70,11 @@ namespace Lumi
 		bool operator!=(const Entity& rhs) const
 		{
 			return !(*this == rhs);
+		}
+
+		Entity& operator=(const Entity& rhs)
+		{
+			Name = "dfs";
 		}
 
 		operator bool() const { return m_Entity != entt::null; }

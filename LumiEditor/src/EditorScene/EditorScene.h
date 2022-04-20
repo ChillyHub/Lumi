@@ -9,5 +9,6 @@ namespace Lumi
 	public:
 		EditorScene();
 		void EditorUpdate(Timestep ts);
+		Camera& GetCamera2D();
 	};
 }

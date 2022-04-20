@@ -3,9 +3,10 @@
 #include "RenderCommand.h"
 #include "Shader.h"
 
-#include "Lumi/Scene/Camera.h"
-#include "Lumi/Scene/Camera2D.h"
-#include "Lumi/Scene/Camera3D.h"
+//#include "Lumi/Scene/Camera.h"
+//#include "Lumi/Scene/Camera2D.h"
+//#include "Lumi/Scene/Camera3D.h"
+#include "Lumi/Scene/Component/Camera.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
@@ -17,8 +18,9 @@ namespace Lumi
 		static void Init();
 
 		static void BeginScene();
-		static void BeginScene(const Camera2D& camera);
-		static void BeginScene(const Camera3D& camera);
+		//static void BeginScene(const Camera2D& camera);
+		//static void BeginScene(const Camera3D& camera);
+		static void BeginScene(const Camera& camera);
 		static void EndScene();
 
 		static void Draw(const std::shared_ptr<Shader>& shader, 

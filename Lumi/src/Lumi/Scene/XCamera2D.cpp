@@ -1,4 +1,5 @@
 #include "pch.h"
+/*
 #include "Camera2D.h"
 
 namespace Lumi
@@ -141,3 +142,4 @@ namespace Lumi
 		return false;
 	}
 }
+*/

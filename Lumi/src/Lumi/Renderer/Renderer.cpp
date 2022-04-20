@@ -21,17 +21,25 @@ namespace Lumi
 		s_SceneData->ViewMatirx = glm::mat4(1.0f);
 	}
 	
-	void Renderer::BeginScene(const Camera2D& camera)
-	{
-		LM_PROFILE_FUNCTION(); 
-		
-		s_SceneData->ProjectMatrix = camera.GetProjectMatrix();
-		s_SceneData->ViewMatirx = camera.GetViewMatrix();
-	}
+	//void Renderer::BeginScene(const Camera2D& camera)
+	//{
+	//	LM_PROFILE_FUNCTION(); 
+	//	
+	//	s_SceneData->ProjectMatrix = camera.GetProjectMatrix();
+	//	s_SceneData->ViewMatirx = camera.GetViewMatrix();
+	//}
+	//
+	//void Renderer::BeginScene(const Camera3D& camera)
+	//{
+	//	LM_PROFILE_FUNCTION();
+	//}
 
-	void Renderer::BeginScene(const Camera3D& camera)
+	void Renderer::BeginScene(const Camera& camera)
 	{
 		LM_PROFILE_FUNCTION();
+
+		s_SceneData->ProjectMatrix = camera.GetProjectionMatrix();
+		s_SceneData->ViewMatirx = camera.GetViewMatrix();
 	}
 
 	void Renderer::EndScene()

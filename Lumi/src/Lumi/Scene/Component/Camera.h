@@ -27,18 +27,20 @@ namespace Lumi
 		float FarClip = 1000.0f;
 		float Size = 2.0f;
 		float Aspect = 16.0f / 9.0f;
+		float ScreenWidth = 1980.0f;
+		float ScreenHeight = 1080.0f;
 	public:
-		Camera(const Camera& src) = default;
+		//Camera(const Camera& src) = default;
 		Camera(Entity* ent) : entity(ent) {}
 		Camera(Entity* ent, float moveSpeed, float zoom, float nearClip, float farClip,
 			float size, float aspect)
 			: entity(ent), MovementSpeed(moveSpeed), Zoom(zoom),
 			NearClip(nearClip), FarClip(farClip), Size(size), Aspect(aspect) {}
 	public:
-		glm::mat4 GetViewMatrix();
-		glm::mat4 GetProjectionMatrix();
-		glm::mat4 GetWorldToScreenMatrix();
-		glm::vec3 WorldToScreenPoint(const glm::vec3& point);
+		glm::mat4 GetViewMatrix() const;
+		glm::mat4 GetProjectionMatrix() const;
+		glm::mat4 GetWorldToScreenMatrix() const;
+		glm::vec3 WorldToScreenPoint(const glm::vec3& point) const;
 	public:
 		virtual void OnUpdate(Timestep ts) override;
 	private:

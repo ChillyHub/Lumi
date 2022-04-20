@@ -20,7 +20,7 @@ namespace Lumi
 
 		Entity* entity;
 	public:
-		Transform(const Transform&) = default;
+		Transform(const Transform& src) = default;
 		Transform(Entity* ent) : entity(ent) {}
 		Transform(Entity* ent, glm::vec3 position, glm::vec3 scale, glm::quat rotation)
 			: entity(ent), Position(position), Scale(scale), Rotation(rotation) {}
@@ -30,6 +30,15 @@ namespace Lumi
 		void RotateAroundPoint(const glm::vec3& worldPos, const glm::vec3& axis, float angle);
 	public:
 		virtual void OnUpdate(Timestep ts) override;
+
+		Transform& operator=(const Transform& rhs)
+		{
+			Position = rhs.Position;
+			Scale = rhs.Scale;
+			Rotation = rhs.Rotation;
+			entity = rhs.entity;
+			return *this;
+		}
 	private:
 		glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
 	};

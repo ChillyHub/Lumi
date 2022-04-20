@@ -28,7 +28,8 @@ namespace Lumi
 		static void Init(bool initFramebuffer = false);
 
 		static void BeginScene();
-		static void BeginScene(const Camera2D& camera);
+		//static void BeginScene(const Camera2D& camera);
+		static void BeginScene(const Camera& camera);
 		static void ReBeginScene();
 		static void EndScene();
 

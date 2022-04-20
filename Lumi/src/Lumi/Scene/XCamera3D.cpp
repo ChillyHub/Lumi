@@ -1,4 +1,5 @@
 #include "pch.h"
+/*
 #include "Camera3D.h"
 
 namespace Lumi
@@ -48,3 +49,4 @@ namespace Lumi
 				(float)m_Width / (float)m_Width, -1.0f, 1.0f, -1.0f, 1.0f);
 	}
 }
+*/

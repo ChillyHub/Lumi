@@ -110,9 +110,19 @@ namespace Lumi
 		Renderer::BeginScene();
 	}
 
-	void Renderer2D::BeginScene(const Camera2D& camera)
+	//void Renderer2D::BeginScene(const Camera2D& camera)
+	//{
+	//	LM_PROFILE_FUNCTION(); 
+	//
+	//	s_RenderData.IndexCount = 0u;
+	//	s_RenderData.VertexBufferPtr = s_RenderData.VertexBufferBase;
+	//
+	//	Renderer::BeginScene(camera);
+	//}
+
+	void Renderer2D::BeginScene(const Camera& camera)
 	{
-		LM_PROFILE_FUNCTION(); 
+		LM_PROFILE_FUNCTION();
 
 		s_RenderData.IndexCount = 0u;
 		s_RenderData.VertexBufferPtr = s_RenderData.VertexBufferBase;

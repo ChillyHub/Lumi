@@ -2,6 +2,9 @@
 
 #include <Lumi.h>
 
+#include "EditorScene/EditorScene.h"
+#include "EditorScene/EditorCamera2D.h"
+
 namespace Lumi
 {
 	class EditorLayer : public Layer
@@ -17,11 +20,10 @@ namespace Lumi
 		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Event& event) override;
 	private:
-		Camera2D m_Camera2D;
-		Camera3D m_Camera3D;
 
 		std::shared_ptr<Framebuffer> m_Framebuffer;
 		std::shared_ptr<Scene> m_Scene;
+		std::shared_ptr<EditorScene> m_EditorScene;
 
 		glm::vec3 m_QuadColor = { 0.113f, 0.113f, 0.113f };
 		glm::vec3 m_LastColor = { 0.113f, 0.113f, 0.113f };

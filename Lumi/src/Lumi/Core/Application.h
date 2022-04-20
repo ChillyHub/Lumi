@@ -8,8 +8,6 @@
 #include "Lumi/Renderer/Renderer.h"
 #include "Lumi/Renderer/Shader.h"
 #include "Lumi/Renderer/VertexArray.h"
-#include "Lumi/Scene/Camera.h"
-#include "Lumi/Scene/Camera2D.h"
 #include "Core.h"
 #include "Input.h"
 #include "LayerStack.h"
