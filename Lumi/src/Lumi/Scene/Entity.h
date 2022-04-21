@@ -17,7 +17,7 @@ namespace Lumi
 		Transform& transform;
 	public:
 		Entity(const Entity& src);
-		Entity(entt::entity entity, Scene* scene, std::string& name)
+		Entity(entt::entity entity, Scene* scene, std::string name = "Entity")
 			: m_Entity(entity), m_Scene(scene), Name(name), transform(AddTransform(scene, entity)) {}
 
 		template <typename T, typename... Args>
@@ -70,11 +70,6 @@ namespace Lumi
 		bool operator!=(const Entity& rhs) const
 		{
 			return !(*this == rhs);
-		}
-
-		Entity& operator=(const Entity& rhs)
-		{
-			Name = "dfs";
 		}
 
 		operator bool() const { return m_Entity != entt::null; }

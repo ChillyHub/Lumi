@@ -73,7 +73,7 @@ namespace Lumi
 		glm::vec3 position = Position;
 		glm::quat q = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
 		q = glm::rotate(q, glm::radians(angle), axis);
-		glm::vec3 newPosition = glm::rotate(q, position);
+		glm::vec3 newPosition = glm::rotate(q, position - worldPos);
 		Position = newPosition;
 		LookAt(worldPos);
 	}

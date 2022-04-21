@@ -4,6 +4,8 @@
 
 #include "EditorScene/EditorScene.h"
 #include "EditorScene/EditorCamera2D.h"
+#include "UI/PropertiesUI.h"
+#include "UI/SceneUI.h"
 
 namespace Lumi
 {
@@ -32,5 +34,10 @@ namespace Lumi
 		bool m_ViewportHover;
 
 		unsigned int m_ColorTex;
+
+		std::shared_ptr<SceneUI> m_SceneUI 
+			= std::shared_ptr<SceneUI>(new SceneUI());
+		std::shared_ptr<PropertiesUI> m_PropertiesUI
+			= std::shared_ptr<PropertiesUI>(new PropertiesUI());;
 	};
 }

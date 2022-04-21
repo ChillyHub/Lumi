@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Example/Example1.hpp"
+#include "Example/Example2.hpp"
 
 namespace Lumi
 {
@@ -21,11 +22,11 @@ namespace Lumi
 
         //m_Camera2D = Lumi::Camera2D((int)m_ViewportSize.x, (int)m_ViewportSize.y, { 0.0f, 0.0f, 2.0f });
 
-        Lumi::ResourceManager::LoadTexture2D("assets/textures/barbara2.png", "Barbara", true);
-        Lumi::ResourceManager::LoadTexture2D("assets/textures/bronya2.png", "Bronya", true);
-        Lumi::ResourceManager::LoadTexture2D("assets/textures/ei.png", "Ei", true);
-        Lumi::ResourceManager::LoadTexture2D("assets/textures/ganyu_keqing.png", "Ganyu", true);
-        Lumi::ResourceManager::LoadTexture2D("assets/textures/keqing.png", "Keqing", true);
+        //Lumi::ResourceManager::LoadTexture2D("assets/textures/barbara2.png", "Barbara", true);
+        //Lumi::ResourceManager::LoadTexture2D("assets/textures/bronya2.png", "Bronya", true);
+        //Lumi::ResourceManager::LoadTexture2D("assets/textures/ei.png", "Ei", true);
+        //Lumi::ResourceManager::LoadTexture2D("assets/textures/ganyu_keqing.png", "Ganyu", true);
+        //Lumi::ResourceManager::LoadTexture2D("assets/textures/keqing.png", "Keqing", true);
 
         Lumi::Renderer2D::Init(true);
 
@@ -40,8 +41,13 @@ namespace Lumi
         m_ColorTex = m_Framebuffer->AddTexBuffer(colorTexSpec);
 
         m_Scene = std::make_shared<Scene>();
-        auto& quads = m_Scene->CreateEntity("Quads");
-        quads.AddComponent<Script>().Bind<Example1>();
+        //auto& quads = m_Scene->CreateEntity("Quads");
+        //quads.AddComponent<Script>().Bind<Example1>();
+        auto& quads = m_Scene->CreateEntity("Quad");
+        quads.AddComponent<Script>().Bind<Example2>();
+
+        m_SceneUI->SetContext(m_Scene);
+        m_PropertiesUI->SetScene(m_SceneUI);
 
         //auto quadTexture1 = Lumi::ResourceManager::GetTexture2D("Barbara");
         //auto quadTexture2 = Lumi::ResourceManager::GetTexture2D("Bronya");
@@ -246,30 +252,35 @@ namespace Lumi
             camera.ScreenHeight = m_ViewportSize.y;
             //m_Camera2D.Resize(m_ViewportSize.x, m_ViewportSize.y);
         }
+        auto& script = m_EditorScene->GetCameraScript2D();
+        script.IsHovered = m_ViewportHover;
         ImGui::Image((void*)(unsigned long long)m_Framebuffer->GetTexID(0), 
             ImVec2{m_ViewportSize.x, m_ViewportSize.y}, {0, 1}, {1, 0});
         ImGui::End();
         ImGui::PopStyleVar();
 
-        ImGui::Begin("Setting");
-        //ImGui::ColorEdit3("Quad Color", glm::value_ptr(m_QuadColor));
-        ImGui::Separator();
+        m_SceneUI->OnImGuiRender();
+        m_PropertiesUI->OnImGuiRender();
 
-        auto entities = m_Scene->GetRegistry().view<Script>();
-        for (auto entity : entities)
-        {
-            auto [script] = entities.get(entity);
-            //script.QuadColor = glm::vec4(m_QuadColor, 1.0f);
-            //if (m_QuadColor != m_LastColor && material.Texture2D == nullptr)
-            //{
-            //    material.QuadColor = glm::vec4(m_QuadColor, 1.0f);
-            //}
-            ImGui::ColorEdit3("Quads Color", 
-                glm::value_ptr(script.GetInstance<Example1>().QuadColor));
-            ImGui::Separator();
-        }
-        m_LastColor = m_QuadColor;
-        ImGui::End();
+        //ImGui::Begin("Setting");
+        ////ImGui::ColorEdit3("Quad Color", glm::value_ptr(m_QuadColor));
+        //ImGui::Separator();
+        //
+        //auto entities = m_Scene->GetRegistry().view<Script>();
+        //for (auto entity : entities)
+        //{
+        //    auto [script] = entities.get(entity);
+        //    //script.QuadColor = glm::vec4(m_QuadColor, 1.0f);
+        //    //if (m_QuadColor != m_LastColor && material.Texture2D == nullptr)
+        //    //{
+        //    //    material.QuadColor = glm::vec4(m_QuadColor, 1.0f);
+        //    //}
+        //    ImGui::ColorEdit3("Quads Color", 
+        //        glm::value_ptr(script.GetInstance<Example1>().QuadColor));
+        //    ImGui::Separator();
+        //}
+        //m_LastColor = m_QuadColor;
+        //ImGui::End();
 	}
 
 	void EditorLayer::OnEvent(Event& event)

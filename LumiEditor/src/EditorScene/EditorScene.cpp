@@ -1,15 +1,19 @@
 #include "EditorScene.h"
-#include "EditorCamera2D.h"
 
 namespace Lumi
 {
 	EditorScene::EditorScene() : Scene()
 	{
-		auto& entity = CreateEntity("EditorCamera2D");
-		auto& camera = entity.AddComponent<Camera>();
-		camera.Projection = ProjectionType::Orthographic;
-		camera.entity->transform.Position = { 0.0f, 0.0f, 2.0f };
-		entity.AddComponent<Script>().Bind<EditorCamera2D>();
+		auto& entity2D = CreateEntity("EditorCamera2D");
+		auto& camera2D = entity2D.AddComponent<Camera>();
+		camera2D.Projection = ProjectionType::Orthographic;
+		camera2D.entity->transform.Position = { 0.0f, 0.0f, 2.0f };
+		entity2D.AddComponent<Script>().Bind<EditorCamera2D>();
+
+		auto& entity3D = CreateEntity("EditorCamera3D");
+		auto& camera3D = entity3D.AddComponent<Camera>();
+		camera3D.entity->transform.Position = { 0.0f, 0.0f, 20.0f };
+		entity3D.AddComponent<Script>().Bind<EditorCamera3D>();
 	}
 
 	void EditorScene::EditorUpdate(Timestep ts)
@@ -37,5 +41,20 @@ namespace Lumi
 	Camera& EditorScene::GetCamera2D()
 	{
 		return m_Entities[0]->GetComponent<Camera>();
+	}
+
+	Camera& EditorScene::GetCamera3D()
+	{
+		return m_Entities[1]->GetComponent<Camera>();
+	}
+
+	EditorCamera2D& EditorScene::GetCameraScript2D()
+	{
+		return m_Entities[0]->GetComponent<Script>().GetInstance<EditorCamera2D>();
+	}
+
+	EditorCamera3D& EditorScene::GetCameraScript3D()
+	{
+		return m_Entities[1]->GetComponent<Script>().GetInstance<EditorCamera3D>();
 	}
 }

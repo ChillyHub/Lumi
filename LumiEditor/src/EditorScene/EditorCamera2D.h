@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Lumi.h>
+#include <imgui.h>
 
 namespace Lumi
 {
@@ -15,6 +16,8 @@ namespace Lumi
 		float m_CursorPosX = 0.0f;
 		float m_CursorPosY = 0.0f;
 	public:
+		bool IsHovered = true;
+	public:
 		void Start()
 		{
 			
@@ -27,8 +30,9 @@ namespace Lumi
 			float X = Input::GetCursorX();
 			float Y = Input::GetCursorY();
 
-			if (Input::IsMouseButtonPressed(Mouse::Middle) || 
-				Input::IsMouseButtonPressed(Mouse::Right))
+			if ((Input::IsMouseButtonPressed(Mouse::Middle) || 
+				Input::IsMouseButtonPressed(Mouse::Right)) &&
+				IsHovered)
 			{
 				auto& camera = entity->GetComponent<Camera>();
 				
