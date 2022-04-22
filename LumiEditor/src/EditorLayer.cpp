@@ -47,6 +47,7 @@ namespace Lumi
         quads.AddComponent<Script>().Bind<Example2>();
 
         m_SceneUI->SetContext(m_Scene);
+        m_SceneUI->SetEditor(m_EditorScene);
         m_PropertiesUI->SetScene(m_SceneUI);
 
         //auto quadTexture1 = Lumi::ResourceManager::GetTexture2D("Barbara");
@@ -119,7 +120,27 @@ namespace Lumi
             // Lumi::Renderer2D::DrawQuad(quadTexture1, { 0.0f, 0.0f, -0.01f }, { 1.0f, 1.0f },
             // 	{ 1.0f, 1.0f, 1.0f }, 0.0f);
             // Lumi::Renderer2D::EndScene();
-            Lumi::Renderer2D::BeginScene(m_EditorScene->GetCamera2D());
+            auto& camera = m_CameraType ?
+                m_EditorScene->GetCamera3D() : m_EditorScene->GetCamera2D();
+            if (m_CameraType)
+            {
+                m_EditorScene->GetCamera3D().Activated = true;
+                m_EditorScene->GetCamera2D().Activated = false;
+                m_EditorScene->GetCamera3D().entity
+                    ->GetComponent<Script>().Activated = true;
+                m_EditorScene->GetCamera2D().entity
+                    ->GetComponent<Script>().Activated = false;
+            }
+            else
+            {
+                m_EditorScene->GetCamera3D().Activated = false;
+                m_EditorScene->GetCamera2D().Activated = true;
+                m_EditorScene->GetCamera3D().entity
+                    ->GetComponent<Script>().Activated = false;
+                m_EditorScene->GetCamera2D().entity
+                    ->GetComponent<Script>().Activated = true;
+            }
+            Lumi::Renderer2D::BeginScene(camera);
             //for (float x = 0.0f, i = 0.0f; x < 50.0f; x += 1.2f)
             //{
             //    for (float y = 0.0f; y < 50.0f; y += 1.2f, i++)
@@ -246,10 +267,14 @@ namespace Lumi
         {
             m_ViewportSize = { size.x, size.y };
             m_Framebuffer->Resize((unsigned int)m_ViewportSize.x, (unsigned int)m_ViewportSize.y);
-            auto& camera = m_EditorScene->GetCamera2D();
-            camera.Aspect = m_ViewportSize.x / m_ViewportSize.y;
-            camera.ScreenWidth = m_ViewportSize.x;
-            camera.ScreenHeight = m_ViewportSize.y;
+            auto& camera2D = m_EditorScene->GetCamera2D();
+            camera2D.Aspect = m_ViewportSize.x / m_ViewportSize.y;
+            camera2D.ScreenWidth = m_ViewportSize.x;
+            camera2D.ScreenHeight = m_ViewportSize.y;
+            auto& camera3D = m_EditorScene->GetCamera3D();
+            camera3D.Aspect = m_ViewportSize.x / m_ViewportSize.y;
+            camera3D.ScreenWidth = m_ViewportSize.x;
+            camera3D.ScreenHeight = m_ViewportSize.y;
             //m_Camera2D.Resize(m_ViewportSize.x, m_ViewportSize.y);
         }
         auto& script = m_EditorScene->GetCameraScript2D();
@@ -258,6 +283,30 @@ namespace Lumi
             ImVec2{m_ViewportSize.x, m_ViewportSize.y}, {0, 1}, {1, 0});
         ImGui::End();
         ImGui::PopStyleVar();
+
+        ImGui::Begin("Select Editor Camera");
+        const char* cameraTypes[] = { "Camera2D", "Camera3D" };
+        const char* currentType = cameraTypes[(int)m_CameraType];
+        if (ImGui::BeginCombo("Projection", currentType))
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                bool isSelected = currentType == cameraTypes[i];
+                if (ImGui::Selectable(cameraTypes[i], isSelected))
+                {
+                    currentType = cameraTypes[i];
+                    m_CameraType = (unsigned int)i;
+                }
+
+                if (isSelected)
+                {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+
+            ImGui::EndCombo();
+        }
+        ImGui::End();
 
         m_SceneUI->OnImGuiRender();
         m_PropertiesUI->OnImGuiRender();

@@ -34,14 +34,15 @@ namespace Lumi
 	{
 		auto& transform = entity->transform;
 		glm::vec3 center = glm::rotate(transform.Rotation, { 0.0f, 0.0f, -1.0f }) + transform.Position;
-		m_ViewMatrix = glm::lookAt(transform.Position, center, { 0.0f, 1.0f, 0.0f });
+		glm::vec3 up = glm::rotate(transform.Rotation, { 0.0f, 1.0f, 0.0f });
+		m_ViewMatrix = glm::lookAt(transform.Position, center, up);
 	}
 
 	void Camera::UpdateProjection()
 	{
 		if (Projection == ProjectionType::Perspective)
 		{
-			m_ProjectionMatrix = glm::perspective(Zoom, Aspect, NearClip, FarClip);
+			m_ProjectionMatrix = glm::perspective(glm::radians(Zoom), Aspect, NearClip, FarClip);
 		}
 		else
 		{

@@ -34,6 +34,7 @@ namespace Lumi
 		bool m_ViewportHover;
 
 		unsigned int m_ColorTex;
+		unsigned int m_CameraType = 0;
 
 		std::shared_ptr<SceneUI> m_SceneUI 
 			= std::shared_ptr<SceneUI>(new SceneUI());

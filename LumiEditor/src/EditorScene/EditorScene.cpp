@@ -4,6 +4,8 @@ namespace Lumi
 {
 	EditorScene::EditorScene() : Scene()
 	{
+		Name = "EditorScene";
+		
 		auto& entity2D = CreateEntity("EditorCamera2D");
 		auto& camera2D = entity2D.AddComponent<Camera>();
 		camera2D.Projection = ProjectionType::Orthographic;

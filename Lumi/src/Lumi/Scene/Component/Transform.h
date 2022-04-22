@@ -13,6 +13,7 @@ namespace Lumi
 	
 	class Transform : public Component
 	{
+		friend class Camera;
 	public:
 		glm::vec3 Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Scale    = { 1.0f, 1.0f, 1.0f };
@@ -27,7 +28,8 @@ namespace Lumi
 	public:
 		glm::mat4 GetModelMatrix() const;
 		void LookAt(const glm::vec3& worldPos, const glm::vec3& worldUp = { 0.0f, 0.0f, 1.0f });
-		void RotateAroundPoint(const glm::vec3& worldPos, const glm::vec3& axis, float angle);
+		void RotateAroundPoint(const glm::vec3& worldPos, 
+			const glm::vec3& axis, float angle);
 	public:
 		virtual void OnUpdate(Timestep ts) override;
 

@@ -16,6 +16,7 @@ namespace Lumi
 		void OnImGuiRender();
 	private:
 		void DrawComponents(Entity* entity);
+		bool DrawTransformVec(const std::string& label, glm::vec3& vec);
 	private:
 		std::shared_ptr<SceneUI> m_Scene;
 		Entity* m_SelectedEntity = nullptr;

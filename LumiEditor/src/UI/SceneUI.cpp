@@ -15,6 +15,11 @@ namespace Lumi
 		m_Context = context;
 	}
 
+	void SceneUI::SetEditor(const std::shared_ptr<EditorScene>& editor)
+	{
+		m_Editor = editor;
+	}
+
 	void SceneUI::OnImGuiRender()
 	{
 		ImGui::Begin("Scene Collection");
@@ -40,6 +45,23 @@ namespace Lumi
 			for (auto v : view)
 			{
 				auto entity = m_Context->GetRegistry().get<Transform>(v).entity;
+				DrawEntityNodes(entity);
+			}
+			ImGui::TreePop();
+		}
+
+		opened = ImGui::TreeNodeEx((void*)1,
+			ImGuiTreeNodeFlags_DefaultOpen, m_Editor->Name.c_str());
+		if (ImGui::IsItemClicked())
+		{
+			m_SelectedScene = m_Editor.get();
+		}
+		if (opened)
+		{
+			auto view = m_Editor->GetRegistry().view<Transform>();
+			for (auto v : view)
+			{
+				auto entity = m_Editor->GetRegistry().get<Transform>(v).entity;
 				DrawEntityNodes(entity);
 			}
 			ImGui::TreePop();
