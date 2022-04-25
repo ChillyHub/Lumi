@@ -47,9 +47,10 @@ namespace Lumi
 
 		// Load Fonts
 		float fontsize = 24.0f;
-#ifdef _LM_WINDOWS_
-		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", fontsize, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-#endif
+		io.Fonts->AddFontFromFileTTF("assets/fonts/msyh.ttc",
+			fontsize, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+		io.Fonts->AddFontFromFileTTF("assets/fonts/msyhbd.ttc",
+			fontsize, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 
 		// Setup Platform/Renderer backends
 		Application& app = Application::Get();

@@ -33,8 +33,9 @@ namespace Lumi
 
 		//ImGuiTreeNodeFlags flag = (m_Context.get() == m_SelectedScene ?
 		//	ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+		ImGuiTreeNodeFlags flag = ImGuiTreeNodeFlags_SpanAvailWidth;
 		auto opened = ImGui::TreeNodeEx((void*)0,
-			ImGuiTreeNodeFlags_DefaultOpen, m_Context->Name.c_str());
+			flag | ImGuiTreeNodeFlags_DefaultOpen, m_Context->Name.c_str());
 		if (ImGui::IsItemClicked())
 		{
 			m_SelectedScene = m_Context.get();
@@ -51,7 +52,7 @@ namespace Lumi
 		}
 
 		opened = ImGui::TreeNodeEx((void*)1,
-			ImGuiTreeNodeFlags_DefaultOpen, m_Editor->Name.c_str());
+			flag | ImGuiTreeNodeFlags_DefaultOpen, m_Editor->Name.c_str());
 		if (ImGui::IsItemClicked())
 		{
 			m_SelectedScene = m_Editor.get();
@@ -74,6 +75,7 @@ namespace Lumi
 	{
 		ImGuiTreeNodeFlags flag = (entity == m_SelectedEntity ?
 			ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+		flag |= ImGuiTreeNodeFlags_SpanAvailWidth;
 		auto opened = ImGui::TreeNodeEx((void*)(uint64_t)(unsigned int)*entity, 
 			flag, entity->Name.c_str());
 		if (ImGui::IsItemClicked())

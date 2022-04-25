@@ -26,7 +26,7 @@ project "Lumi"
 	includedirs
 	{
 		"%{wks.location}/%{prj.name}/src",
-		"%{wks.location}/%{prj.name}",
+		"%{wks.location}/%{prj.name}/include",
 		"%{IncludeDir.entt}",
         "%{IncludeDir.glad}",
 		"%{IncludeDir.GLFW}",
