@@ -1,0 +1,12 @@
+Scene: Scene
+Entities:
+  - Entity: 0
+    Name: Quad
+    Transform:
+      Position: [0, 0, 0]
+      Rotation: [1, 0, 0, 0]
+      Scale: [1, 1, 1]
+    Material2D:
+      Color: [0.750769258, 0.735373557, 0.487422466, 1]
+    Script:
+      Activated: true

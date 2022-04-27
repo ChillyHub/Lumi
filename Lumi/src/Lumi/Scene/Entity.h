@@ -20,6 +20,8 @@ namespace Lumi
 		Entity(entt::entity entity, Scene* scene, std::string name = "Entity")
 			: m_Entity(entity), m_Scene(scene), Name(name), transform(AddTransform(scene, entity)) {}
 
+		unsigned int GetEntityID() { return unsigned int(m_Entity); }
+
 		template <typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{

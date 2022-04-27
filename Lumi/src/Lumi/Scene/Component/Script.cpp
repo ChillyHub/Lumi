@@ -7,6 +7,10 @@ namespace Lumi
 {
 	void Script::Init()
 	{
+		if (InitScript == nullptr)
+		{
+			Bind<Script>();
+		}
 		instance = InitScript();
 		instance->Start();
 	}

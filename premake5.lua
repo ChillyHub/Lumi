@@ -20,6 +20,7 @@ group "External"
 	include "Lumi/ext/imgui"
 	include "Lumi/ext/spdlog"
 	include "Lumi/ext/stb"
+	include "Lumi/ext/yaml"
 group ""
 
 -- Include dirctories relative to root folder
@@ -31,6 +32,7 @@ IncludeDir["glm"] = "%{wks.location}/Lumi/ext/glm"
 IncludeDir["ImGui"] = "%{wks.location}/Lumi/ext/imgui"
 IncludeDir["spdlog"] = "%{wks.location}/Lumi/ext/spdlog/include"
 IncludeDir["stb"] = "%{wks.location}/Lumi/ext/stb"
+IncludeDir["yaml"] = "%{wks.location}/Lumi/ext/yaml/include"
 
 -- Include subpremake
 include "Lumi"

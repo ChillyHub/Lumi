@@ -126,6 +126,12 @@ namespace Lumi
 		
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.WindowRounding = 13.0f;
+		style.ChildRounding = 13.0f;
+		style.FrameRounding = 13.0f;
+		style.GrabRounding = 13.0f;
+		style.PopupRounding = 13.0f;
+		style.ScrollbarRounding = 13.0f;
+		style.TabRounding = 5.0f;
 		
 		auto& colors = style.Colors;
 		colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };

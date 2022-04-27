@@ -23,7 +23,8 @@ project "LumiEditor"
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}", 
-		"%{IncludeDir.spdlog}"
+		"%{IncludeDir.spdlog}",
+		"%{IncludeDir.yaml}"
 	}
  
 	links

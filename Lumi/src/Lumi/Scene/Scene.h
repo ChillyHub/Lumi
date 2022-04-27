@@ -14,12 +14,15 @@ namespace Lumi
 	{
 		friend class Entity;
 		friend class PropertiesUI;
+		friend class Serializer;
 	public:
 		std::string Name;
 	public:
 		Scene(std::string name = "Scene") : Name(name) {}
 		Entity& CreateEntity(std::string name = "Entity");
+		void ClearEntities() { m_Registry.clear(); m_Entities.clear(); }
 		entt::registry& GetRegistry() { return m_Registry; }
+		const entt::registry& GetRegistry() const { return m_Registry; }
 		virtual void OnUpdate2D(Timestep ts, glm::vec3 color);
 
 		bool operator==(const Scene& rhs) const { return Name == rhs.Name; }

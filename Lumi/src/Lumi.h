@@ -9,6 +9,7 @@
 #include "Lumi/Core/Log.h"
 #include "Lumi/Core/MouseButtonCodes.h"
 #include "Lumi/Core/ResourceManager.h"
+#include "Lumi/Core/Serializer.h"
 #include "Lumi/Core/Timestep.h"
 #include "Lumi/Core/Window.h"
 

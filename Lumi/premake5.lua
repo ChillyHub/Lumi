@@ -33,7 +33,8 @@ project "Lumi"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.stb}"
+		"%{IncludeDir.stb}",
+		"%{IncludeDir.yaml}"
 	}
 
 	links
@@ -45,7 +46,8 @@ project "Lumi"
         "glm",
 		"ImGui",
         "spdlog",
-        "stb"
+        "stb",
+		"yaml"
 	}
 
 	filter "system:windows"

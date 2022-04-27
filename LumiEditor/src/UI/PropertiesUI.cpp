@@ -194,7 +194,9 @@ namespace Lumi
 	bool PropertiesUI::DrawTransformVec(const std::string& label, glm::vec3& vec)
 	{
 		auto& io = ImGui::GetIO();
+		auto& style = ImGui::GetStyle();
 		auto boldFont = io.Fonts->Fonts[1];
+		style.FrameRounding = 3.0f;
 		
 		ImGui::PushID(label.c_str());
 		
@@ -264,6 +266,7 @@ namespace Lumi
 
 		ImGui::PopID();
 
+		style.FrameRounding = 13.0f;
 		return change;
 	}
 }

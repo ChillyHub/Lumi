@@ -38,7 +38,7 @@ namespace Lumi
 				float lineHeight = GImGui->Font->FontSize
 					+ GImGui->Style.FramePadding.y * 2.0f;
 				ImGui::PopStyleVar();
-				ImGui::SameLine(regionAvail.x - lineHeight * 0.5f);
+				ImGui::SameLine(regionAvail.x - lineHeight * 0.7f);
 				if (ImGui::Button("X", ImVec2{ lineHeight, lineHeight }))
 				{
 					remove = true;

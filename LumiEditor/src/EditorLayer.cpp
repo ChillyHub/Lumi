@@ -14,19 +14,9 @@ namespace Lumi
 	{
 		LM_PROFILE_FUNCTION();
 
-        //m_Framebuffer = Framebuffer::Create(FramebufferSpecification());
-
         //ImVec2 viewportSize = ImGui::GetContentRegionAvail();
         m_EditorScene = std::make_shared<EditorScene>();
         //m_ViewportSize = { 1920, 1080 };
-
-        //m_Camera2D = Lumi::Camera2D((int)m_ViewportSize.x, (int)m_ViewportSize.y, { 0.0f, 0.0f, 2.0f });
-
-        //Lumi::ResourceManager::LoadTexture2D("assets/textures/barbara2.png", "Barbara", true);
-        //Lumi::ResourceManager::LoadTexture2D("assets/textures/bronya2.png", "Bronya", true);
-        //Lumi::ResourceManager::LoadTexture2D("assets/textures/ei.png", "Ei", true);
-        //Lumi::ResourceManager::LoadTexture2D("assets/textures/ganyu_keqing.png", "Ganyu", true);
-        //Lumi::ResourceManager::LoadTexture2D("assets/textures/keqing.png", "Keqing", true);
 
         Lumi::Renderer2D::Init(true);
 
@@ -41,42 +31,12 @@ namespace Lumi
         m_ColorTex = m_Framebuffer->AddTexBuffer(colorTexSpec);
 
         m_Scene = std::make_shared<Scene>();
-        //auto& quads = m_Scene->CreateEntity("Quads");
-        //quads.AddComponent<Script>().Bind<Example1>();
-        auto& quads = m_Scene->CreateEntity("Quad");
-        quads.AddComponent<Script>().Bind<Example2>();
+        //auto& quads = m_Scene->CreateEntity("Quad");
+        //quads.AddComponent<Script>().Bind<Example2>();
 
         m_SceneUI->SetContext(m_Scene);
         m_SceneUI->SetEditor(m_EditorScene);
         m_PropertiesUI->SetScene(m_SceneUI);
-
-        //auto quadTexture1 = Lumi::ResourceManager::GetTexture2D("Barbara");
-        //auto quadTexture2 = Lumi::ResourceManager::GetTexture2D("Bronya");
-        //auto quadTexture3 = Lumi::ResourceManager::GetTexture2D("Ei");
-        //auto quadTexture4 = Lumi::ResourceManager::GetTexture2D("Ganyu");
-        //auto quadTexture5 = Lumi::ResourceManager::GetTexture2D("Keqing");
-        //std::vector textures{ quadTexture1, quadTexture2, quadTexture3, quadTexture4, quadTexture5 };
-        //
-        //for (float x = 0.0f, i = 0.0f; x < 50.0f; x += 1.2f)
-        //{
-        //    for (float y = 0.0f; y < 50.0f; y += 1.2f, i++)
-        //    {
-        //        auto quad1 = m_Scene->CreateEntity("Entity" + std::to_string(2 * i));
-        //        auto texture = textures[(int)i % textures.size()];
-        //        auto& transform1 = quad1.GetComponent<Transform>();
-        //        transform1.Position = { x, y, 0.0f };
-        //        transform1.Scale = { 1.0f, 1.0f, 1.0f };
-        //        transform1.Rotation = { 1.0f, 0.0f, 0.0f, 0.0f };
-        //        quad1.AddComponent<Material2D>(texture, glm::vec4(1.0f));
-        //        auto quad2 = m_Scene->CreateEntity("Entity" + std::to_string(2 * i + 1));
-        //        auto& transform2 = quad2.GetComponent<Transform>();
-        //        transform2.Position = { x, y, -0.01f };
-        //        transform2.Scale = { 1.0f, 1.0f, 1.0f };
-        //        transform2.Rotation = { 1.0f, 0.0f, 0.0f, 0.0f };
-        //        quad2.AddComponent<Material2D>(m_QuadColor);
-        //        
-        //    }
-        //}
 	}
 
 	EditorLayer::~EditorLayer()
@@ -229,7 +189,7 @@ namespace Lumi
                 // which we can't undo at the moment without finer window depth/z control.
                 // ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
                 //ImGui::MenuItem("Padding", NULL, &opt_padding);
-                ImGui::Separator();
+                //ImGui::Separator();
                 
                 //if (ImGui::MenuItem("Flag: NoSplit", "", 
                 //    (dockspace_flags & ImGuiDockNodeFlags_NoSplit) != 0)) 
@@ -246,10 +206,25 @@ namespace Lumi
                 //if (ImGui::MenuItem("Flag: PassthruCentralNode", "", 
                 //    (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen)) 
                 //{ dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
-                ImGui::Separator();
+                //ImGui::Separator();
 
                 //if (ImGui::MenuItem("Close", NULL, false))
                 //    dockspaceOpen = false;
+
+                if (ImGui::MenuItem("Load"))
+                {
+                    m_Scene->ClearEntities();
+                    m_SceneUI->Reset();
+                    
+                    Serializer ser;
+                    ser.Deserialize(m_Scene.get(), "assets/untitled.lumiscene");
+                }
+                if (ImGui::MenuItem("Save"))
+                {
+                    Serializer ser;
+                    ser.Serialize(m_Scene.get(), "assets/untitled.lumiscene");
+                }
+
                 ImGui::EndMenu();
             }
 
