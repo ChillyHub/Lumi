@@ -26,6 +26,7 @@ namespace Lumi
 
 		virtual ~Window() = default;
 
+		virtual void SetTitle(const std::string& title) = 0;
 		virtual int GetWidth() const = 0;
 		virtual int GetHeight() const = 0;
 		virtual void SetWidth(int width) = 0;

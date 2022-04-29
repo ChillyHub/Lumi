@@ -31,6 +31,8 @@ namespace Lumi
 		void PushOverlay(Layer* overlay);
 
 		void Run();
+
+		void Close();
 	private:
 		// callback event
 		bool OnCloseWindow(WindowCloseEvent& e);

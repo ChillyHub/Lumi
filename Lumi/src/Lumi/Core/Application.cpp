@@ -89,6 +89,13 @@ namespace Lumi
 		}
 	}
 
+	void Application::Close()
+	{
+		LM_PROFILE_FUNCTION();
+
+		m_Running = false;
+	}
+
 
 	bool Application::OnCloseWindow(WindowCloseEvent& e)
 	{

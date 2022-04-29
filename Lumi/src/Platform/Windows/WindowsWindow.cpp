@@ -44,6 +44,7 @@ namespace Lumi
 		LUMI_CORE_ASSERT(m_Window, "Window handle is NULL!");
 		glfwPollEvents();
 		m_Context->SwapBuffers();
+		glfwSetWindowTitle(m_Window, m_Data.Title.c_str());
 	}
 
 	void WindowsWindow::UpdateWindowSize()

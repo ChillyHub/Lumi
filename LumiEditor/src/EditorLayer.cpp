@@ -58,6 +58,16 @@ namespace Lumi
 	{
 		LM_PROFILE_FUNCTION();
 
+        if (!m_CurrentFilepath.empty())
+        {
+            Application::Get().GetWindow().SetTitle(
+                std::format("Lumi [{0}]", m_CurrentFilepath));
+        }
+        else
+        {
+            Application::Get().GetWindow().SetTitle("Lumi");
+        }
+
         m_EditorScene->EditorUpdate(ts);
 
         m_Framebuffer->Bind();
@@ -185,46 +195,58 @@ namespace Lumi
         {
             if (ImGui::BeginMenu("File"))
             {
-                // Disabling fullscreen would allow the window to be moved to the front of other windows,
-                // which we can't undo at the moment without finer window depth/z control.
-                // ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-                //ImGui::MenuItem("Padding", NULL, &opt_padding);
-                //ImGui::Separator();
+                if (ImGui::MenuItem("New", "Ctrl N"))
+                {
+                    NewScene();
+                }
+                if (ImGui::MenuItem("Open...", "Ctrl O"))
+                {
+                    OpenScene();
+                }
+                ImGui::Separator();
+
+                if (ImGui::MenuItem("Save", "Ctrl S"))
+                {
+                    SaveScene();
+                }
+                if (ImGui::MenuItem("Save As...", "Shift Ctrl S"))
+                {
+                    SaveSceneAs();
+                }
+                ImGui::Separator();
+
+                if (ImGui::MenuItem("Quit", "Ctrl Q"))
+                {
+                    Application::Get().Close();
+                }
+
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Edit"))
+            {
+                if (ImGui::MenuItem("Preferences"))
+                {
+
+                }
                 
-                //if (ImGui::MenuItem("Flag: NoSplit", "", 
-                //    (dockspace_flags & ImGuiDockNodeFlags_NoSplit) != 0)) 
-                //{ dockspace_flags ^= ImGuiDockNodeFlags_NoSplit; }
-                //if (ImGui::MenuItem("Flag: NoResize", "", 
-                //    (dockspace_flags & ImGuiDockNodeFlags_NoResize) != 0)) 
-                //{ dockspace_flags ^= ImGuiDockNodeFlags_NoResize; }
-                //if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", 
-                //    (dockspace_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0)) 
-                //{ dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode; }
-                //if (ImGui::MenuItem("Flag: AutoHideTabBar", "", 
-                //    (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) 
-                //{ dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
-                //if (ImGui::MenuItem("Flag: PassthruCentralNode", "", 
-                //    (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen)) 
-                //{ dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
-                //ImGui::Separator();
-
-                //if (ImGui::MenuItem("Close", NULL, false))
-                //    dockspaceOpen = false;
-
-                if (ImGui::MenuItem("Load"))
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Window"))
+            {
+                if (ImGui::MenuItem("New Window"))
                 {
-                    m_Scene->ClearEntities();
-                    m_SceneUI->Reset();
-                    
-                    Serializer ser;
-                    ser.Deserialize(m_Scene.get(), "assets/untitled.lumiscene");
-                }
-                if (ImGui::MenuItem("Save"))
-                {
-                    Serializer ser;
-                    ser.Serialize(m_Scene.get(), "assets/untitled.lumiscene");
-                }
 
+                }
+                
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Help"))
+            {
+                if (ImGui::MenuItem("About Lumi"))
+                {
+
+                }
+                
                 ImGui::EndMenu();
             }
 
@@ -256,8 +278,12 @@ namespace Lumi
             camera3D.ScreenHeight = m_ViewportSize.y;
             //m_Camera2D.Resize(m_ViewportSize.x, m_ViewportSize.y);
         }
-        auto& script = m_EditorScene->GetCameraScript2D();
-        script.IsHovered = m_ViewportHover;
+        auto& script2D = m_EditorScene->GetCameraScript2D();
+        script2D.IsHovered = m_ViewportHover;
+        script2D.IsFocused = m_ViewportFocus;
+        auto& script3D = m_EditorScene->GetCameraScript3D();
+        script3D.IsHovered = m_ViewportHover;
+        script3D.IsFocused = m_ViewportFocus;
         ImGui::Image((void*)(unsigned long long)m_Framebuffer->GetTexID(0), 
             ImVec2{m_ViewportSize.x, m_ViewportSize.y}, {0, 1}, {1, 0});
         ImGui::End();
@@ -324,5 +350,116 @@ namespace Lumi
         //    m_Camera2D.OnEvent2(event);
         //}
         //m_Framebuffer->OnEvent(event);
+
+        m_EditorScene->OnEvent(event);
+        m_Scene->OnEvent(event);
+
+        EventDispatcher dispatcher(event);
+        dispatcher.Dispatch<KeyPressedEvent>(
+            BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+        dispatcher.Dispatch<MouseButtonPressedEvent>(
+            BIND_EVENT_FN(EditorLayer::OnMousePressed));
 	}
+
+    void EditorLayer::NewScene()
+    {
+        m_Scene->ClearEntities();
+        m_Scene = std::make_shared<Scene>();
+        m_SceneUI->SetContext(m_Scene);
+        m_PropertiesUI->SetScene(m_SceneUI);
+        m_CurrentFilepath = std::string();
+    }
+
+    void EditorLayer::OpenScene()
+    {
+        std::string filepath = FileDialogs::OpenFile(
+            "Lumi Scene (*.lumiscene)\0*.lumiscene\0");
+        if (!filepath.empty())
+        {
+            OpenScene(filepath);
+            m_CurrentFilepath = filepath;
+        }
+    }
+
+    void EditorLayer::OpenScene(const std::filesystem::path& path)
+    {
+        if (path.extension().string() != ".lumiscene")
+        {
+            LUMI_CLIENT_WARN("Can't open file: {0} :: Not a scene file",
+                path.filename().string());
+            return;
+        }
+
+        std::shared_ptr<Scene> newScene = std::make_shared<Scene>();
+        Serializer ser;
+        if (ser.Deserialize(newScene.get(), path.string()))
+        {
+            m_Scene->ClearEntities();
+            m_Scene = newScene;
+            m_SceneUI->SetContext(m_Scene);
+            m_PropertiesUI->SetScene(m_SceneUI);
+        }
+    }
+
+    void EditorLayer::SaveScene()
+    {
+        if (m_CurrentFilepath.empty())
+        {
+            SaveSceneAs();
+        }
+        else
+        {
+            Serializer ser;
+            ser.Serialize(m_Scene.get(), m_CurrentFilepath);
+        }
+    }
+
+    void EditorLayer::SaveSceneAs()
+    {
+        std::string filepath = FileDialogs::SaveFile(
+            "Lumi Scene (*.lumiscene)\0*.lumiscene\0");
+        m_CurrentFilepath = filepath;
+        if (!filepath.empty())
+        {
+            Serializer ser;
+            ser.Serialize(m_Scene.get(), filepath);
+        }
+    }
+
+    bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+    {
+        bool ctrl = Input::IsKeyPressed(Key::LeftCtrl) ||
+            Input::IsKeyPressed(Key::RightCtrl);
+        bool shift = Input::IsKeyPressed(Key::LeftShift) ||
+            Input::IsKeyPressed(Key::RightShift);
+
+        switch (e.GetKeyCode())
+        {
+        case Key::N:
+            if (ctrl)
+                NewScene();
+            break;
+        case Key::O:
+            if (ctrl)
+                OpenScene();
+            break;
+        case Key::S:
+            if (shift && ctrl)
+                SaveSceneAs();
+            else if (ctrl)
+                SaveScene();
+            break;
+        case Key::Q:
+            Application::Get().Close();
+            break;
+        default:
+            break;
+        }
+        return false;
+    }
+
+    bool EditorLayer::OnMousePressed(MouseButtonPressedEvent& e)
+    {
+        return false;
+    }
 }

@@ -14,7 +14,7 @@ namespace Lumi
 
 		auto& entity3D = CreateEntity("EditorCamera3D");
 		auto& camera3D = entity3D.AddComponent<Camera>();
-		camera3D.entity->transform.Position = { 0.0f, 0.0f, 20.0f };
+		camera3D.entity->transform.Position = { -5.0f, -3.0f, 3.0f };
 		entity3D.AddComponent<Script>().Bind<EditorCamera3D>();
 	}
 

@@ -15,8 +15,10 @@ namespace Lumi
 		float m_MouseScaleSensitivity = 0.25f;
 		float m_CursorPosX = 0.0f;
 		float m_CursorPosY = 0.0f;
+		float m_ScaleOffset = 0.0f;
 	public:
 		bool IsHovered = true;
+		bool IsFocused = true;
 	public:
 		void Start()
 		{
@@ -48,6 +50,41 @@ namespace Lumi
 
 			m_CursorPosX = X;
 			m_CursorPosY = Y;
+		}
+
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e)
+		{
+			return false;
+		}
+
+		bool OnMouseButtonRealeased(MouseButtonReleasedEvent& e)
+		{
+			return false;
+		}
+
+		bool OnScrolleMouse(MouseScrolledEvent& e)
+		{
+			if (!Input::IsMouseButtonPressed(Mouse::Middle) && IsHovered)
+			{
+				auto& transform = entity->transform;
+				auto& camera = entity->GetComponent<Camera>();
+				
+				if (camera.Size > 0.05f || e.GetOffsetY() < 0)
+					m_ScaleOffset += e.GetOffsetY() * m_MouseScaleSensitivity;
+
+				camera.Size = std::max(std::exp(0.7f * -m_ScaleOffset), 0.05f);
+			}
+			return false;
+		}
+
+		bool OnMoveCursorPos(MouseMovedEvent& e)
+		{
+			return false;
+		}
+
+		bool OnResizeWindow(WindowResizeEvent& e)
+		{
+			return false;
 		}
 	};
 }

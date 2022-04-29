@@ -22,6 +22,15 @@ namespace Lumi
 		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Event& event) override;
 	private:
+		void NewScene();
+		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
+		void SaveScene();
+		void SaveSceneAs();
+	private:
+		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMousePressed(MouseButtonPressedEvent& e);
+	private:
 
 		std::shared_ptr<Framebuffer> m_Framebuffer;
 		std::shared_ptr<Scene> m_Scene;
@@ -34,7 +43,8 @@ namespace Lumi
 		bool m_ViewportHover;
 
 		unsigned int m_ColorTex;
-		unsigned int m_CameraType = 0;
+		unsigned int m_CameraType = 1;
+		std::string m_CurrentFilepath;
 
 		std::shared_ptr<SceneUI> m_SceneUI 
 			= std::shared_ptr<SceneUI>(new SceneUI());

@@ -14,14 +14,23 @@ namespace Lumi
 		return m_ProjectionMatrix;
 	}
 
-	glm::mat4 Camera::GetWorldToScreenMatrix() const
+	glm::mat4 Camera::GetWorldToClipMatrix() const
 	{
 		return m_ProjectionMatrix * m_ViewMatrix;
 	}
 
 	glm::vec3 Camera::WorldToScreenPoint(const glm::vec3& point) const
 	{
-		return m_ProjectionMatrix * m_ViewMatrix * glm::vec4(point, 1.0f);
+		auto p = m_ProjectionMatrix * m_ViewMatrix * glm::vec4(point, 1.0f);
+		float sx = p.x * ScreenWidth * 0.5f / p.w + ScreenWidth * 0.5f;
+		float sy = p.y * ScreenHeight * 0.5f / p.w + ScreenHeight * 0.5f;
+		return glm::vec3(sx, sy, p.z / p.w);
+	}
+
+	glm::vec3 Camera::ScreenToWorldVector(const glm::vec2& point) const
+	{
+		auto mat = glm::transpose(m_ViewMatrix);
+		return mat * glm::vec4(point, 0.0f, 0.0f);
 	}
 
 	void Camera::OnUpdate(Timestep ts)

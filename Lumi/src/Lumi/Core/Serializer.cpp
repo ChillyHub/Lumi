@@ -125,6 +125,19 @@ namespace Lumi
 		out << YAML::EndSeq;
 		out << YAML::EndMap;
 
+		//out << YAML::BeginMap;
+		//out << YAML::Key << "EditorScene" << YAML::Value << "EditorScene";
+		//out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
+		//scene->GetRegistry().view<Transform>().each([&](auto entityID, Transform& trans)
+		//	{
+		//		auto entity = trans.entity;
+		//		if (!entity) return;
+		//
+		//		SerializeEntity(out, entity);
+		//	});
+		//out << YAML::EndSeq;
+		//out << YAML::EndMap;
+
 		std::ofstream fout(filepath);
 		fout << out.c_str();
 	}
@@ -154,63 +167,73 @@ namespace Lumi
 			return false;
 		}
 
-		std::string sceneName = data["Scene"].as<std::string>();
-		LUMI_CORE_TRACE("Deserialized scene: {0}", sceneName);
-
-		auto entities = data["Entities"];
-		if (entities)
+		try
 		{
-			for (auto entity : entities)
+			std::string sceneName = data["Scene"].as<std::string>();
+			scene->Name = sceneName;
+			LUMI_CORE_TRACE("Deserialized scene: {0}", sceneName);
+
+			auto entities = data["Entities"];
+			if (entities)
 			{
-				unsigned int uuid = entity["Entity"].as<unsigned int>();
-
-				std::string name = entity["Name"].as<std::string>();
-				LUMI_CORE_TRACE("Deserialized entity: {0}, {1}", 
-					(unsigned int)uuid, name);
-
-				Entity newEnt = scene->CreateEntity(name);
-
-				auto transform = entity["Transform"];
-				if (transform)
+				for (auto entity : entities)
 				{
-					auto& trans = newEnt.GetComponent<Transform>();
-					trans.Position = transform["Position"].as<glm::vec3>();
-					trans.Rotation = transform["Rotation"].as<glm::quat>();
-					trans.Scale = transform["Scale"].as<glm::vec3>();
-				}
+					unsigned int uuid = entity["Entity"].as<unsigned int>();
 
-				auto camera = entity["Camera"];
-				if (camera)
-				{
-					auto& cam = newEnt.AddComponent<Camera>();
-					cam.Activated = camera["Acrivated"].as<bool>();
-					cam.Aspect = camera["Aspect"].as<float>();
-					cam.FarClip = camera["FarClip"].as<float>();
-					cam.MovementSpeed = camera["MovementSpeed"].as<float>();
-					cam.NearClip = camera["NearClip"].as<float>();
-					cam.Projection = (ProjectionType)camera["Peojection"].as<int>();
-					cam.ScreenHeight = camera["ScreenHeight"].as<float>();
-					cam.ScreenWidth = camera["ScreenHeight"].as<float>();
-					cam.Size = camera["Size"].as<float>();
-					cam.Zoom = camera["Zoom"].as<float>();
-				}
+					std::string name = entity["Name"].as<std::string>();
+					LUMI_CORE_TRACE("Deserialized entity: {0}, {1}",
+						(unsigned int)uuid, name);
 
-				auto material = entity["Material2D"];
-				if (material)
-				{
-					auto& mat = newEnt.AddComponent<Material2D>();
-					mat.QuadColor = material["Color"].as<glm::vec4>();
-					mat.Texture2D = nullptr;
-				}
+					Entity newEnt = scene->CreateEntity(name);
 
-				auto script = entity["Script"];
-				if (script)
-				{
-					auto& scp = newEnt.AddComponent<Script>();
-					scp.Activated = script["Activated"].as<bool>();
+					auto transform = entity["Transform"];
+					if (transform)
+					{
+						auto& trans = newEnt.GetComponent<Transform>();
+						trans.Position = transform["Position"].as<glm::vec3>();
+						trans.Rotation = transform["Rotation"].as<glm::quat>();
+						trans.Scale = transform["Scale"].as<glm::vec3>();
+					}
+
+					auto camera = entity["Camera"];
+					if (camera)
+					{
+						auto& cam = newEnt.AddComponent<Camera>();
+						cam.Activated = camera["Acrivated"].as<bool>();
+						cam.Aspect = camera["Aspect"].as<float>();
+						cam.FarClip = camera["FarClip"].as<float>();
+						cam.MovementSpeed = camera["MovementSpeed"].as<float>();
+						cam.NearClip = camera["NearClip"].as<float>();
+						cam.Projection = (ProjectionType)camera["Peojection"].as<int>();
+						cam.ScreenHeight = camera["ScreenHeight"].as<float>();
+						cam.ScreenWidth = camera["ScreenHeight"].as<float>();
+						cam.Size = camera["Size"].as<float>();
+						cam.Zoom = camera["Zoom"].as<float>();
+					}
+
+					auto material = entity["Material2D"];
+					if (material)
+					{
+						auto& mat = newEnt.AddComponent<Material2D>();
+						mat.QuadColor = material["Color"].as<glm::vec4>();
+						mat.Texture2D = nullptr;
+					}
+
+					auto script = entity["Script"];
+					if (script)
+					{
+						auto& scp = newEnt.AddComponent<Script>();
+						scp.Activated = script["Activated"].as<bool>();
+					}
 				}
 			}
 		}
+		catch (const std::exception& e)
+		{
+			LUMI_CORE_ERROR("Deserialize file fialed: {0}", e.what());
+			return false;
+		}
+		
 		return true;
 	}
 

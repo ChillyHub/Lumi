@@ -13,6 +13,8 @@ namespace Lumi
 	void SceneUI::SetContext(const std::shared_ptr<Scene>& context)
 	{
 		m_Context = context;
+		m_SelectedScene = nullptr;
+		m_SelectedEntity = nullptr;
 	}
 
 	void SceneUI::SetEditor(const std::shared_ptr<EditorScene>& editor)

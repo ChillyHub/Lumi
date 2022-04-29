@@ -15,6 +15,22 @@ namespace Lumi
 		m_Entities.push_back(ptr);
 		return *m_Entities.back();
 	}
+
+	void Scene::OnEvent(Event& e)
+	{
+		m_Registry.view<Script>().each([&](auto entity, Script& script)
+			{
+				if (script.Activated)
+				{
+					if (!script)
+					{
+						script.Init();
+					}
+
+					script.OnEvent(e);
+				}
+			});
+	}
 	
 	void Scene::OnUpdate2D(Timestep ts, glm::vec3 color)
 	{

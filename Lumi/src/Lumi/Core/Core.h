@@ -44,6 +44,7 @@
 #define BIT(x) (1 << x)
 
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+#define BIND_EVENT_DYNAMIC_FN(x, ins) std::bind(&x, ins, std::placeholders::_1)
 
 #include "pch.h"
 

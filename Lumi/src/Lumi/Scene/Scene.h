@@ -23,6 +23,8 @@ namespace Lumi
 		void ClearEntities() { m_Registry.clear(); m_Entities.clear(); }
 		entt::registry& GetRegistry() { return m_Registry; }
 		const entt::registry& GetRegistry() const { return m_Registry; }
+
+		virtual void OnEvent(Event& e);
 		virtual void OnUpdate2D(Timestep ts, glm::vec3 color);
 
 		bool operator==(const Scene& rhs) const { return Name == rhs.Name; }

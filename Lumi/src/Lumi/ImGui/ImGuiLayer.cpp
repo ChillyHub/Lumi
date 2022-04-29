@@ -46,7 +46,7 @@ namespace Lumi
 		SetDarkThemeColors();
 
 		// Load Fonts
-		float fontsize = 24.0f;
+		float fontsize = 20.0f;
 		io.Fonts->AddFontFromFileTTF("assets/fonts/msyh.ttc",
 			fontsize, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 		io.Fonts->AddFontFromFileTTF("assets/fonts/msyhbd.ttc",

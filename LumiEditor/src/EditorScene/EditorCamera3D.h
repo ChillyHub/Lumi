@@ -14,15 +14,20 @@ namespace Lumi
 		float m_MouseScaleSensitivity = 0.25f;
 		float m_CursorPosX = 0.0f;
 		float m_CursorPosY = 0.0f;
+		float m_ScaleOffset = 0.0f;
 		glm::vec3 m_FocalPoint = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_OldPosition = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 camUp = { 0.0f, 0.0f, 1.0f };
 		glm::vec3 tmpRight = { 1.0f, 0.0f, 0.0f };
 	public:
+		bool IsHovered = true;
+		bool IsFocused = true;
+	public:
 		void Start()
 		{
 			auto& transform = entity->transform;
 			m_OldPosition = transform.Position;
+			transform.LookAt(m_FocalPoint);
 		}
 
 		void Update(Timestep ts)
@@ -33,7 +38,7 @@ namespace Lumi
 			float Y = Input::GetCursorY();
 			auto& camera = entity->GetComponent<Camera>();
 
-			if (Input::IsMouseButtonPressed(Mouse::Middle))
+			if (Input::IsMouseButtonPressed(Mouse::Middle) && IsHovered)
 			{
 				float deltaX = X - m_CursorPosX;
 				float deltaY = Y - m_CursorPosY;
@@ -42,11 +47,23 @@ namespace Lumi
 
 				if (Input::IsKeyPressed(Key::LeftShift))
 				{
-					up = up / camera.ScreenHeight * camera.Size;
-					auto deltaPos = -glm::vec3(up.x, up.y, 0.0f);
+					//up = up / camera.ScreenHeight * camera.Size;
+					//auto deltaPos = -glm::vec3(up.x, up.y, 0.0f);
+					//
+					//transform.Position += deltaPos;
+					//m_FocalPoint += deltaPos;
 
-					transform.Position += deltaPos;
-					m_FocalPoint += deltaPos;
+					auto mat = camera.GetWorldToClipMatrix();
+					auto mat_inv = glm::inverse(mat);
+					auto clipPoint = mat * glm::vec4(m_FocalPoint, 1.0f);
+					auto screenDelta = glm::vec4(delta.x / camera.ScreenWidth,
+						delta.y / camera.ScreenHeight, 0.0f, 0.0f) 
+						* clipPoint.w * 2.0f;
+					auto worldPoint = mat_inv * (clipPoint + screenDelta);
+					auto worldDelta = glm::vec3(worldPoint) - m_FocalPoint;
+
+					transform.Position -= worldDelta;
+					m_FocalPoint -= worldDelta;
 				}
 				else if (glm::length2(up) != 0)
 				{
@@ -176,6 +193,45 @@ namespace Lumi
 
 			m_CursorPosX = X;
 			m_CursorPosY = Y;
+		}
+
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e)
+		{
+			return false;
+		}
+
+		bool OnMouseButtonRealeased(MouseButtonReleasedEvent& e)
+		{
+			return false;
+		}
+
+		bool OnScrolleMouse(MouseScrolledEvent& e)
+		{
+			if (!Input::IsMouseButtonPressed(Mouse::Middle) && IsHovered)
+			{
+				auto& transform = entity->transform;
+				auto& camera = entity->GetComponent<Camera>();
+
+				auto back = glm::rotate(transform.Rotation, { 0.0f, 0.0f, 1.0f });
+				auto dist = glm::length(transform.Position - m_FocalPoint) * 0.2f;
+				transform.Position += -e.GetOffsetY() * dist * back;
+
+				if (camera.Size > 0.05f || e.GetOffsetY() < 0)
+					m_ScaleOffset += e.GetOffsetY() * m_MouseScaleSensitivity;
+
+				camera.Size = std::max(std::exp(0.7f * -m_ScaleOffset), 0.05f);
+			}
+			return false;
+		}
+
+		bool OnMoveCursorPos(MouseMovedEvent& e)
+		{
+			return false;
+		}
+
+		bool OnResizeWindow(WindowResizeEvent& e)
+		{
+			return false;
 		}
 	};
 }

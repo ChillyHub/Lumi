@@ -15,6 +15,7 @@ namespace Lumi
 		WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow();
 
+		virtual void SetTitle(const std::string& title) { m_Data.Title = title; }
 		virtual int GetWidth() const override { return m_Data.Width; }
 		virtual int GetHeight() const override { return m_Data.Height; }
 		virtual void SetWidth(int width) override { m_Data.Width = width; }

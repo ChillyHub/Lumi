@@ -15,6 +15,12 @@ namespace Lumi
 	public:
 		virtual void Start() {}
 		virtual void Update(Timestep ts) {}
+
+		virtual bool OnMouseButtonPressed(MouseButtonPressedEvent& e) { return false; }
+		virtual bool OnMouseButtonRealeased(MouseButtonReleasedEvent& e) { return false; }
+		virtual bool OnScrolleMouse(MouseScrolledEvent& e) { return false; }
+		virtual bool OnMoveCursorPos(MouseMovedEvent& e) { return false; }
+		virtual bool OnResizeWindow(WindowResizeEvent& e) { return false; }
 	public:
 		template <typename T>
 		void Bind()

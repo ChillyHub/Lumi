@@ -41,3 +41,5 @@
 #include "Lumi/Scene/Component/Material2D.h"
 #include "Lumi/Scene/Component/Script.h"
 #include "Lumi/Scene/Component/Transform.h"
+
+#include "Lumi/Utils/FileDialogs.h"

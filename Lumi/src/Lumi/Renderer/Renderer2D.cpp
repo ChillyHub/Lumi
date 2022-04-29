@@ -142,6 +142,9 @@ namespace Lumi
 	{
 		LM_PROFILE_FUNCTION();
 
+		if (s_RenderData.IndexCount == 0)
+			return; // Nothing to draw
+
 		unsigned int dataSize = (unsigned int)(s_RenderData.VertexBufferPtr
 			- s_RenderData.VertexBufferBase);
 		auto s = sizeof(QuadVertex);
@@ -172,6 +175,9 @@ namespace Lumi
 	void Renderer2D::EndFrame()
 	{
 		LM_PROFILE_FUNCTION();
+
+		if (s_RenderData.IndexCount == 0)
+			return; // Nothing to draw
 
 		unsigned int dataSize = (unsigned int)(s_FramebufferData.VertexBufferPtr
 			- s_FramebufferData.VertexBufferBase);

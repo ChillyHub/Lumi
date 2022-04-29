@@ -25,7 +25,7 @@ namespace Lumi
 		float Zoom = 45.0f;
 		float NearClip = 0.3f;
 		float FarClip = 1000.0f;
-		float Size = 2.0f;
+		float Size = 5.0f;
 		float Aspect = 16.0f / 9.0f;
 		float ScreenWidth = 1980.0f;
 		float ScreenHeight = 1080.0f;
@@ -39,8 +39,9 @@ namespace Lumi
 	public:
 		glm::mat4 GetViewMatrix() const;
 		glm::mat4 GetProjectionMatrix() const;
-		glm::mat4 GetWorldToScreenMatrix() const;
+		glm::mat4 GetWorldToClipMatrix() const;
 		glm::vec3 WorldToScreenPoint(const glm::vec3& point) const;
+		glm::vec3 ScreenToWorldVector(const glm::vec2& point) const;
 	public:
 		virtual void OnUpdate(Timestep ts) override;
 	private:
