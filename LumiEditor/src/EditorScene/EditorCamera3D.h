@@ -17,7 +17,7 @@ namespace Lumi
 		float m_ScaleOffset = 0.0f;
 		glm::vec3 m_FocalPoint = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_OldPosition = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 camUp = { 0.0f, 0.0f, 1.0f };
+		glm::vec3 m_CameraUp = { 0.0f, 0.0f, 1.0f };
 		glm::vec3 tmpRight = { 1.0f, 0.0f, 0.0f };
 	public:
 		bool IsHovered = true;
@@ -47,12 +47,6 @@ namespace Lumi
 
 				if (Input::IsKeyPressed(Key::LeftShift))
 				{
-					//up = up / camera.ScreenHeight * camera.Size;
-					//auto deltaPos = -glm::vec3(up.x, up.y, 0.0f);
-					//
-					//transform.Position += deltaPos;
-					//m_FocalPoint += deltaPos;
-
 					auto mat = camera.GetWorldToClipMatrix();
 					auto mat_inv = glm::inverse(mat);
 					auto clipPoint = mat * glm::vec4(m_FocalPoint, 1.0f);
@@ -67,116 +61,29 @@ namespace Lumi
 				}
 				else if (glm::length2(up) != 0)
 				{
-					//up = glm::normalize(up);
-					//auto camUp = glm::rotate(transform.Rotation, { 0.0f, 1.0f, 0.0f });
-					//auto back = glm::rotate(transform.Rotation, { 0.0f, 0.0f, 1.0f });
-					//auto axis = glm::normalize(glm::cross(up, back));
-					//float angle = glm::length(delta) / 4.0f;
-					//
-					//transform.RotateAroundPoint(m_FocalPoint, axis, angle, camUp);
-
-					//up = glm::normalize(up);
-					//auto right = glm::rotate(transform.Rotation, { 1.0f, 0.0f, 0.0f });
-					//auto camUp = glm::rotate(transform.Rotation, { 0.0f, 1.0f, 0.0f });
-					//auto back = glm::rotate(transform.Rotation, { 0.0f, 0.0f, 1.0f });
-					//auto a1 = right.x; auto a2 = camUp.x;
-					//auto b1 = right.y; auto b2 = camUp.y;
-					//if (a2 - b2 == 0)
-					//{
-					//	camUp = glm::normalize(camUp);
-					//}
-					//else
-					//{
-					//	auto pxy = transform.Position.x + transform.Position.y;
-					//	auto B = (a1 - b1 + pxy) / (b2 - a2);
-					//	camUp = glm::normalize(right + B * camUp);
-					//}
-					//auto axis = glm::normalize(glm::cross(up, back));
-					//float angle = glm::length(delta) / 4.0f;
-					//transform.RotateAroundPoint(m_FocalPoint, axis, angle);
-					//transform.LookAt(m_FocalPoint, camUp);
-
-					up = glm::normalize(up);
-					auto theUp = glm::rotate(transform.Rotation, { 0.0f, 1.0f, 0.0f });
-					auto back = glm::rotate(transform.Rotation, { 0.0f, 0.0f, 1.0f });
-					auto backXY = glm::normalize(glm::vec3{ back.x, back.y, 0.0f });
-					auto oldPos = glm::normalize(transform.Position - m_FocalPoint);
-					auto oldXY = glm::normalize(glm::vec3{ oldPos.x, oldPos.y, 0.0f });
-					auto axis = glm::normalize(glm::cross(up, back));
-					float angle = glm::length(delta) / 4.0f;
-					transform.RotateAroundPoint(m_FocalPoint, axis, angle);
-					auto newPos = glm::normalize(transform.Position - m_FocalPoint);
-					auto newXY = glm::normalize(glm::vec3{ newPos.x, newPos.y, 0.0f });
-					if (glm::length2(backXY) == 0)
+					float angleX = delta.x / 4.0f;
+					float angleY = delta.y / 4.0f;
+					transform.RotateAroundPoint(m_FocalPoint,
+						{ 0.0f, 0.0f, 1.0f }, -angleX);
+					transform.LookAt(m_FocalPoint, m_CameraUp);
+					auto cameraBack = glm::rotate(transform.Rotation,
+						{ 0.0f, 0.0f, 1.0f });
+					auto planeBack = glm::vec3(cameraBack.x, cameraBack.y, 0.0f);
+					auto oldDot = glm::dot(transform.Position - m_FocalPoint,
+						planeBack);
+					auto cameraUp = glm::rotate(transform.Rotation,
+						{ 0.0f, 1.0f, 0.0f });
+					auto cameraRight = glm::rotate(transform.Rotation,
+						{ 1.0f, 0.0f, 0.0f });
+					transform.RotateAroundPoint(m_FocalPoint,
+						cameraRight, angleY);
+					auto newDot = glm::dot(transform.Position - m_FocalPoint,
+						planeBack);
+					if (oldDot * newDot < 0)
 					{
-						if (glm::dot(theUp, newXY) > 0)
-						{
-							camUp = -camUp;
-						}
+						m_CameraUp = -m_CameraUp;
 					}
-					else if (glm::dot(backXY, oldXY) > 0 && glm::dot(backXY, newXY) < 0)
-					{
-						camUp = -camUp;
-					}
-					//auto r = transform.Position - m_FocalPoint;
-					//auto ro = glm::vec3{ -r.x, -r.y, 0.0f };
-					//glm::vec3 right;
-					//if (glm::length2(ro) < 0.001f)
-					//{
-					//	right = tmpRight;
-					//}
-					//else if (r.z > 0)
-					//{
-					//	right = glm::normalize(glm::cross(ro, r));
-					//}
-					//else if (r.z < 0)
-					//{
-					//	right = glm::normalize(glm::cross(r, ro));
-					//}
-					//else
-					//{
-					//	right = glm::normalize(glm::cross({ 0.0f, 0.0f, 1.0f }, ro));
-					//}
-					//auto camUps = glm::normalize(glm::cross(r, tmpRight));
-					transform.LookAt(m_FocalPoint, camUp);
-					//tmpRight = glm::rotate(transform.Rotation, { 1.0f, 0.0f, 0.0f });
-
-					//auto back = glm::rotate(transform.Rotation, { 0.0f, 0.0f, 1.0f });
-					//auto ndot = glm::dot(back, { 0.0f, 0.0f, 1.0f });
-					//glm::vec3 axisXY;
-					//if (ndot * ndot > 0.99f)
-					//{
-					//	axisXY = tmpRight;
-					//}
-					//else
-					//{
-					//	axisXY = glm::normalize(glm::cross({ 0.0f, 0.0f, 1.0f, back }));
-					//	tmpRight = axisXY;
-					//}
-
-					//auto axisXY = glm::rotate(transform.Rotation, { 1.0f, 0.0f, 0.0f });
-					//float angleXY = delta.y / 4.0f;
-					//transform.RotateAroundPoint(m_FocalPoint, axisXY, angleXY);
-					//auto camUp = transform.Position - m_OldPosition;
-					//auto axisZ = glm::vec3{ 0.0f, 0.0f, 1.0f };
-					//float angleZ = delta.x / 4.0f;
-					//transform.RotateAroundPoint(m_FocalPoint, axisZ, angleZ);
-					//transform.LookAt(m_FocalPoint, camUp);
-
-					//auto back = glm::rotate(transform.Rotation, { 0.0f, 0.0f, 1.0f });
-					//glm::vec3 axisXY;
-					//glm::vec3 camUp = { 0.0f, 0.0f, 1.0f };
-					//if (glm::dot(camUp, back) > 0.999f)
-					//{
-					//	axisXY = glm::rotate(transform.Rotation, { 0.0f, 1.0f, 0.0f });
-					//}
-					//else
-					//{
-					//	axisXY = glm::normalize(glm::cross({ 0.0f, 0.0f, 1.0f }, back));
-					//}
-					//auto camUp = glm::normalize(glm::cross(back, axisXY));
-					//float angleXY = delta.y / 4.0f;
-					//transform.RotateAroundPoint(m_FocalPoint, axisXY, angleXY, camUp);
+					transform.LookAt(m_FocalPoint, m_CameraUp);
 				}
 				m_OldPosition = transform.Position;
 			}
@@ -207,7 +114,8 @@ namespace Lumi
 
 		bool OnScrolleMouse(MouseScrolledEvent& e)
 		{
-			if (!Input::IsMouseButtonPressed(Mouse::Middle) && IsHovered)
+			if (!Input::IsMouseButtonPressed(Mouse::Middle) && 
+				(IsHovered || IsFocused))
 			{
 				auto& transform = entity->transform;
 				auto& camera = entity->GetComponent<Camera>();

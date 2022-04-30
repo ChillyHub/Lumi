@@ -82,8 +82,8 @@ namespace Lumi
 	{
 		glm::mat4 model(1.0f);
 		model = glm::translate(model, Position);
+		model *= glm::mat4_cast(Rotation);
 		model = glm::scale(model, Scale);
-		glm::mat4 R = glm::mat4_cast(Rotation);
-		m_ModelMatrix = model * R;
+		m_ModelMatrix = model;
 	}
 }

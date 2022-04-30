@@ -9,6 +9,7 @@
 #include <backends/imgui_impl_opengl3.h>
 
 #include "Lumi/Core/Application.h"
+#include "UI/Function/Gizmos.h"
 
 #define GLSL_VERSION "#version 410"
 
@@ -100,6 +101,7 @@ namespace Lumi
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		Gizmos::BeginFrame();
 	}
 
 	void ImGuiLayer::End()

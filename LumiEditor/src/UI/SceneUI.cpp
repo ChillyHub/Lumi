@@ -53,22 +53,22 @@ namespace Lumi
 			ImGui::TreePop();
 		}
 
-		opened = ImGui::TreeNodeEx((void*)1,
-			flag | ImGuiTreeNodeFlags_DefaultOpen, m_Editor->Name.c_str());
-		if (ImGui::IsItemClicked())
-		{
-			m_SelectedScene = m_Editor.get();
-		}
-		if (opened)
-		{
-			auto view = m_Editor->GetRegistry().view<Transform>();
-			for (auto v : view)
-			{
-				auto entity = m_Editor->GetRegistry().get<Transform>(v).entity;
-				DrawEntityNodes(entity);
-			}
-			ImGui::TreePop();
-		}
+		//opened = ImGui::TreeNodeEx((void*)1,
+		//	flag | ImGuiTreeNodeFlags_DefaultOpen, m_Editor->Name.c_str());
+		//if (ImGui::IsItemClicked())
+		//{
+		//	m_SelectedScene = m_Editor.get();
+		//}
+		//if (opened)
+		//{
+		//	auto view = m_Editor->GetRegistry().view<Transform>();
+		//	for (auto v : view)
+		//	{
+		//		auto entity = m_Editor->GetRegistry().get<Transform>(v).entity;
+		//		DrawEntityNodes(entity);
+		//	}
+		//	ImGui::TreePop();
+		//}
 
 		ImGui::End();
 	}

@@ -34,7 +34,8 @@ project "Lumi"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.stb}",
-		"%{IncludeDir.yaml}"
+		"%{IncludeDir.yaml}",
+		"%{wks.location}/LumiEditor/src"
 	}
 
 	links

@@ -41,9 +41,14 @@ namespace Lumi
 		glm::vec2 m_ViewportSize;
 		bool m_ViewportFocus;
 		bool m_ViewportHover;
+		bool m_Move = false;
+		bool m_Rote = false;
+		bool m_Scal = false;
 
 		unsigned int m_ColorTex;
 		unsigned int m_CameraType = 1;
+		int m_GizmosType = 0;
+		int m_GizmosSpace = 1;
 		std::string m_CurrentFilepath;
 
 		std::shared_ptr<SceneUI> m_SceneUI 

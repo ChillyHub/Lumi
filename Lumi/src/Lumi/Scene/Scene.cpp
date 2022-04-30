@@ -51,6 +51,7 @@ namespace Lumi
 		for (auto entity : group)
 		{
 			auto [transform, material] = group.get(entity);
+			transform.OnUpdate(ts);
 
 			Renderer2D::DrawQuad(material.Texture2D,
 				transform.Position,

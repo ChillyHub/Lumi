@@ -4,6 +4,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "UI/Function/Gizmos.h"
+
 #include "Example/Example1.hpp"
 #include "Example/Example2.hpp"
 
@@ -286,13 +288,115 @@ namespace Lumi
         script3D.IsFocused = m_ViewportFocus;
         ImGui::Image((void*)(unsigned long long)m_Framebuffer->GetTexID(0), 
             ImVec2{m_ViewportSize.x, m_ViewportSize.y}, {0, 1}, {1, 0});
+
+        // Gizmos
+        auto selectEntity = m_SceneUI->GetSelectedEntity();
+        Camera& camera2D = m_EditorScene->GetCamera2D();
+        Camera& camera3D = m_EditorScene->GetCamera3D();
+        Camera& camera = m_CameraType ? camera3D : camera2D;
+        if (selectEntity && m_GizmosType > 0)
+        {
+            if (camera.Projection == ProjectionType::Orthographic)
+            {
+                Gizmos::SetOrthographic(true);
+            }
+            else
+            {
+                Gizmos::SetOrthographic(false);
+            }
+
+            bool snap = Input::IsKeyPressed(Key::LeftCtrl);
+            float snapValue = 1.0f;
+            float snapAngle = 5.0f;
+            float snapValues[3] = { snapValue, snapValue, snapValue };
+            float snapAngles[3] = { snapAngle, snapAngle, snapAngle };
+
+            Gizmos::SetDrawlist();
+            float width = (float)ImGui::GetWindowWidth();
+            float height = (float)ImGui::GetWindowHeight();
+            Gizmos::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y,
+                width, height);
+
+            const auto& projectMat = camera.GetProjectionMatrix();
+            const auto& viewMat = camera.GetViewMatrix();
+            auto transformMat = selectEntity->transform.GetModelMatrix();
+            Gizmos::Manipulate(glm::value_ptr(viewMat), glm::value_ptr(projectMat),
+                (Gizmos::OPERATION)m_GizmosType, (Gizmos::MODE)m_GizmosSpace,
+                glm::value_ptr(transformMat), nullptr, 
+                snap ? snapValues : nullptr);
+
+            if (Gizmos::IsUsing())
+            {
+                auto& position = selectEntity->transform.Position;
+                auto& rotation = selectEntity->transform.Rotation;
+                auto& scale = selectEntity->transform.Scale;
+                auto eularAngle = glm::degrees(glm::eulerAngles(rotation));
+                
+                Gizmos::DecomposeMatrixToComponents(glm::value_ptr(transformMat),
+                    glm::value_ptr(position), 
+                    glm::value_ptr(eularAngle), 
+                    glm::value_ptr(scale));
+                rotation = glm::quat(glm::radians(eularAngle));
+            } 
+        }
+
         ImGui::End();
         ImGui::PopStyleVar();
 
+        ImGui::Begin("Gizmos");
+        ImGui::Columns(2);
+        ImGui::SetColumnWidth(0, 100.0f);
+
+        const char* gizmosSpaces[] = { "Local", "World" };
+        const char* gizmosSpace = gizmosSpaces[m_GizmosSpace];
+        ImGui::Text("Space");
+        ImGui::NextColumn();
+        if (ImGui::BeginCombo("##Space", gizmosSpace))
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                bool isSelected = gizmosSpace == gizmosSpaces[i];
+                if (ImGui::Selectable(gizmosSpaces[i], isSelected))
+                {
+                    gizmosSpace = gizmosSpaces[i];
+                    m_GizmosSpace = i;
+                }
+                if (isSelected)
+                {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::NextColumn();
+
+        ImGui::Text("Move");
+        ImGui::NextColumn();
+        ImGui::Checkbox("##Move", &m_Move);
+        ImGui::NextColumn();
+        ImGui::Text("Rotate");
+        ImGui::NextColumn();
+        ImGui::Checkbox("##Rotate", &m_Rote);
+        ImGui::NextColumn();
+        ImGui::Text("Scale");
+        ImGui::NextColumn();
+        ImGui::Checkbox("##Scale", &m_Scal);
+        ImGui::Columns(1);
+
+        m_GizmosType = 0;
+        if (m_Move) m_GizmosType |= Gizmos::OPERATION::TRANSLATE;
+        if (m_Rote) m_GizmosType |= Gizmos::OPERATION::ROTATE;
+        if (m_Scal) m_GizmosType |= Gizmos::OPERATION::SCALE;
+        ImGui::End();
+
         ImGui::Begin("Select Editor Camera");
+        ImGui::Columns(2);
+        ImGui::SetColumnWidth(0, 100.0f);
+        ImGui::Text("Camera");
+        ImGui::NextColumn();
         const char* cameraTypes[] = { "Camera2D", "Camera3D" };
         const char* currentType = cameraTypes[(int)m_CameraType];
-        if (ImGui::BeginCombo("Projection", currentType))
+        if (ImGui::BeginCombo("##Camera Type", currentType))
         {
             for (int i = 0; i < 2; i++)
             {
@@ -302,7 +406,6 @@ namespace Lumi
                     currentType = cameraTypes[i];
                     m_CameraType = (unsigned int)i;
                 }
-
                 if (isSelected)
                 {
                     ImGui::SetItemDefaultFocus();
@@ -311,6 +414,31 @@ namespace Lumi
 
             ImGui::EndCombo();
         }
+        ImGui::NextColumn();
+
+        ImGui::Text("Projection");
+        ImGui::NextColumn();
+        const char* projectTypes[] = { "Perspective", "Orthographic" };
+        const char* projectType = projectTypes[(int)camera.Projection];
+        if (ImGui::BeginCombo("##Projection", projectType))
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                bool isSelected = projectType == projectTypes[i];
+                if (ImGui::Selectable(projectTypes[i], isSelected))
+                {
+                    projectType = projectTypes[i];
+                    camera.Projection = (ProjectionType)i;
+                }
+                if (isSelected)
+                {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+
+            ImGui::EndCombo();
+        }
+        ImGui::Columns(1);
         ImGui::End();
 
         m_SceneUI->OnImGuiRender();

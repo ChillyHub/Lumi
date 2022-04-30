@@ -13,6 +13,7 @@ namespace Lumi
 		SceneUI() = default;
 		SceneUI(const std::shared_ptr<Scene>& context);
 
+		Entity* GetSelectedEntity() const { return m_SelectedEntity; }
 		void Reset() { m_SelectedEntity = nullptr; }
 		void SetContext(const std::shared_ptr<Scene>& contest);
 		void SetEditor(const std::shared_ptr<EditorScene>& editor);

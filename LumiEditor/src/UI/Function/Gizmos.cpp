@@ -733,13 +733,14 @@ namespace IMGUIZMO_NAMESPACE
     static Context gContext;
 
     static const vec_t directionUnary[3] = { makeVect(1.f, 0.f, 0.f), makeVect(0.f, 1.f, 0.f), makeVect(0.f, 0.f, 1.f) };
-    static const ImU32 directionColor[3] = { IM_COL32(0xAA, 0, 0, 0xFF), IM_COL32(0, 0xAA, 0, 0xFF), IM_COL32(0, 0, 0xAA, 0XFF) };
+    static const ImU32 directionColor[3] = { IM_COL32(0xF6, 0x53, 0x14, 0xB3), IM_COL32(0x7C, 0xBB, 0, 0xB3), IM_COL32(0, 0xA1, 0xF1, 0XB3) };
+    static const ImU32 selectionColor[3] = { IM_COL32(0xF6, 0x53, 0x14, 0xFF), IM_COL32(0x7C, 0xBB, 0, 0xFF), IM_COL32(0, 0xA1, 0xF1, 0XFF) };
 
     // Alpha: 100%: FF, 87%: DE, 70%: B3, 54%: 8A, 50%: 80, 38%: 61, 12%: 1F
-    static const ImU32 planeColor[3] = { IM_COL32(0xAA, 0, 0, 0x61), IM_COL32(0, 0xAA, 0, 0x61), IM_COL32(0, 0, 0xAA, 0x61) };
-    static const ImU32 selectionColor = IM_COL32(0xFF, 0x80, 0x10, 0x8A);
+    static const ImU32 planeColor[3] = { IM_COL32(0xF6, 0x53, 0x14, 0x61), IM_COL32(0x7C, 0xBB, 0, 0x61), IM_COL32(0, 0xA1, 0xF1, 0x61) };
+    static const ImU32 selectionPlaneColor[3] = { IM_COL32(0xF6, 0x53, 0x14, 0xB3), IM_COL32(0x7C, 0xBB, 0, 0xB3), IM_COL32(0, 0xA1, 0xF1, 0XB3) };
     static const ImU32 inactiveColor = IM_COL32(0x99, 0x99, 0x99, 0x99);
-    static const ImU32 translationLineColor = IM_COL32(0xAA, 0xAA, 0xAA, 0xAA);
+    static const ImU32 translationLineColor = IM_COL32(0xAA, 0xAA, 0xAA, 0);
     static const char* translationInfoMask[] = { "X : %5.3f", "Y : %5.3f", "Z : %5.3f",
        "Y : %5.3f Z : %5.3f", "X : %5.3f Z : %5.3f", "X : %5.3f Y : %5.3f",
        "X : %5.3f Y : %5.3f Z : %5.3f" };
@@ -1055,27 +1056,27 @@ namespace IMGUIZMO_NAMESPACE
             switch (operation)
             {
             case TRANSLATE:
-                colors[0] = (type == MT_MOVE_SCREEN) ? selectionColor : IM_COL32_WHITE;
+                colors[0] = (type == MT_MOVE_SCREEN) ? IM_COL32_WHITE : IM_COL32_WHITE_ALPHA;
                 for (int i = 0; i < 3; i++)
                 {
-                    colors[i + 1] = (type == (int)(MT_MOVE_X + i)) ? selectionColor : directionColor[i];
-                    colors[i + 4] = (type == (int)(MT_MOVE_YZ + i)) ? selectionColor : planeColor[i];
-                    colors[i + 4] = (type == MT_MOVE_SCREEN) ? selectionColor : colors[i + 4];
+                    colors[i + 1] = (type == (int)(MT_MOVE_X + i)) ? selectionColor[i] : directionColor[i];
+                    colors[i + 4] = (type == (int)(MT_MOVE_YZ + i)) ? selectionPlaneColor[i] : planeColor[i];
+                    colors[i + 4] = (type == MT_MOVE_SCREEN) ? IM_COL32_WHITE_ALPHA : colors[i + 4];
                 }
                 break;
             case ROTATE:
-                colors[0] = (type == MT_ROTATE_SCREEN) ? selectionColor : IM_COL32_WHITE;
+                colors[0] = (type == MT_ROTATE_SCREEN) ? IM_COL32_WHITE : IM_COL32_WHITE_ALPHA;
                 for (int i = 0; i < 3; i++)
                 {
-                    colors[i + 1] = (type == (int)(MT_ROTATE_X + i)) ? selectionColor : directionColor[i];
+                    colors[i + 1] = (type == (int)(MT_ROTATE_X + i)) ? selectionColor[i] : directionColor[i];
                 }
                 break;
             case SCALEU:
             case SCALE:
-                colors[0] = (type == MT_SCALE_XYZ) ? selectionColor : IM_COL32_WHITE;
+                colors[0] = (type == MT_SCALE_XYZ) ? IM_COL32_WHITE : IM_COL32_WHITE_ALPHA;
                 for (int i = 0; i < 3; i++)
                 {
-                    colors[i + 1] = (type == (int)(MT_SCALE_X + i)) ? selectionColor : directionColor[i];
+                    colors[i + 1] = (type == (int)(MT_SCALE_X + i)) ? selectionColor[i] : directionColor[i];
                 }
                 break;
                 // note: this internal function is only called with three possible values for operation
@@ -1282,7 +1283,7 @@ namespace IMGUIZMO_NAMESPACE
         {
             ImVec2 baseSSpace2 = worldToPos(axis * 0.05f * (float)(j * 2) * gContext.mScreenFactor, gContext.mMVP);
             ImVec2 worldDirSSpace2 = worldToPos(axis * 0.05f * (float)(j * 2 + 1) * gContext.mScreenFactor, gContext.mMVP);
-            gContext.mDrawList->AddLine(baseSSpace2, worldDirSSpace2, IM_COL32(0, 0, 0, 0x80), 6.f);
+            gContext.mDrawList->AddLine(baseSSpace2, worldDirSSpace2, IM_COL32(0, 0, 0, 0xFF), 2.f);
         }
     }
 
@@ -1329,19 +1330,30 @@ namespace IMGUIZMO_NAMESPACE
                     ImVec2 worldDirSSpaceNoScale = worldToPos(dirAxis * markerScale * gContext.mScreenFactor, gContext.mMVP);
                     ImVec2 worldDirSSpace = worldToPos((dirAxis * markerScale * scaleDisplay[i]) * gContext.mScreenFactor, gContext.mMVP);
 
-                    if (gContext.mbUsing && (gContext.mActualID == -1 || gContext.mActualID == gContext.mEditingID))
-                    {
-                        drawList->AddLine(baseSSpace, worldDirSSpaceNoScale, IM_COL32(0x40, 0x40, 0x40, 0xFF), 3.f);
-                        drawList->AddCircleFilled(worldDirSSpaceNoScale, 6.f, IM_COL32(0x40, 0x40, 0x40, 0xFF));
-                    }
+                    //if (gContext.mbUsing && (gContext.mActualID == -1 || gContext.mActualID == gContext.mEditingID))
+                    //{
+                    //    drawList->AddLine(baseSSpace, worldDirSSpaceNoScale, colors[i + 1], 3.f);
+                    //    drawList->AddCircleFilled(worldDirSSpaceNoScale, 6.f, colors[i + 1]);
+                    //}
 
                     if (!hasTranslateOnAxis || gContext.mbUsing)
                     {
-                        drawList->AddLine(baseSSpace, worldDirSSpace, colors[i + 1], 3.f);
+                        drawList->AddLine(baseSSpace, worldDirSSpaceNoScale, colors[i + 1], 3.f);
                     }
-                    drawList->AddCircleFilled(worldDirSSpace, 6.f, colors[i + 1]);
+                    //drawList->AddCircleFilled(worldDirSSpaceNoScale, 6.f, colors[i + 1]);
+                    drawList->AddQuadFilled(
+                        worldDirSSpaceNoScale + ImVec2{ -6.f, -6.f },
+                        worldDirSSpaceNoScale + ImVec2{ -6.f,  6.f },
+                        worldDirSSpaceNoScale + ImVec2{  6.f,  6.f },
+                        worldDirSSpaceNoScale + ImVec2{  6.f, -6.f }
+                        , colors[i + 1]);
 
-                    if (gContext.mAxisFactor[i] < 0.f)
+                    //if (gContext.mAxisFactor[i] < 0.f)
+                    //{
+                    //    DrawHatchedAxis(dirAxis * scaleDisplay[i]);
+                    //}
+
+                    if (gContext.mbUsing && (gContext.mActualID == -1 || gContext.mActualID == gContext.mEditingID))
                     {
                         DrawHatchedAxis(dirAxis * scaleDisplay[i]);
                     }
@@ -1506,10 +1518,10 @@ namespace IMGUIZMO_NAMESPACE
                     drawList->AddTriangleFilled(worldDirSSpace - dir, a + ortogonalDir, a - ortogonalDir, colors[i + 1]);
                     // Arrow head end
 
-                    if (gContext.mAxisFactor[i] < 0.f)
-                    {
-                        DrawHatchedAxis(dirAxis);
-                    }
+                    //if (gContext.mAxisFactor[i] < 0.f)
+                    //{
+                    //    DrawHatchedAxis(dirAxis);
+                    //}
                 }
             }
             // draw plane
@@ -1697,8 +1709,8 @@ namespace IMGUIZMO_NAMESPACE
                     overSmallAnchor = false;
                 }
 
-                unsigned int bigAnchorColor = overBigAnchor ? selectionColor : (IM_COL32(0xAA, 0xAA, 0xAA, 0) + anchorAlpha);
-                unsigned int smallAnchorColor = overSmallAnchor ? selectionColor : (IM_COL32(0xAA, 0xAA, 0xAA, 0) + anchorAlpha);
+                unsigned int bigAnchorColor = overBigAnchor ? selectionColor[0] : (IM_COL32(0xAA, 0xAA, 0xAA, 0) + anchorAlpha);
+                unsigned int smallAnchorColor = overSmallAnchor ? selectionColor[0] : (IM_COL32(0xAA, 0xAA, 0xAA, 0) + anchorAlpha);
 
                 drawList->AddCircleFilled(worldBound1, AnchorBigRadius, IM_COL32_BLACK);
                 drawList->AddCircleFilled(worldBound1, AnchorBigRadius - 1.2f, bigAnchorColor);

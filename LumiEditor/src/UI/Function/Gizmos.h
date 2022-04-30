@@ -114,7 +114,7 @@ void EditTransform(const Camera& camera, matrix_t& matrix)
 #endif
 
 #ifndef IMGUIZMO_NAMESPACE
-#define IMGUIZMO_NAMESPACE ImGuizmo
+#define IMGUIZMO_NAMESPACE Gizmos
 #endif
 
 namespace IMGUIZMO_NAMESPACE
